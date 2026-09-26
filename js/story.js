@@ -25,7 +25,17 @@
 
   function withVars(text, vars) {
     const v = typeof vars === 'function' ? vars() : vars || {};
-    return Object.keys(v).reduce((acc, k) => acc.split(`{${k}}`).join(v[k]), String(text));
+    return josa(Object.keys(v).reduce((acc, k) => acc.split(`{${k}}`).join(v[k]), String(text)));
+  }
+
+  // '맘바(이)가' → '맘바가', '기사(은)는' → '기사는': 앞 글자에 받침이 있는지 보고 조사를 고른다
+  function josa(text) {
+    const pairs = { '(이)가': ['이', '가'], '(은)는': ['은', '는'], '(을)를': ['을', '를'], '(과)와': ['과', '와'], '(이)': ['이', ''] };
+    return text.replace(/(.)(\(이\)가|\(은\)는|\(을\)를|\(과\)와|\(이\))/g, (m, ch, mark) => {
+      const code = ch.charCodeAt(0) - 0xac00;
+      const batchim = code >= 0 && code < 11172 && code % 28 !== 0;
+      return ch + pairs[mark][batchim ? 0 : 1];
+    });
   }
 
   function textOf(step) {

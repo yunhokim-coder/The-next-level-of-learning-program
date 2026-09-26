@@ -30,6 +30,7 @@
     showcase: null, // 파티원 소개 장면: { key, at }
     sphinx: false,
     knocked: false,
+    battle: null,
     knockedAt: 0,
     compass: { visible: false, x: 0, y: 0, tx: 0, ty: 0 },
     portal: 0,
@@ -364,6 +365,7 @@
     state.showcase = null;
     state.sphinx = false;
     state.knocked = false;
+    state.battle = null;
     state.compass = { visible: false, x: 0, y: 0, tx: 0, ty: 0 };
   }
 
@@ -557,16 +559,21 @@
       g.fillRect(hx - 3, hy + 6, 1, 1);
     }
 
-    const scale = MAMBA_SIZE / 60;
-    const left = m.x - MAMBA_SIZE / 2;
-    const top = GROUND + 6 - Math.round(MAMBA_SIZE * m.rise) - hop('mamba');
+    // 전투 장면에서는 다른 자리·크기로 그리고, 맞으면 깜빡이고, 밟히면 납작해진다
+    const size = m.size || MAMBA_SIZE;
+    const base = m.base || GROUND;
+    const scale = size / 60;
+    const left = m.x + (m.dx || 0) - size / 2;
+    const top = base + 6 - Math.round(size * m.rise) - hop('mamba');
     mambaHead.x = left + (hx + 6) * scale;
     mambaHead.y = top + (hy + 3) * scale;
+    if (m.blink > t && Math.floor(t * 16) % 2) return;
+    const squash = m.squash || 0;
     ctx.save();
     ctx.beginPath();
-    ctx.rect(0, 0, W, GROUND + 4);
+    ctx.rect(0, 0, W, base + 4);
     ctx.clip();
-    ctx.drawImage(snakeBuf, left, top, MAMBA_SIZE, MAMBA_SIZE);
+    ctx.drawImage(snakeBuf, left - (size * squash) / 2, top + size * squash * 0.8, size * (1 + squash), size * (1 - squash * 0.8));
     ctx.restore();
   }
 
@@ -797,6 +804,76 @@
     tile(layers.ground, 0, GROUND);
   }
 
+  // ---------- 전투 장면 (고전 RPG 구도: 적은 오른쪽 위, 우리 편은 왼쪽 아래) ----------
+  const BATTLE = { ex: 232, ebase: 84, px: 88, pbase: 170 };
+
+  function platform(cx, cy, rx, ry, top, side) {
+    for (let dy = -ry; dy <= ry; dy++) {
+      const half = Math.round(rx * Math.sqrt(1 - (dy * dy) / (ry * ry)));
+      ctx.fillStyle = dy < ry - 3 ? top : side;
+      ctx.fillRect(cx - half, cy + dy, half * 2, 1);
+    }
+  }
+
+  function drawBattle() {
+    const b = state.battle;
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, '#ffe7b0');
+    sky.addColorStop(1, '#f2c27a');
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, 0, W, H);
+    // 멀리 보이는 어둠의 탑
+    ctx.fillStyle = 'rgba(60, 40, 60, 0.35)';
+    for (let i = 0; i < 6; i++) {
+      const w = 30 - i * 4;
+      ctx.fillRect(150 - w / 2, 70 - (i + 1) * 10, w, 10);
+    }
+    ctx.fillStyle = '#e8b56a';
+    ctx.fillRect(0, 70, W, H - 70);
+    ctx.fillStyle = 'rgba(160, 100, 40, 0.25)';
+    for (let i = 0; i < 40; i++) ctx.fillRect((i * 83) % W, 74 + ((i * 37) % 100), 6, 1);
+    platform(BATTLE.ex, BATTLE.ebase, 58, 10, '#c9955a', '#a8783f');
+    platform(BATTLE.px, BATTLE.pbase, 70, 12, '#c9955a', '#a8783f');
+    drawMamba();
+    // 우리 편: 내 캐릭터를 크게, 주인공은 옆에
+    const hurt = b.hurt > t && Math.floor(t * 16) % 2;
+    const jump = b.jumpAt ? Math.min(1, (t - b.jumpAt) / 0.6) : 0;
+    const jx = BATTLE.px + (BATTLE.ex - BATTLE.px) * jump;
+    const jy = BATTLE.pbase + (BATTLE.ebase - 6 - BATTLE.pbase) * jump - Math.sin(jump * Math.PI) * 50;
+    const lunge = b.lungeAt && t - b.lungeAt < 0.3 ? Math.sin(((t - b.lungeAt) / 0.3) * Math.PI) * 14 : 0;
+    if (!hurt) {
+      drawShadow(jx - 22, BATTLE.pbase - 2, 16);
+      drawSprite(Sprites.frames.hero[Math.floor(t * 3) % 2], jx - 38 + lunge, jy - 2, 2);
+      drawCharacter(Sprites.party[b.player], jx + 10 + lunge, jy - 2, 72);
+    }
+    // 날아가는 카드의 힘
+    const p = b.shot;
+    if (p) {
+      const k = Math.min(1, (t - p.at) / 0.55);
+      const x = BATTLE.px + 20 + (BATTLE.ex - BATTLE.px - 20) * k;
+      const y = BATTLE.pbase - 50 + (BATTLE.ebase - 40 - (BATTLE.pbase - 50)) * k - Math.sin(k * Math.PI) * 24;
+      if (p.type === 'fire') {
+        disc(Math.round(x), Math.round(y), 7, '#ff5a3c');
+        disc(Math.round(x), Math.round(y), 4, '#ffd23f');
+        spark(x, y, '#ff9a3c', 0.2);
+      } else if (p.type === 'cloud') {
+        disc(Math.round(x), Math.round(y), 8, '#9fb8d8');
+        disc(Math.round(x) - 1, Math.round(y) - 1, 7, '#ffffff');
+        spark(x, y, '#cfe8ff', 0.1);
+      } else {
+        disc(Math.round(x), Math.round(y), 7, '#ffd23f');
+        spark(x, y, '#fff6b0', 0.2);
+      }
+      if (k >= 1) {
+        b.shot = null;
+        state.actors.mamba.blink = t + 0.6;
+        const color = p.type === 'fire' ? '#ff9a3c' : p.type === 'cloud' ? '#ffffff' : '#ffd23f';
+        burst(BATTLE.ex, BATTLE.ebase - 40, color, p.big ? 26 : 12);
+        if (p.big) state.shake = 0.4;
+      }
+    }
+  }
+
   // ---------- 그리기 루프 ----------
   function tile(img, offset, y = 0) {
     const x = -Math.round(offset % img.width);
@@ -841,7 +918,8 @@
       if (state.scene === 'showcase' && state.showcase) {
         drawShowcase();
       } else {
-        if (state.scene === 'village') ctx.drawImage(layers.village, 0, 0);
+        if (state.scene === 'battle' && state.battle) drawBattle();
+        else if (state.scene === 'village') ctx.drawImage(layers.village, 0, 0);
         else if (state.scene === 'desert') drawDesert();
         else drawWild();
         if (state.dark > 0.01) {
@@ -851,7 +929,7 @@
         }
         drawPortal();
       }
-      drawMamba();
+      if (state.scene !== 'battle') drawMamba();
       drawGem();
       drawSphinx();
       if (state.scene === 'wild' || state.scene === 'desert') drawParty();
@@ -916,6 +994,11 @@
       await wait(450);
       state.scene = scene;
       state.dark = state.darkTarget = 0;
+      if (scene === 'battle') {
+        state.actors.angel.visible = false;
+        state.partyVisible = false;
+        state.battle = state.battle || { player: 'D', hurt: 0, shot: null, lungeAt: 0, jumpAt: 0 };
+      }
       state.fadeTarget = 0;
       await wait(350);
     },
@@ -957,6 +1040,61 @@
         PARTY.concat('hero').forEach((k) => burst(state.actors[k].x, GROUND - 20, '#fff6b0', 8));
         Sound.play('powerup');
       }
+    },
+    // 전투 시작: player는 내 캐릭터 유형(D/I/S/C)
+    battleStart(player) {
+      state.scene = 'battle';
+      state.battle = { player: player || 'D', hurt: 0, shot: null, lungeAt: 0, jumpAt: 0 };
+      state.partyVisible = false;
+      state.actors.angel.visible = false;
+      state.actors.devil.visible = false;
+    },
+    // 새 블랙맘바가 땅에서 솟아오른다
+    enemyEnter() {
+      const m = state.actors.mamba;
+      Object.assign(m, { visible: true, x: BATTLE.ex, base: BATTLE.ebase, size: 92, rise: 0, target: 1, dx: 0, squash: 0, blink: 0 });
+      burst(BATTLE.ex, BATTLE.ebase - 2, '#c9955a', 14);
+      Sound.play('rumble');
+    },
+    enemyAttack() {
+      const m = state.actors.mamba;
+      const start = t;
+      const tick = () => {
+        const k = (t - start) / 0.35;
+        m.dx = k < 1 ? -Math.sin(k * Math.PI) * 26 : 0;
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      tick();
+      state.shake = 0.35;
+      state.battle.hurt = t + 0.7;
+      Sound.play('poof');
+    },
+    playerAttack(type, big) {
+      state.battle.lungeAt = t;
+      state.battle.shot = { type, big, at: t };
+      Sound.play(big ? 'powerup' : 'select');
+    },
+    enemyFaint() {
+      state.actors.mamba.target = 0;
+      Sound.play('clear');
+    },
+    // 마지막: 내 캐릭터가 뛰어올라 블랙맘바 머리를 밟는다
+    stomp() {
+      const m = state.actors.mamba;
+      Object.assign(m, { visible: true, x: BATTLE.ex, base: BATTLE.ebase, size: 92, rise: 1, target: 1, dx: 0, squash: 0 });
+      state.battle.jumpAt = t;
+      setTimeout(() => {
+        m.squash = 0.55;
+        state.shake = 0.6;
+        burst(BATTLE.ex, BATTLE.ebase - 20, '#ffd23f', 30);
+        burst(BATTLE.ex, BATTLE.ebase - 20, '#ff6ad5', 16);
+        Sound.play('rumble');
+      }, 600);
+    },
+    cheerBattle() {
+      burst(BATTLE.px, BATTLE.pbase - 60, '#ffd23f', 24);
+      burst(BATTLE.ex, BATTLE.ebase - 50, '#3cf29a', 20);
+      Sound.play('powerup');
     },
     hideParty() {
       state.partyVisible = false;

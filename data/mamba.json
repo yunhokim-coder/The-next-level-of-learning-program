@@ -29,7 +29,10 @@
    "en": {
     "name": "Shaky Mamba",
     "desc": "When a test gets close, I get tense and anxious and feel stuck"
-   }
+   },
+   "tags": [
+    "calm"
+   ]
   },
   {
    "id": 2,
@@ -42,7 +45,11 @@
    "en": {
     "name": "Sloppy Mamba",
     "desc": "I don't want to, but I have to, so I just rush through it"
-   }
+   },
+   "tags": [
+    "start",
+    "method"
+   ]
   },
   {
    "id": 3,
@@ -55,7 +62,10 @@
    "en": {
     "name": "Worry Mamba",
     "desc": "Worries with no reason keep hanging around me"
-   }
+   },
+   "tags": [
+    "calm"
+   ]
   },
   {
    "id": 4,
@@ -68,7 +78,10 @@
    "en": {
     "name": "Hurry Mamba",
     "desc": "I think I must finish fast, so I make mistakes or miss things"
-   }
+   },
+   "tags": [
+    "method"
+   ]
   },
   {
    "id": 5,
@@ -81,7 +94,11 @@
    "en": {
     "name": "Chatter Mamba",
     "desc": "I keep chatting with friends in class and get in the way"
-   }
+   },
+   "tags": [
+    "focus",
+    "relation"
+   ]
   },
   {
    "id": 6,
@@ -94,7 +111,10 @@
    "en": {
     "name": "Bed Mamba",
     "desc": "I can't say no to my bed and always get pulled in"
-   }
+   },
+   "tags": [
+    "start"
+   ]
   },
   {
    "id": 7,
@@ -107,7 +127,10 @@
    "en": {
     "name": "Scribble Mamba",
     "desc": "I listen hard in class, but I only copy down what the teacher says"
-   }
+   },
+   "tags": [
+    "method"
+   ]
   },
   {
    "id": 8,
@@ -120,7 +143,10 @@
    "en": {
     "name": "Grumpy Mamba",
     "desc": "I say I don't really know why studying matters"
-   }
+   },
+   "tags": [
+    "motivation"
+   ]
   },
   {
    "id": 9,
@@ -133,7 +159,10 @@
    "en": {
     "name": "Stuck Mamba",
     "desc": "I tried hard, but I didn't get the result I wanted"
-   }
+   },
+   "tags": [
+    "selfworth"
+   ]
   },
   {
    "id": 10,
@@ -146,7 +175,10 @@
    "en": {
     "name": "Rush-Rush Mamba",
     "desc": "When I study, I'm always running out of time"
-   }
+   },
+   "tags": [
+    "plan"
+   ]
   },
   {
    "id": 11,
@@ -159,7 +191,10 @@
    "en": {
     "name": "Impulse Mamba",
     "desc": "I just jump in without any plan"
-   }
+   },
+   "tags": [
+    "plan"
+   ]
   },
   {
    "id": 12,
@@ -172,7 +207,11 @@
    "en": {
     "name": "Perfect Mamba",
     "desc": "I try to do everything perfectly, then there's too much and I finish little"
-   }
+   },
+   "tags": [
+    "selfworth",
+    "plan"
+   ]
   },
   {
    "id": 13,
@@ -185,7 +224,10 @@
    "en": {
     "name": "Later Mamba",
     "desc": "I should study, but playing is just too fun"
-   }
+   },
+   "tags": [
+    "start"
+   ]
   },
   {
    "id": 14,
@@ -198,7 +240,11 @@
    "en": {
     "name": "Tangled Mamba",
     "desc": "Too many thoughts, so I can't focus on studying"
-   }
+   },
+   "tags": [
+    "calm",
+    "focus"
+   ]
   },
   {
    "id": 15,
@@ -211,7 +257,10 @@
    "en": {
     "name": "Scatter Mamba",
     "desc": "I get bored fast, check my phone, drift off, and miss important things"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 16,
@@ -224,7 +273,11 @@
    "en": {
     "name": "Excuse Mamba",
     "desc": "Every time I study, I only think of excuses"
-   }
+   },
+   "tags": [
+    "start",
+    "motivation"
+   ]
   },
   {
    "id": 17,
@@ -237,7 +290,10 @@
    "en": {
     "name": "Maybe Mamba",
     "desc": "I want to study, but I rarely actually do it"
-   }
+   },
+   "tags": [
+    "start"
+   ]
   },
   {
    "id": 18,
@@ -250,7 +306,11 @@
    "en": {
     "name": "Stage-Fright Mamba",
     "desc": "Speaking in front of the class scares me a lot"
-   }
+   },
+   "tags": [
+    "calm",
+    "relation"
+   ]
   },
   {
    "id": 19,
@@ -263,7 +323,10 @@
    "en": {
     "name": "Stubborn Mamba",
     "desc": "I stick to only my own way of studying"
-   }
+   },
+   "tags": [
+    "method"
+   ]
   },
   {
    "id": 20,
@@ -276,7 +339,11 @@
    "en": {
     "name": "Droopy Mamba",
     "desc": "I have plenty of time but still don't study"
-   }
+   },
+   "tags": [
+    "start",
+    "plan"
+   ]
   },
   {
    "id": 21,
@@ -289,7 +356,10 @@
    "en": {
     "name": "Puzzled Mamba",
     "desc": "I don't know how I should study"
-   }
+   },
+   "tags": [
+    "method"
+   ]
   },
   {
    "id": 22,
@@ -302,7 +372,11 @@
    "en": {
     "name": "Nervous-Eye Mamba",
     "desc": "I feel small because I think others are laughing at me"
-   }
+   },
+   "tags": [
+    "calm",
+    "relation"
+   ]
   },
   {
    "id": 23,
@@ -315,7 +389,10 @@
    "en": {
     "name": "Joke Mamba",
     "desc": "I get so caught up in talking that I don't focus"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 24,
@@ -328,7 +405,10 @@
    "en": {
     "name": "Compare Mamba",
     "desc": "I always compare myself with my friends"
-   }
+   },
+   "tags": [
+    "selfworth"
+   ]
   },
   {
    "id": 25,
@@ -341,7 +421,11 @@
    "en": {
     "name": "Whiny Mamba",
     "desc": "I just complain 'No!' and sometimes blame my parents or teachers"
-   }
+   },
+   "tags": [
+    "relation",
+    "motivation"
+   ]
   },
   {
    "id": 26,
@@ -354,7 +438,10 @@
    "en": {
     "name": "Rebel Mamba",
     "desc": "'Why should I?' gets in the way of wanting to study"
-   }
+   },
+   "tags": [
+    "motivation"
+   ]
   },
   {
    "id": 27,
@@ -367,7 +454,10 @@
    "en": {
     "name": "Last-Minute Mamba",
     "desc": "I cram at the last minute or ignore my plan"
-   }
+   },
+   "tags": [
+    "plan"
+   ]
   },
   {
    "id": 28,
@@ -380,7 +470,10 @@
    "en": {
     "name": "Game Mamba",
     "desc": "I get so into games that I lose track of time"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 29,
@@ -393,7 +486,10 @@
    "en": {
     "name": "Video Mamba",
     "desc": "I get hooked on videos and waste my study time"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 30,
@@ -406,7 +502,10 @@
    "en": {
     "name": "Blame Mamba",
     "desc": "I mock friends' presentations or say they did it wrong"
-   }
+   },
+   "tags": [
+    "relation"
+   ]
   },
   {
    "id": 31,
@@ -419,7 +518,11 @@
    "en": {
     "name": "No-No Mamba",
     "desc": "No real reason, I just don't like anything"
-   }
+   },
+   "tags": [
+    "motivation",
+    "calm"
+   ]
   },
   {
    "id": 32,
@@ -432,7 +535,10 @@
    "en": {
     "name": "Off-Task Mamba",
     "desc": "In class, I don't listen and do other things"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 33,
@@ -445,7 +551,10 @@
    "en": {
     "name": "Focus-Drop Mamba",
     "desc": "My focus doesn't last, so I get bored quickly"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 34,
@@ -458,7 +567,10 @@
    "en": {
     "name": "Snack Mamba",
     "desc": "My book is open, but I only focus on snacks"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 35,
@@ -471,7 +583,11 @@
    "en": {
     "name": "Whatever Mamba",
     "desc": "Even when I might not make it, I just think 'It'll work out somehow'"
-   }
+   },
+   "tags": [
+    "plan",
+    "motivation"
+   ]
   },
   {
    "id": 36,
@@ -484,7 +600,10 @@
    "en": {
     "name": "Alone Mamba",
     "desc": "I don't join in with friends and am always by myself"
-   }
+   },
+   "tags": [
+    "relation"
+   ]
   },
   {
    "id": 37,
@@ -497,7 +616,11 @@
    "en": {
     "name": "Sulky Mamba",
     "desc": "When someone gives me advice about studying, I just sulk"
-   }
+   },
+   "tags": [
+    "relation",
+    "selfworth"
+   ]
   },
   {
    "id": 38,
@@ -510,7 +633,10 @@
    "en": {
     "name": "Busy Mamba",
     "desc": "I focus on other things, and studying gets pushed back"
-   }
+   },
+   "tags": [
+    "plan"
+   ]
   },
   {
    "id": 39,
@@ -523,7 +649,10 @@
    "en": {
     "name": "No-Fun Mamba",
     "desc": "Nothing is fun lately, I can't get into studying or focus"
-   }
+   },
+   "tags": [
+    "motivation"
+   ]
   },
   {
    "id": 40,
@@ -536,7 +665,10 @@
    "en": {
     "name": "Not-Enough Mamba",
     "desc": "I always feel I'm not good enough at studying and blame myself"
-   }
+   },
+   "tags": [
+    "selfworth"
+   ]
   },
   {
    "id": 41,
@@ -549,7 +681,11 @@
    "en": {
     "name": "Drained Mamba",
     "desc": "Shows up when lessons are hard and boring"
-   }
+   },
+   "tags": [
+    "motivation",
+    "method"
+   ]
   },
   {
    "id": 42,
@@ -562,7 +698,11 @@
    "en": {
     "name": "Scaredy Mamba",
     "desc": "Being timid gets in the way of wanting to learn new things"
-   }
+   },
+   "tags": [
+    "calm",
+    "selfworth"
+   ]
   },
   {
    "id": 43,
@@ -575,7 +715,11 @@
    "en": {
     "name": "Give-Up Mamba",
     "desc": "I think 'Studying isn't for me,' so I don't even start"
-   }
+   },
+   "tags": [
+    "selfworth",
+    "start"
+   ]
   },
   {
    "id": 44,
@@ -588,7 +732,10 @@
    "en": {
     "name": "Lazy Mamba",
     "desc": "I think about studying, but I laze around much longer"
-   }
+   },
+   "tags": [
+    "start"
+   ]
   },
   {
    "id": 45,
@@ -601,7 +748,11 @@
    "en": {
     "name": "Pressure Mamba",
     "desc": "I worry a lot about my parents being disappointed"
-   }
+   },
+   "tags": [
+    "calm",
+    "selfworth"
+   ]
   },
   {
    "id": 46,
@@ -614,7 +765,11 @@
    "en": {
     "name": "Just-Enough Mamba",
     "desc": "I don't study in an organized way, just enough to get by"
-   }
+   },
+   "tags": [
+    "plan",
+    "method"
+   ]
   },
   {
    "id": 47,
@@ -627,7 +782,10 @@
    "en": {
     "name": "Talent Mamba",
     "desc": "I think studying is all talent, so I hold back"
-   }
+   },
+   "tags": [
+    "selfworth"
+   ]
   },
   {
    "id": 48,
@@ -640,7 +798,11 @@
    "en": {
     "name": "Bother Mamba",
     "desc": "I always say 'What a bother,' especially when studying"
-   }
+   },
+   "tags": [
+    "start",
+    "motivation"
+   ]
   },
   {
    "id": 49,
@@ -653,7 +815,10 @@
    "en": {
     "name": "Dodge Mamba",
     "desc": "I have things to do but avoid them for no reason"
-   }
+   },
+   "tags": [
+    "start"
+   ]
   },
   {
    "id": 50,
@@ -666,7 +831,10 @@
    "en": {
     "name": "Forgetful Mamba",
     "desc": "I listen in class but put off reviewing, so I forget most of it"
-   }
+   },
+   "tags": [
+    "method"
+   ]
   },
   {
    "id": 51,
@@ -679,7 +847,10 @@
    "en": {
     "name": "Sleepy Mamba",
     "desc": "Class feels boring, so I often fall asleep"
-   }
+   },
+   "tags": [
+    "focus"
+   ]
   },
   {
    "id": 52,
@@ -692,7 +863,11 @@
    "en": {
     "name": "Whip Mamba",
     "desc": "I always think I'm not enough and push myself to the limit"
-   }
+   },
+   "tags": [
+    "selfworth",
+    "calm"
+   ]
   },
   {
    "id": 53,
@@ -705,7 +880,11 @@
    "en": {
     "name": "Dunno Mamba",
     "desc": "I don't try to figure it out and just keep saying 'I don't know'"
-   }
+   },
+   "tags": [
+    "method",
+    "start"
+   ]
   },
   {
    "id": 54,
@@ -718,7 +897,11 @@
    "en": {
     "name": "Greedy Mamba",
     "desc": "I don't try, but I want more and dream only of good grades"
-   }
+   },
+   "tags": [
+    "plan",
+    "motivation"
+   ]
   },
   {
    "id": 55,
@@ -731,7 +914,11 @@
    "en": {
     "name": "Dream Thief Mamba",
     "desc": "Keeps whispering to me, 'Give up your dream! This is good enough'"
-   }
+   },
+   "tags": [
+    "motivation",
+    "selfworth"
+   ]
   }
  ]
 }

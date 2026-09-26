@@ -5,10 +5,10 @@
   const titleEl = $('#title');
   const menu = $('#menu');
   const VIDEO_ID = 'bZFApTvrVVQ';
-  const READY_EPISODES = [1, 2, 3, 4]; // 지금 플레이할 수 있는 에피소드
+  const READY_EPISODES = [1, 2, 3, 4, 5]; // 지금 플레이할 수 있는 에피소드
   const MIN_AGE = 7;
   const MAX_AGE = 80;
-  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#clear-screen', '#video-modal'];
+  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#strategy-screen', '#clear-screen', '#video-modal'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
   function fit() {
@@ -64,6 +64,7 @@
   // ---------- 2. 타이틀 ----------
   function showTitle() {
     Story.stop();
+    Battle.hideHud();
     hideOverlays();
     Game.setMode('title');
     stage.classList.remove('playing');
@@ -149,6 +150,7 @@
   // ---------- 4. 모험 지도 ----------
   function showMap() {
     Story.stop();
+    Battle.hideHud();
     hideOverlays();
     titleEl.hidden = true;
     stage.classList.add('playing');
@@ -432,6 +434,59 @@
     ];
   }
 
+  // 에피소드 5: 가장 자주 나타나는 블랙맘바부터 최대 3마리와 전투
+  function ep5Opponents() {
+    const e4 = Data.save.ep4;
+    const ids = e4 && e4.cards && e4.cards.length ? e4.cards.slice() : [];
+    ids.sort((a, b) => ((e4.freq && e4.freq[b]) || 0) - ((e4.freq && e4.freq[a]) || 0));
+    const list = (ids.length ? ids : [28, 13, 3]).slice(0, 3);
+    return list.map((id) => Mamba.card(id));
+  }
+
+  async function playEp5(rec) {
+    const player = (Data.save.disc && Data.save.disc.primary) || 'D';
+    await Story.play([
+      {
+        do: async () => {
+          await Game.fadeTo('wild');
+          Game.reset('wild');
+          Game.night(true);
+          Game.partyEnter();
+          Game.walk(true);
+        },
+        wait: 2400,
+      },
+      { do: () => Game.walk(false) },
+      { who: 'narrator', key: 'ep5.intro1' },
+      { do: () => Game.enter('angel'), wait: 1100 },
+      { who: 'angel', key: 'ep5.angel1' },
+      { who: 'angel', key: 'ep5.angel2' },
+      { who: 'angel', key: 'ep5.cloudFire' },
+      ...(Data.save.ep4 && Data.save.ep4.cards && Data.save.ep4.cards.length ? [] : [{ who: 'angel', key: 'ep5.noMamba' }]),
+      { do: () => Game.fadeTo('battle') },
+    ]);
+    rec.results = await Battle.run(ep5Opponents(), player);
+    await Story.play([
+      { who: 'angel', key: 'ep5.stomp' },
+      { who: 'narrator', key: 'ep5.stompDone', do: () => Game.stomp(), wait: 1400 },
+      { who: 'narrator', key: 'ep5.highfive', do: () => Game.cheerBattle() },
+    ]);
+    Battle.hideHud();
+    $('#dialog').hidden = true;
+    await Battle.summary(rec.results);
+    await Story.play([
+      {
+        do: async () => {
+          await Game.fadeTo('wild');
+          Game.reset('wild');
+          Game.enter('angel');
+        },
+        wait: 1000,
+      },
+      { who: 'angel', key: 'ep5.angel3' },
+    ]);
+  }
+
   async function playEpisode(ep) {
     hideOverlays();
     titleEl.hidden = true;
@@ -466,6 +521,14 @@
         checks: (rec.checks || []).map((c) => (c ? 1 : 0)).join(''),
         top: (rec.top || []).join(','),
         compassTries: rec.compassTries,
+      });
+    } else if (ep === 5) {
+      const rec = { results: [] };
+      await playEp5(rec);
+      Data.save.ep5 = rec;
+      Data.persist();
+      Data.send('ep5_result', {
+        results: rec.results.map((r) => `${r.mamba}:${r.card}:${r.super ? 1 : 0}:${r.used.join('/')}`).join(','),
       });
     } else if (ep === 4) {
       const prev = Data.save.ep4 || {};
@@ -585,6 +648,7 @@
     Quiz.rerender();
     Energy.rerender();
     Mamba.rerender();
+    Battle.rerender();
   }
 
   function bind() {
@@ -608,6 +672,7 @@
 
     Energy.bind();
     Mamba.bind();
+    Battle.bind();
     $('#quiz-back').addEventListener('click', () => Quiz.back());
     $('#result-flip').addEventListener('click', () => {
       $('#result-card').classList.toggle('flipped');
@@ -688,7 +753,7 @@
 
   // 브라우저가 예전 index.html을 기억하고 있으면 새 코드와 맞지 않는다. 그때는 한 번 새로 받아 온다
   function staleHtml() {
-    if ($('#lang-screen') && $('#setup-age') && $('#draw-screen')) return false;
+    if ($('#lang-screen') && $('#setup-age') && $('#strategy-screen')) return false;
     const url = new URL(location.href);
     if (url.searchParams.has('fresh')) return false;
     url.searchParams.set('fresh', Date.now());
@@ -702,7 +767,7 @@
     fit();
     Story.init();
     bind();
-    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc(), Energy.load(), Mamba.load()]);
+    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc(), Energy.load(), Mamba.load(), Battle.load()]);
     Data.load();
     syncMenu();
     updateHud();

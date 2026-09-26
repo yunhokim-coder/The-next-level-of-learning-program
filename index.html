@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>I'M ON THE NEXT LEVEL</title>
   <meta name="description" content="학업동기 향상을 위한 광야에서의 모험">
-  <meta name="app-version" content="20260926g">
+  <meta name="app-version" content="20260926k">
   <link rel="preload" href="assets/fonts/Galmuri11.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=20260926g">
+  <link rel="stylesheet" href="css/style.css?v=20260926k">
 </head>
 <body>
   <main id="app">
@@ -41,6 +41,23 @@
         <p class="credit" data-i18n="title.credit"></p>
       </section>
 
+      <div id="bhud" class="bhud" hidden>
+        <div class="bh bh-enemy">
+          <img id="bh-enemy-img" alt="">
+          <div class="bh-body">
+            <div id="bh-enemy-name" class="bh-name"></div>
+            <div class="bh-row"><span class="bh-label">HP</span><div class="bh-track"><span id="bh-enemy-bar"></span></div></div>
+          </div>
+        </div>
+        <div class="bh bh-player">
+          <div class="bh-body">
+            <div id="bh-player-name" class="bh-name"></div>
+            <div class="bh-row"><span class="bh-label">HP</span><div class="bh-track"><span id="bh-player-bar"></span></div></div>
+            <div id="bh-player-hp" class="bh-hp"></div>
+          </div>
+        </div>
+      </div>
+
       <div id="bonus" class="bonus" hidden data-i18n="ep1.bonus">자신감 +1</div>
     </div>
 
@@ -49,6 +66,17 @@
       <p id="dialog-text" class="dialog-text"></p>
       <div id="choices" class="choices" hidden></div>
       <span class="dialog-next" aria-hidden="true">▼</span>
+    </section>
+    <section id="hand" class="hand" hidden>
+      <div class="hand-top">
+        <span class="hand-title" data-i18n="ep5.handTitle">해결책 카드를 골라!</span>
+        <span class="hand-tools">
+          <button id="hand-hint" type="button" class="pill" data-i18n="ep5.hint">💡 힌트</button>
+          <button id="hand-reshuffle" type="button" class="pill" data-i18n="ep5.reshuffle">🔄 다른 카드</button>
+        </span>
+      </div>
+      <p id="hand-hint-text" class="hand-hint" hidden></p>
+      <div id="hand-cards" class="hand-cards"></div>
     </section>
   </main>
 
@@ -254,6 +282,16 @@
     </div>
   </section>
 
+  <!-- 에피소드 5: 나만의 학업 전략 -->
+  <section id="strategy-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 data-i18n="ep5.summaryTitle">나만의 학업 전략</h2>
+      <p class="panel-sub" data-i18n="ep5.summarySub"></p>
+      <div id="strategy-list" class="strategy-list"></div>
+      <button id="strategy-done" type="button" class="big-btn" data-i18n="ep5.summaryDone">다음 ▶</button>
+    </div>
+  </section>
+
   <section id="clear-screen" class="screen screen-center" hidden>
     <div class="clear">
       <div id="clear-ep" class="clear-ep"></div>
@@ -319,17 +357,18 @@
       document.getElementById('crash-detail').textContent = (e.message || '') + ' @ ' + (e.filename || '').split('/').pop() + ':' + (e.lineno || '');
     });
   </script>
-  <script src="config.js?v=20260926g"></script>
-  <script src="js/i18n.js?v=20260926g"></script>
-  <script src="js/sound.js?v=20260926g"></script>
-  <script src="js/data.js?v=20260926g"></script>
-  <script src="js/sprites.js?v=20260926g"></script>
-  <script src="js/game.js?v=20260926g"></script>
-  <script src="js/story.js?v=20260926g"></script>
-  <script src="js/card.js?v=20260926g"></script>
-  <script src="js/energy.js?v=20260926g"></script>
-  <script src="js/mamba.js?v=20260926g"></script>
-  <script src="js/quiz.js?v=20260926g"></script>
-  <script src="js/main.js?v=20260926g"></script>
+  <script src="config.js?v=20260926k"></script>
+  <script src="js/i18n.js?v=20260926k"></script>
+  <script src="js/sound.js?v=20260926k"></script>
+  <script src="js/data.js?v=20260926k"></script>
+  <script src="js/sprites.js?v=20260926k"></script>
+  <script src="js/game.js?v=20260926k"></script>
+  <script src="js/story.js?v=20260926k"></script>
+  <script src="js/card.js?v=20260926k"></script>
+  <script src="js/energy.js?v=20260926k"></script>
+  <script src="js/mamba.js?v=20260926k"></script>
+  <script src="js/battle.js?v=20260926k"></script>
+  <script src="js/quiz.js?v=20260926k"></script>
+  <script src="js/main.js?v=20260926k"></script>
 </body>
 </html>

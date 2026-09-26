@@ -6,6 +6,8 @@
   const menu = $('#menu');
   const VIDEO_ID = 'bZFApTvrVVQ';
   const READY_EPISODES = [1, 2]; // 지금 플레이할 수 있는 에피소드
+  const MIN_AGE = 7;
+  const MAX_AGE = 80;
   const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#clear-screen', '#video-modal'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
@@ -100,22 +102,21 @@
     if (!draft) return;
     $('#setup-name').textContent = Data.nameText(draft);
     $('#setup-code').textContent = Data.codeText(draft);
-    const ages = $('#setup-ages');
-    ages.innerHTML = '';
-    [7, 8, 9, 10, 11, 12, 13, 'secret'].forEach((age) => {
-      const b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'age';
-      b.textContent = age === 'secret' ? I18n.t('setup.ageSecret') : `${age}${I18n.t('setup.ageUnit')}`;
-      b.setAttribute('aria-pressed', String(draft.age === age));
-      b.addEventListener('click', () => {
-        draft.age = age;
-        Sound.play('select');
-        $('#setup-error').hidden = true;
-        renderSetup();
-      });
-      ages.appendChild(b);
+    // 나이: 눌러서 스크롤로 고르는 목록 (7살 ~ 성인, 비밀)
+    const select = $('#setup-age');
+    select.innerHTML = '';
+    const opts = [['', I18n.t('setup.agePick')]];
+    for (let age = MIN_AGE; age <= MAX_AGE; age++) opts.push([String(age), `${age}${I18n.t('setup.ageUnit')}`]);
+    opts.push([`${MAX_AGE + 1}+`, I18n.t('setup.ageOver').replace('{n}', MAX_AGE + 1)]);
+    opts.push(['secret', I18n.t('setup.ageSecret')]);
+    opts.forEach(([value, label]) => {
+      const o = document.createElement('option');
+      o.value = value;
+      o.textContent = label;
+      if (value === '') o.disabled = true;
+      select.appendChild(o);
     });
+    select.value = draft.age === null ? '' : String(draft.age);
   }
 
   function shiftName(part, step) {
@@ -230,12 +231,16 @@
     { who: 'narrator', key: 'ep1.s4' },
     { do: () => Game.showcase('I'), wait: 700 },
     { who: 'narrator', key: 'ep1.sI' },
+    { who: 'I', key: 'ep1.selfI' },
     { do: () => Game.showcase('D'), wait: 600 },
     { who: 'narrator', key: 'ep1.sD' },
+    { who: 'D', key: 'ep1.selfD' },
     { do: () => Game.showcase('S'), wait: 600 },
     { who: 'narrator', key: 'ep1.sS' },
+    { who: 'S', key: 'ep1.selfS' },
     { do: () => Game.showcase('C'), wait: 600 },
     { who: 'narrator', key: 'ep1.sC' },
+    { who: 'C', key: 'ep1.selfC' },
     {
       do: async () => {
         await Game.fadeTo('wild');
@@ -436,6 +441,12 @@
     $('#name-noun-next').addEventListener('click', () => shiftName(1, 1));
     $('#name-dice').addEventListener('click', rollName);
     $('#setup-go').addEventListener('click', confirmSetup);
+    $('#setup-age').addEventListener('change', (e) => {
+      const v = e.target.value;
+      draft.age = /^\d+$/.test(v) ? Number(v) : v;
+      Sound.play('select');
+      $('#setup-error').hidden = true;
+    });
 
     $('#quiz-back').addEventListener('click', () => Quiz.back());
     $('#result-flip').addEventListener('click', () => {

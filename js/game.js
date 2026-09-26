@@ -481,24 +481,144 @@
     for (let i = 0; i < 6; i++) ctx.fillRect(64 + (i % 3) * 5, 118 - i * 13, 2, 3);
   }
 
-  // 파티원 한 명을 크게 비춰 소개한다
+  // ---------- 파티원 소개 장면: 캐릭터마다 자기 자리(교실, 훈련장, 보건실, 공부방)에서 등장 ----------
+  const K = '#1b1b24';
+
+  function rect(x, y, w, h, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  function outlined(x, y, w, h, color) {
+    rect(x - 1, y - 1, w + 2, h + 2, K);
+    rect(x, y, w, h, color);
+  }
+
+  function brickWall(top, bottom, base, line) {
+    rect(0, top, W, bottom - top, base);
+    ctx.fillStyle = line;
+    for (let row = 0; top + row * 10 < bottom; row++) {
+      const y = top + row * 10;
+      ctx.fillRect(0, y + 9, W, 1);
+      for (let x = row % 2 ? 12 : 0; x < W; x += 24) ctx.fillRect(x, y, 1, 9);
+    }
+  }
+
+  // 아이 머리 (소개 장면의 관객, 환자, 학생)
+  function kid(x, y, hair, cheer) {
+    disc(x, y, 8, K);
+    disc(x, y, 7, '#ffd2a8');
+    ctx.fillStyle = hair;
+    ctx.fillRect(x - 7, y - 7, 14, 5);
+    ctx.fillRect(x - 7, y - 3, 3, 3);
+    rect(x - 3, y, 2, 2, K);
+    rect(x + 2, y, 2, 2, K);
+    rect(x - 2, y + 4, 5, 1, '#c0392b');
+    if (cheer) {
+      const up = Math.floor(t * 4 + x) % 2 ? 2 : 0;
+      outlined(x + 9, y - 10 - up, 4, 8, '#ffd2a8');
+    }
+  }
+
+  const BACKDROPS = {
+    // 공감 마법사: 교실에서 친구들을 웃게 한다
+    I() {
+      brickWall(0, 150, '#f2d7a2', '#e0bd82');
+      outlined(18, 22, 70, 64, '#8a5a2e');
+      rect(22, 26, 29, 27, '#9fd0ff');
+      rect(55, 26, 29, 27, '#9fd0ff');
+      rect(22, 56, 29, 27, '#9fd0ff');
+      rect(55, 56, 29, 27, '#9fd0ff');
+      rect(0, 150, W, 30, '#d9a45a');
+      rect(0, 150, W, 1, '#b8843f');
+      kid(34, 150, '#3a2a20', true);
+      kid(62, 158, '#6b3e1e', true);
+      kid(92, 152, '#3a2a20', true);
+      kid(290, 156, '#2a2a3a', true);
+      if (Math.random() < 0.3) spark(120 + Math.random() * 180, 20 + Math.random() * 40, ['#ff6ad5', '#ffd23f', '#3cf29a'][Math.floor(Math.random() * 3)], 0.3);
+    },
+    // 불꽃 기사: 훈련장에서 친구들과 훈련한다
+    D() {
+      rect(0, 0, W, 132, '#fbe7b5');
+      [[40, 24], [230, 16], [290, 40]].forEach(([x, y]) => {
+        rect(x, y, 30, 6, '#ffffff');
+        rect(x + 6, y - 4, 16, 4, '#ffffff');
+      });
+      rect(0, 132, W, 48, '#7cc05a');
+      ctx.fillStyle = '#5a9e3c';
+      for (let x = 6; x < W; x += 22) ctx.fillRect(x, 140 + ((x * 7) % 30), 3, 3);
+      // 허수아비 훈련 인형
+      outlined(58, 96, 4, 58, '#7a4a2a');
+      outlined(44, 104, 32, 4, '#7a4a2a');
+      disc(60, 110, 13, K);
+      disc(60, 110, 12, '#d9b44a');
+      disc(60, 86, 9, K);
+      disc(60, 86, 8, '#e6c35a');
+      rect(56, 84, 2, 2, K);
+      rect(62, 84, 2, 2, K);
+      // 과녁
+      disc(282, 104, 16, K);
+      disc(282, 104, 15, '#ffffff');
+      disc(282, 104, 10, '#e8414f');
+      disc(282, 104, 5, '#ffffff');
+      outlined(280, 120, 4, 34, '#7a4a2a');
+    },
+    // 토닥 힐러: 아픈 친구 곁을 지킨다
+    S() {
+      brickWall(0, 150, '#f5e3bd', '#ead2a0');
+      outlined(24, 18, 44, 38, '#9fc8d8');
+      // 벽에 걸린 하트 표지
+      disc(40, 34, 6, '#e8414f');
+      disc(52, 34, 6, '#e8414f');
+      for (let i = 0; i < 9; i++) rect(34 + i, 37 + i, 24 - i * 2, 1, '#e8414f');
+      rect(0, 150, W, 30, '#d9b98a');
+      // 침대와 누워 있는 친구
+      outlined(8, 118, 6, 40, '#8a5a2e');
+      outlined(10, 128, 126, 18, '#8a5a2e');
+      outlined(16, 112, 28, 14, '#ffffff');
+      kid(32, 112, '#3a2a20', false);
+      rect(26, 111, 4, 1, K);
+      rect(35, 111, 4, 1, K);
+      outlined(44, 116, 90, 14, '#7fb3c9');
+      // 링거
+      outlined(150, 58, 2, 100, K);
+      outlined(144, 60, 12, 18, '#cfe8ff');
+      rect(145, 68, 10, 9, '#5a9ec9');
+      // 반짝이는 회복 효과
+      if (Math.random() < 0.25) spark(30 + Math.random() * 20, 100, '#fff6b0', -0.3);
+    },
+    // AI 전략가: AI 친구와 함께 어려운 문제를 푼다
+    C() {
+      rect(0, 0, W, 150, '#f6e2b5');
+      outlined(14, 16, 140, 80, '#8a5a2e');
+      rect(18, 20, 132, 72, '#3b3f3a');
+      ctx.fillStyle = '#f5f0e0';
+      ctx.font = '12px Galmuri11, monospace';
+      ctx.textBaseline = 'top';
+      ctx.fillText('x + y = √9  ?', 26, 30);
+      ctx.fillRect(26, 50, 42, 1);
+      ctx.fillText('2', 42, 56);
+      ctx.fillText('★', 120, 70);
+      rect(0, 150, W, 30, '#c9a06a');
+      // 책상과 책
+      outlined(0, 138, 124, 42, '#8a5a2e');
+      rect(0, 138, 124, 3, '#a8703a');
+      outlined(30, 130, 40, 8, '#ffffff');
+      rect(49, 130, 2, 8, '#c9c1a8');
+      kid(96, 126, '#6b3e1e', false);
+    },
+  };
+
   function drawShowcase() {
     const sc = state.showcase;
-    ctx.fillStyle = '#12101f';
-    ctx.fillRect(0, 0, W, H);
-    const color = CARD_COLORS[sc.key];
     const since = t - sc.at;
-    const r = Math.min(70, Math.round(since * 220));
-    disc(160, 96, r, color);
-    disc(160, 96, Math.max(0, r - 6), 'rgba(255,255,255,0.18)');
-    for (let i = 0; i < 18; i++) {
-      const a = (i / 18) * Math.PI * 2 + t * 0.4;
-      ctx.fillStyle = i % 2 ? '#ffe9a8' : color;
-      ctx.fillRect(Math.round(160 + Math.cos(a) * 82), Math.round(96 + Math.sin(a) * 60), 2, 2);
-    }
+    BACKDROPS[sc.key]();
     const pop = Math.min(1, since * 3);
-    const h = 104 * (0.6 + 0.4 * pop) + Math.sin(t * 3) * 2;
-    drawCharacter(Sprites.party[sc.key], 160, 150, h);
+    const h = 100 * (0.75 + 0.25 * pop) + Math.sin(t * 3) * 1.5;
+    drawShadow(212, 160, 24);
+    drawCharacter(Sprites.party[sc.key], 212, 160 - hop(sc.key), h);
+    // 등장 순간 반짝임
+    if (since < 0.2) burst(212, 110, CARD_COLORS[sc.key], 6);
   }
 
   // 황금빛 문: 반짝이가 여행자들을 부르는 입구

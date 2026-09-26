@@ -44,7 +44,9 @@
     "codeLabel": "My adventure code",
     "codeHint": "If your teacher asks, tell them this code.",
     "go": "Start the adventure!",
-    "needAge": "Please choose your age"
+    "needAge": "Please choose your age",
+    "agePick": "Tap to choose",
+    "ageOver": "{n} or older"
   },
   "nameParts": {
     "adj": [
@@ -137,7 +139,7 @@
     "s2": "When the Dream Gem sparkled, they found things they wanted to do, and studying felt like an adventure.",
     "s3": "But one day, the ground shook and the whole world went dark…",
     "mamba1": "I am the Black Mamba! I'm the one who gets in the way of your dreams and studies. This gem is mine now!",
-    "s4": "The Black Mamba stole the Dream Gem and vanished into the darkness. Without their gem, the children forgot what they wanted to do.",
+    "s4": "The Black Mamba stole the Dream Gem and vanished into the 'Tower of Darkness'. Without their gem, the children forgot what they wanted to do.",
     "s5": "One night, a golden door opened in front of the four friends.",
     "angel1": "Hi! I'm Sparkle, the starlight spirit who woke up inside the Golden Compass!",
     "angel2": "We need your help to get the Dream Gem back! Come with me across the wilderness to find the Black Mamba!",
@@ -160,7 +162,11 @@
     "sD": "the Flame Knight always led the way, training alongside friends,",
     "sS": "the Pat-Pat Healer stayed by sick friends and comforted their hearts,",
     "sC": "and the AI Strategist solved hard problems step by step with an AI buddy.",
-    "s6": "By day a cloud shaded them from the hot sun, and by night a firelight showed them the way. The travelers' adventure had begun!"
+    "s6": "By day a cloud shaded them from the hot sun, and by night a firelight showed them the way. The travelers' adventure had begun!",
+    "selfI": "Ta-da! I'm the Empathy Mage. My magic reads friends' hearts and makes everyone smile!",
+    "selfD": "I'm the Flame Knight! I'll lead the way through anything hard. Follow me, everyone!",
+    "selfS": "I'm the Pat-Pat Healer. Whenever a friend is having a hard time, I'll be right there to comfort them.",
+    "selfC": "I'm the AI Strategist. With my Quick-Calc AI, I can solve any problem step by step."
   },
   "ep2": {
     "intro1": "To cross the wilderness, first you need to know yourself. What kind of traveler are you?",

@@ -650,26 +650,6 @@ body.portrait .dialog-name {
   word-break: keep-all;
 }
 
-.ages {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-}
-
-.age {
-  background: #1c1c3a;
-  border: 2px solid #c7c7ff;
-  border-radius: 8px;
-  padding: 12px 6px;
-  font-size: 18px;
-}
-
-.age[aria-pressed='true'] {
-  background: var(--blue);
-  border-color: #fff;
-  box-shadow: 0 0 0 3px var(--gold);
-}
-
 .code-box {
   background: #16162c;
   border: 2px dashed #3f3f73;
@@ -1232,4 +1212,29 @@ body.overlay-open .player {
 
 body.overlay-open .screen {
   padding-top: 56px;
+}
+
+/* 나이 고르기: 눌러서 스크롤하는 목록 */
+.age-select {
+  width: 100%;
+  font: inherit;
+  font-size: 20px;
+  color: #fff;
+  background: #1c1c3a url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10'%3E%3Cpath d='M0 0h14L7 10z' fill='%23ffd23f'/%3E%3C/svg%3E") no-repeat right 16px center;
+  border: 3px solid #c7c7ff;
+  border-radius: 10px;
+  padding: 12px 44px 12px 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+
+.age-select:focus-visible {
+  outline: 2px dashed var(--gold);
+  outline-offset: 2px;
+}
+
+.age-select option {
+  background: #1c1c3a;
+  color: #fff;
 }

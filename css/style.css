@@ -2207,3 +2207,108 @@ body.portrait .hcard {
     margin: 10mm;
   }
 }
+
+/* ---------- 전투 안내 ---------- */
+.hand-tutor {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  background: #fff3c4;
+  color: #4a3300;
+  border: 3px solid var(--gold);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  line-height: 1.5;
+  word-break: keep-all;
+}
+
+.hand-tutor[hidden] {
+  display: none;
+}
+
+.hand-tutor img {
+  width: 48px;
+  image-rendering: pixelated;
+}
+
+.hand-tutor p {
+  margin: 0;
+}
+
+.hand.tutoring .hcard {
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.hand.tutoring #hand-cards.spotlight .hcard {
+  opacity: 1;
+}
+
+.spotlight {
+  position: relative;
+  z-index: 2;
+  outline: 4px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: 10px;
+  animation: spot 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes spot {
+  to {
+    outline-color: #fff6b0;
+    box-shadow: 0 0 18px 6px rgba(255, 210, 63, 0.6);
+  }
+}
+
+.tool {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.tool.fresh .pill {
+  animation: spot 0.9s ease-in-out infinite alternate;
+}
+
+.hand-tips {
+  margin: -2px 0 10px;
+  color: var(--gold);
+  font-size: 14px;
+  text-align: right;
+}
+
+.hand-tips[hidden],
+.hand.tutoring .hand-tips {
+  display: none;
+}
+
+
+
+.own-input {
+  margin-top: 8px;
+  font-size: 16px;
+  padding: 8px 12px;
+}
+
+@media (max-width: 640px) {
+  .hand-tutor {
+    grid-template-columns: 40px 1fr;
+  }
+  .hand-tutor button {
+    grid-column: 1 / -1;
+  }
+  .hand-tips {
+    text-align: left;
+  }
+}
+
+.hand-tutor button {
+  font-size: 16px;
+  padding: 8px 16px;
+  border-width: 2px;
+  border-radius: 8px;
+}

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>I'M ON THE NEXT LEVEL</title>
   <meta name="description" content="학업동기 향상을 위한 광야에서의 모험">
-  <meta name="app-version" content="20260926n">
+  <meta name="app-version" content="20260926q">
   <link rel="preload" href="assets/fonts/Galmuri11.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=20260926n">
+  <link rel="stylesheet" href="css/style.css?v=20260926q">
 </head>
 <body>
   <main id="app">
@@ -71,10 +71,16 @@
       <div class="hand-top">
         <span class="hand-title" data-i18n="ep5.handTitle">해결책 카드를 골라!</span>
         <span class="hand-tools">
-          <button id="hand-hint" type="button" class="pill" data-i18n="ep5.hint">💡 힌트</button>
-          <button id="hand-reshuffle" type="button" class="pill" data-i18n="ep5.reshuffle">🔄 다른 카드</button>
+          <span class="tool"><button id="hand-hint" type="button" class="pill" data-i18n="ep5.hint">💡 힌트</button></span>
+          <span class="tool"><button id="hand-reshuffle" type="button" class="pill" data-i18n="ep5.reshuffle">🔄 다른 카드</button></span>
         </span>
       </div>
+      <div id="hand-tutor" class="hand-tutor" hidden>
+        <img id="hand-tutor-img" alt="">
+        <p id="hand-tutor-text"></p>
+        <button id="hand-tutor-next" type="button" class="pill pill-primary" data-i18n="dialog.next">다음 ▶</button>
+      </div>
+      <p id="hand-tips" class="hand-tips" data-i18n="ep5.tips"></p>
       <p id="hand-hint-text" class="hand-hint" hidden></p>
       <div id="hand-cards" class="hand-cards"></div>
     </section>
@@ -393,19 +399,19 @@
       document.getElementById('crash-detail').textContent = (e.message || '') + ' @ ' + (e.filename || '').split('/').pop() + ':' + (e.lineno || '');
     });
   </script>
-  <script src="config.js?v=20260926n"></script>
-  <script src="js/i18n.js?v=20260926n"></script>
-  <script src="js/sound.js?v=20260926n"></script>
-  <script src="js/data.js?v=20260926n"></script>
-  <script src="js/sprites.js?v=20260926n"></script>
-  <script src="js/game.js?v=20260926n"></script>
-  <script src="js/story.js?v=20260926n"></script>
-  <script src="js/card.js?v=20260926n"></script>
-  <script src="js/energy.js?v=20260926n"></script>
-  <script src="js/mamba.js?v=20260926n"></script>
-  <script src="js/battle.js?v=20260926n"></script>
-  <script src="js/finale.js?v=20260926n"></script>
-  <script src="js/quiz.js?v=20260926n"></script>
-  <script src="js/main.js?v=20260926n"></script>
+  <script src="config.js?v=20260926q"></script>
+  <script src="js/i18n.js?v=20260926q"></script>
+  <script src="js/sound.js?v=20260926q"></script>
+  <script src="js/data.js?v=20260926q"></script>
+  <script src="js/sprites.js?v=20260926q"></script>
+  <script src="js/game.js?v=20260926q"></script>
+  <script src="js/story.js?v=20260926q"></script>
+  <script src="js/card.js?v=20260926q"></script>
+  <script src="js/energy.js?v=20260926q"></script>
+  <script src="js/mamba.js?v=20260926q"></script>
+  <script src="js/battle.js?v=20260926q"></script>
+  <script src="js/finale.js?v=20260926q"></script>
+  <script src="js/quiz.js?v=20260926q"></script>
+  <script src="js/main.js?v=20260926q"></script>
 </body>
 </html>

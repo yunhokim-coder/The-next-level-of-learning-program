@@ -334,7 +334,13 @@
     "summarySub": "The strategy cards you used to beat your Black Mambas.",
     "summaryVs": "Counter card",
     "summaryDone": "Next ▶",
-    "noMamba": "You haven't found any Black Mambas yet, so let's face the wild ones!"
+    "noMamba": "You haven't found any Black Mambas yet, so let's face the wild ones!",
+    "tut1": "Wait! Before we fight, let me show you how. After the Black Mamba attacks, 4 solution cards will appear at the bottom.",
+    "tut2": "Tap the one card you think will beat the Black Mamba. ☁ Cloud cards calm your heart, and 🔥 Fire cards get you moving.",
+    "tut3": "Not sure which card works? Tap the 💡 Hint button at the top right. I'll give you a clue!",
+    "tut4": "Don't like any of the cards? Tap 🔄 New cards to get 4 new ones. You can do it as many times as you want!",
+    "tut5": "Pick the perfect card and it's 'super effective!', knocking down the Black Mamba's HP a lot. Other cards still work a little, so don't worry!",
+    "tips": "💡 Hint: shows which cards work well · 🔄 New cards: get 4 new cards"
   },
   "ep6": {
     "intro1": "The travelers finally returned to the Village of Dreams. But the village was still covered in darkness.",
@@ -388,7 +394,7 @@
     "prev": "◀ Back",
     "next": "Next ▶",
     "stamp": "Stamp my promise! 🖐",
-    "needW": "Let's set one promise for this week! (Write what, or choose when)",
+    "needW": "Let's set one promise for this week! (Choose or write when, and write what)",
     "privacy": "🔒 What you write here stays on this device only and is never sent anywhere.",
     "cardTitle": "My profile card",
     "save": "🖼 Save as image",
@@ -410,6 +416,8 @@
     "c_reward": "Reward Energy",
     "c_both": "Passion + Reward Energy",
     "c_none": "-",
-    "c_date": "Completed"
+    "c_date": "Completed",
+    "whenOwn": "✏ Not here? Write your own (e.g. Saturday afternoon)",
+    "longOwn": "✏ Write your own (e.g. 45 min, until I finish 5 problems)"
   }
 }

@@ -102,17 +102,32 @@
         label.textContent = t(labelKey);
         const c = document.createElement('div');
         c.className = 'chips';
+        const own = document.createElement('input');
+        own.className = 'text-input own-input';
+        own.maxLength = 30;
+        own.placeholder = t(`${field}Own`);
+        own.value = plan[`${field}Text`] || '';
         I18n.t(`ep6.${opts}`).forEach((o, i) =>
           c.appendChild(
             chip(o, plan[field] === i, () => {
               plan[field] = plan[field] === i ? null : i;
+              if (plan[field] !== null) plan[`${field}Text`] = '';
               Sound.play('select');
               $('#grow-error').hidden = true;
               renderStep();
             })
           )
         );
-        wrap.append(label, c);
+        // 해당하는 게 없으면 직접 쓴다
+        own.addEventListener('input', () => {
+          plan[`${field}Text`] = own.value;
+          $('#grow-error').hidden = true;
+          if (own.value && plan[field] !== null) {
+            plan[field] = null;
+            c.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          }
+        });
+        wrap.append(label, c, own);
         return wrap;
       };
       body.appendChild(row('when', 'whenOpts', 'when'));
@@ -148,7 +163,7 @@
   }
 
   function next() {
-    if (STEPS[step] === 'w' && !String(plan.what || '').trim() && plan.when === null) {
+    if (STEPS[step] === 'w' && !String(plan.what || '').trim() && plan.when === null && !String(plan.whenText || '').trim()) {
       $('#grow-error').hidden = false;
       Sound.play('blip');
       return;
@@ -354,7 +369,7 @@
       ['O', [((p.o || []).map((id) => Battle.card(id)[L].name).join(', ')), p.oText].filter(Boolean).join(' / ')],
       [
         'W',
-        [p.when != null ? I18n.t('ep6.whenOpts')[p.when] : '', p.long != null ? I18n.t('ep6.longOpts')[p.long] : '', p.what || '']
+        [p.when != null ? I18n.t('ep6.whenOpts')[p.when] : p.whenText || '', p.long != null ? I18n.t('ep6.longOpts')[p.long] : p.longText || '', p.what || '']
           .filter(Boolean)
           .join(' · '),
       ],
@@ -458,7 +473,7 @@
     },
     grow(prev = {}) {
       const e3 = Data.save.ep3 || {};
-      plan = { g: e3.goal || '', r: '', o: [], oText: '', when: null, long: null, what: '', cheer: 0, ...prev };
+      plan = { g: e3.goal || '', r: '', o: [], oText: '', when: null, whenText: '', long: null, longText: '', what: '', cheer: 0, ...prev };
       step = 0;
       $('#grow-error').hidden = true;
       renderStep();

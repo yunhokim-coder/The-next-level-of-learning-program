@@ -65,6 +65,7 @@
       b.querySelector('.hcard-name').textContent = c[lang()].name;
       b.querySelector('.hcard-desc').textContent = c[lang()].desc;
       b.addEventListener('click', () => {
+        if (tutorStep >= 0) return;
         Sound.play('select');
         $('#hand').hidden = true;
         document.body.classList.remove('hand-open');
@@ -82,12 +83,63 @@
     }
   }
 
+  // ---------- 처음 카드를 고를 때 반짝이가 버튼을 하나씩 짚어 가며 알려 준다 ----------
+  const TUTOR = [
+    { key: 'ep5.tut1', target: null },
+    { key: 'ep5.tut2', target: '#hand-cards' },
+    { key: 'ep5.tut3', target: '#hand-hint' },
+    { key: 'ep5.tut4', target: '#hand-reshuffle' },
+    { key: 'ep5.tut5', target: null },
+  ];
+  let tutorStep = -1;
+
+  function renderTutor() {
+    const box = $('#hand-tutor');
+    document.querySelectorAll('.spotlight').forEach((el) => el.classList.remove('spotlight'));
+    if (tutorStep < 0) {
+      box.hidden = true;
+      $('#hand').classList.remove('tutoring');
+      return;
+    }
+    const s = TUTOR[tutorStep];
+    box.hidden = false;
+    $('#hand').classList.add('tutoring');
+    $('#hand-tutor-img').src = Sprites.iconURL('angel', 3);
+    $('#hand-tutor-text').textContent = I18n.t(s.key);
+    if (s.target) $(s.target).classList.add('spotlight');
+  }
+
+  function tutorNext() {
+    Sound.play('blip');
+    tutorStep = tutorStep + 1 < TUTOR.length ? tutorStep + 1 : -1;
+    if (tutorStep < 0) {
+      try {
+        Data.save.battleTutorial = true;
+        Data.persist();
+      } catch (e) {
+        /* 저장 못 해도 진행은 계속 */
+      }
+    }
+    renderTutor();
+  }
+
   function chooseCard() {
     deal();
     renderHand();
     $('#dialog').hidden = true;
     $('#hand').hidden = false;
     document.body.classList.add('hand-open');
+    // 두 버튼은 한 번 눌러 보기 전까지 반짝이며 설명 말풍선을 단다
+    $('#hand-hint').closest('.tool').classList.toggle('fresh', !state.usedHint);
+    $('#hand-reshuffle').closest('.tool').classList.toggle('fresh', !state.usedShuffle);
+    $('#hand-tips').hidden = state.usedHint && state.usedShuffle;
+    if (!state.tutored) {
+      state.tutored = true;
+      if (!(Data.save && Data.save.battleTutorial)) {
+        tutorStep = 0;
+        renderTutor();
+      }
+    }
     return new Promise((resolve) => {
       pickResolve = resolve;
     });
@@ -172,7 +224,11 @@
       return strategy;
     },
     bind() {
+      $('#hand-tutor-next').addEventListener('click', tutorNext);
       $('#hand-reshuffle').addEventListener('click', () => {
+        if (tutorStep >= 0) return;
+        state.usedShuffle = true;
+        $('#hand-reshuffle').closest('.tool').classList.remove('fresh');
         Sound.play('blip');
         const hint = state.hintShown;
         deal();
@@ -180,6 +236,9 @@
         renderHand();
       });
       $('#hand-hint').addEventListener('click', () => {
+        if (tutorStep >= 0) return;
+        state.usedHint = true;
+        $('#hand-hint').closest('.tool').classList.remove('fresh');
         Sound.play('sparkle');
         state.hintShown = true;
         renderHand();
@@ -220,7 +279,10 @@
     rerender() {
       if (!strategy || !state) return;
       renderHud();
-      if (!$('#hand').hidden) renderHand();
+      if (!$('#hand').hidden) {
+        renderHand();
+        if (tutorStep >= 0) renderTutor();
+      }
       if (!$('#strategy-screen').hidden) renderSummary();
     },
   };

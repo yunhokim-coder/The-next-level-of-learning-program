@@ -566,8 +566,8 @@
       // 목표, 지금 모습, 무엇을 할지는 아이가 쓴 글이라 보내지 않는다
       Data.send('ep6_result', {
         strategies: (rec.o || []).join(','),
-        when: rec.when,
-        long: rec.long,
+        when: rec.when != null ? rec.when : rec.whenText ? 'own' : null,
+        long: rec.long != null ? rec.long : rec.longText ? 'own' : null,
         cheer: rec.cheer,
       });
     } else if (ep === 5) {

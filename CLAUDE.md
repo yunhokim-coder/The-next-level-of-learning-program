@@ -63,6 +63,7 @@
   - 원작 DISC 캐릭터 4종은 `tools/make_sprites.py`가 카드 원본을 세로 96칸 도트로 다시 그린 `assets/sprites/*.png` (게임 높이 48로 그림).
 - **폰트:** Galmuri11 (OFL, `assets/fonts/`에 포함). 학교망에서 외부 CDN이 막힐 수 있으므로 폰트는 저장소에 직접 넣는다.
 - **사운드:** Web Audio API로 8비트 효과음을 코드로 생성한다. 음소거 버튼 필수 (교실 사용).
+  - 아이폰·아이패드는 효과음을 숨긴 `<audio>` 재생기(MediaStreamDestination)로 흘려보내 무음 모드에서도 음량 버튼만으로 들리게 한다 (아이폰 15 Pro 사파리에서 확인). 메뉴의 🔔 소리 테스트가 상태(`running · on · … · player/direct`)를 보여 준다.
 - **배포:** GitHub Pages. 서버 없음.
 - **캐시:** 배포할 때마다 `index.html`의 `app-version`과 CSS·JS 주소의 `?v=` 값을 함께 올린다. 그래야 학생 기기가 예전 파일과 새 파일을 섞어 쓰지 않는다. `main.js`는 예전 `index.html`을 감지하면 한 번 새로 받아 온다.
 - **로컬 실행:** `data/`의 JSON을 `fetch`로 읽으므로 파일을 더블클릭하면 안 열린다. 저장소 폴더에서 `python3 -m http.server`를 실행하고 `http://localhost:8000`으로 연다.

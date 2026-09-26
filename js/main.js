@@ -5,10 +5,10 @@
   const titleEl = $('#title');
   const menu = $('#menu');
   const VIDEO_ID = 'bZFApTvrVVQ';
-  const READY_EPISODES = [1, 2]; // 지금 플레이할 수 있는 에피소드
+  const READY_EPISODES = [1, 2, 3]; // 지금 플레이할 수 있는 에피소드
   const MIN_AGE = 7;
   const MAX_AGE = 80;
-  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#clear-screen', '#video-modal'];
+  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#clear-screen', '#video-modal'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
   function fit() {
@@ -302,6 +302,94 @@
     { who: 'angel', key: 'ep2.intro2' },
   ];
 
+  // 에피소드 3: 스핑크스의 수수께끼와 황금나침반. rec에 이번 에피소드의 선택을 모은다
+  function ep3Script(rec) {
+    const L = () => (I18n.lang === 'en' ? 'en' : 'ko');
+    const energyName = (a) => I18n.t(a === 'passion' ? 'ep3.passion' : 'ep3.reward');
+    const riddles = Energy.data.riddles.map((r, i) => ({
+      who: 'sphinx',
+      key: 'ep3.riddleQ',
+      vars: () => ({ n: i + 1, text: r[L()] }),
+      choices: ['passion', 'reward'].map((opt) => ({
+        key: `ep3.${opt}`,
+        pick: () => {
+          rec.riddles[i] = opt;
+        },
+        then: () => [
+          {
+            who: 'sphinx',
+            key: opt === r.answer ? 'ep3.right' : 'ep3.wrong',
+            vars: () => ({ answer: energyName(r.answer) }),
+            do: () => Sound.play(opt === r.answer ? 'sparkle' : 'blip'),
+          },
+        ],
+      })),
+    }));
+    // 마지막 수수께끼: 맞힐 때까지 다시 묻는다
+    const hint = () => [{ who: 'sphinx', key: 'ep3.hint' }, compassQ()];
+    const compassQ = () => ({
+      who: 'sphinx',
+      key: 'ep3.sph7',
+      choices: [
+        { key: 'ep3.optBasic', pick: () => rec.compassTries++, then: hint },
+        { key: 'ep3.optReward', pick: () => rec.compassTries++, then: hint },
+        { key: 'ep3.optPassion', pick: () => rec.compassTries++, then: [{ who: 'sphinx', key: 'ep3.correct' }] },
+        { key: 'ep3.optStar', pick: () => rec.compassTries++, then: hint },
+      ],
+    });
+    return [
+      {
+        do: () => {
+          Game.reset('desert');
+          Game.partyEnter();
+        },
+        wait: 2600,
+      },
+      { who: 'narrator', key: 'ep3.intro1', do: () => Game.showSphinx(), wait: 900 },
+      { who: 'sphinx', key: 'ep3.sph1' },
+      { who: 'sphinx', key: 'ep3.sph2' },
+      { who: 'sphinx', key: 'ep3.sph3' },
+      ...riddles,
+      { who: 'sphinx', key: 'ep3.sph4' },
+      {
+        who: 'sphinx',
+        key: 'ep3.myEnergyQ',
+        choices: ['passion', 'reward', 'both'].map((o) => ({
+          key: o === 'both' ? 'ep3.both' : `ep3.${o}`,
+          pick: () => {
+            rec.energy = o;
+          },
+          then: [{ who: 'sphinx', key: 'ep3.myEnergyA' }],
+        })),
+      },
+      { do: () => Game.enter('angel'), wait: 1100 },
+      { who: 'angel', key: 'ep3.angel1' },
+      {
+        do: async () => {
+          $('#dialog').hidden = true;
+          await Energy.showGauges();
+          rec.checks = await Energy.checklist();
+          const r = Energy.score(rec.checks);
+          rec.gauges = r.gauges;
+          rec.top = r.top;
+          await Energy.showResult(r);
+        },
+      },
+      { who: 'sphinx', key: 'ep3.sph5' },
+      { who: 'sphinx', key: 'ep3.sph6' },
+      compassQ(),
+      { who: 'narrator', key: 'ep3.compass', do: () => Game.giveCompass(), wait: 1800 },
+      { who: 'angel', key: 'ep3.angel2' },
+      {
+        do: async () => {
+          $('#dialog').hidden = true;
+          rec.goal = await Energy.goal(rec.goal);
+        },
+      },
+      { who: 'angel', key: 'ep3.angel3' },
+    ];
+  }
+
   async function playEpisode(ep) {
     hideOverlays();
     titleEl.hidden = true;
@@ -323,6 +411,20 @@
       });
       await showResult(result);
       await Story.play([{ who: 'angel', key: 'ep2.angelResult' }]);
+    } else if (ep === 3) {
+      const prev = Data.save.ep3 || {};
+      const rec = { riddles: [], energy: null, checks: null, gauges: null, top: null, compassTries: 0, goal: prev.goal || '' };
+      await Story.play(ep3Script(rec));
+      Data.save.ep3 = rec;
+      Data.persist();
+      // 목표 글은 기기에만 두고 보내지 않는다
+      Data.send('ep3_result', {
+        riddles: rec.riddles.join(','),
+        energy: rec.energy,
+        checks: (rec.checks || []).map((c) => (c ? 1 : 0)).join(''),
+        top: (rec.top || []).join(','),
+        compassTries: rec.compassTries,
+      });
     }
     showClear(ep);
   }
@@ -427,6 +529,7 @@
     if (!$('#map-screen').hidden) renderMap();
     if (!$('#result-screen').hidden) renderResult();
     Quiz.rerender();
+    Energy.rerender();
   }
 
   function bind() {
@@ -448,6 +551,7 @@
       $('#setup-error').hidden = true;
     });
 
+    Energy.bind();
     $('#quiz-back').addEventListener('click', () => Quiz.back());
     $('#result-flip').addEventListener('click', () => {
       $('#result-card').classList.toggle('flipped');
@@ -528,7 +632,7 @@
 
   // 브라우저가 예전 index.html을 기억하고 있으면 새 코드와 맞지 않는다. 그때는 한 번 새로 받아 온다
   function staleHtml() {
-    if ($('#lang-screen') && $('#setup-age')) return false;
+    if ($('#lang-screen') && $('#setup-age') && $('#goal-screen')) return false;
     const url = new URL(location.href);
     if (url.searchParams.has('fresh')) return false;
     url.searchParams.set('fresh', Date.now());
@@ -542,7 +646,7 @@
     fit();
     Story.init();
     bind();
-    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc()]);
+    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc(), Energy.load()]);
     Data.load();
     syncMenu();
     updateHud();

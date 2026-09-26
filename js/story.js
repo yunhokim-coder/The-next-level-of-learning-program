@@ -1,5 +1,7 @@
 // 대사 진행기: 대본(step 배열)을 한 줄씩 보여주고, 선택지가 있으면 고른 쪽 대본을 이어 붙인다.
-// step = { who, key, do, wait, choices: [{ key, then: [steps] }] }
+// step = { who, key, vars, do, wait, choices: [{ key, pick, then }] }
+//   vars: 문구의 {이름} 자리에 넣을 값 (객체 또는 객체를 돌려주는 함수)
+//   pick: 선택지를 골랐을 때 실행할 함수, then: 이어 붙일 대본 (배열 또는 배열을 돌려주는 함수)
 (function () {
   const $ = (sel) => document.querySelector(sel);
   let dialog;
@@ -21,8 +23,13 @@
     return String(text).replace('{name}', Data.nameText());
   }
 
+  function withVars(text, vars) {
+    const v = typeof vars === 'function' ? vars() : vars || {};
+    return Object.keys(v).reduce((acc, k) => acc.split(`{${k}}`).join(v[k]), String(text));
+  }
+
   function textOf(step) {
-    return fill(I18n.t(step.key));
+    return fill(withVars(I18n.t(step.key), step.vars));
   }
 
   async function next() {
@@ -89,13 +96,15 @@
       const b = document.createElement('button');
       b.className = 'choice';
       b.type = 'button';
-      b.textContent = I18n.t(c.key);
+      b.textContent = withVars(I18n.t(c.key), c.vars);
       b.addEventListener('click', (e) => {
         e.stopPropagation();
         Sound.play('select');
         waitingChoice = false;
         choicesEl.hidden = true;
-        queue = c.then.concat(queue);
+        if (c.pick) c.pick();
+        const then = typeof c.then === 'function' ? c.then() : c.then || [];
+        queue = then.concat(queue);
         next();
       });
       choicesEl.appendChild(b);

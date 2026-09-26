@@ -28,6 +28,8 @@
     actors: {},
     gem: { visible: false, x: 160, y: 62, tx: 160, ty: 62, taken: false },
     showcase: null, // 파티원 소개 장면: { key, at }
+    sphinx: false,
+    compass: { visible: false, x: 0, y: 0, tx: 0, ty: 0 },
     portal: 0,
     portalTarget: 0,
   };
@@ -107,6 +109,15 @@
     });
     layers.village = village;
 
+    // 피라미드 (에피소드 3)
+    const pyr = makeCanvas(W, H);
+    g = pyr.getContext('2d');
+    pyramid(g, 70, 132, 62);
+    pyramid(g, 150, 132, 48);
+    pyramid(g, 30, 132, 36);
+    layers.pyramids = pyr;
+    layers.sphinx = bakeSphinx();
+
     // 먼 모래언덕 (가로로 이어 붙일 수 있게 주기를 320에 맞춘다)
     layers.dunesFar = hills('#f3cf8f', '#e6b877', 112, [[7, 160, 0], [3, 80, 1.3]]);
     layers.dunesNear = hills('#eab06a', '#d69753', 128, [[6, 320, 2], [3, 64, 0.4]]);
@@ -153,6 +164,84 @@
   function hills(fill, edge, base, waves) {
     const c = makeCanvas(W, H);
     hillsInto(c.getContext('2d'), fill, edge, base, waves);
+    return c;
+  }
+
+  function pyramid(g, cx, base, h) {
+    for (let y = base - h; y < base; y++) {
+      const half = Math.round((y - (base - h)) * 1.25);
+      g.fillStyle = '#1b1b24';
+      g.fillRect(cx - half - 1, y, half * 2 + 2, 1);
+      g.fillStyle = '#ecc27a';
+      g.fillRect(cx - half, y, half, 1);
+      g.fillStyle = '#c9954a';
+      g.fillRect(cx, y, half, 1);
+      if ((base - y) % 6 === 0 && half > 2) {
+        g.fillStyle = 'rgba(120, 70, 20, 0.35)';
+        g.fillRect(cx - half + 1, y, half * 2 - 2, 1);
+      }
+    }
+  }
+
+  // 스핑크스: 왼쪽을 보고 엎드린 사자 몸에 줄무늬 머리 장식 (84×66, 슬라이드를 참고해 새로 그림)
+  function bakeSphinx() {
+    const c = makeCanvas(84, 66);
+    const g = c.getContext('2d');
+    const K = '#1b1b24';
+    const box = (x, y, w, h, color) => {
+      g.fillStyle = K;
+      g.fillRect(x - 1, y - 1, w + 2, h + 2);
+      g.fillStyle = color;
+      g.fillRect(x, y, w, h);
+    };
+    const round = (cx, cy, r, color) => {
+      for (let dy = -r - 1; dy <= r + 1; dy++) {
+        const hk = Math.round(Math.sqrt(Math.max(0, (r + 1) * (r + 1) - dy * dy)));
+        g.fillStyle = K;
+        g.fillRect(cx - hk, cy + dy, hk * 2, 1);
+      }
+      for (let dy = -r; dy <= r; dy++) {
+        const h = Math.round(Math.sqrt(r * r - dy * dy));
+        g.fillStyle = color;
+        g.fillRect(cx - h, cy + dy, h * 2, 1);
+      }
+    };
+    const sand = '#d9a85a';
+    const light = '#ecc27a';
+    const dark = '#b98a45';
+    round(70, 44, 13, sand); // 뒷다리 엉덩이
+    box(30, 36, 50, 26, sand); // 몸통
+    g.fillStyle = light;
+    g.fillRect(32, 37, 44, 3);
+    g.fillStyle = dark;
+    g.fillRect(30, 58, 50, 4);
+    box(2, 54, 40, 8, sand); // 앞발
+    g.fillStyle = K;
+    [6, 10, 14].forEach((x) => g.fillRect(x, 58, 1, 4));
+    box(20, 30, 20, 26, light); // 가슴
+    // 머리 장식 (줄무늬)
+    box(8, 8, 32, 30, '#f2c14e');
+    g.fillStyle = '#3a5a9a';
+    for (let y = 10; y < 38; y += 4) {
+      g.fillRect(8, y, 6, 2);
+      g.fillRect(34, y, 6, 2);
+    }
+    g.fillRect(12, 8, 24, 2);
+    // 얼굴
+    box(14, 12, 20, 22, '#e3b56b');
+    g.fillStyle = K;
+    g.fillRect(17, 19, 4, 1);
+    g.fillRect(27, 19, 4, 1);
+    g.fillRect(18, 20, 2, 2);
+    g.fillRect(28, 20, 2, 2);
+    g.fillRect(23, 21, 1, 5);
+    g.fillRect(22, 26, 3, 1);
+    g.fillRect(20, 29, 8, 1);
+    // 수염 장식
+    box(21, 34, 6, 8, '#f2c14e');
+    g.fillStyle = '#3a5a9a';
+    g.fillRect(21, 37, 6, 1);
+    g.fillRect(21, 40, 6, 1);
     return c;
   }
 
@@ -271,6 +360,8 @@
     state.dark = state.darkTarget = 0;
     state.portal = state.portalTarget = 0;
     state.showcase = null;
+    state.sphinx = false;
+    state.compass = { visible: false, x: 0, y: 0, tx: 0, ty: 0 };
   }
 
   function hop(id) {
@@ -639,6 +730,39 @@
     if (Math.random() < 0.5) spark(cx + (Math.random() * 30 - 15) * p, cy + (Math.random() * 70 - 35) * p, '#ffe9a8', -0.2);
   }
 
+  const SPHINX_X = 236;
+
+  function drawSphinx() {
+    if (!state.sphinx) return;
+    const y = GROUND - 66 - hop('sphinx');
+    ctx.drawImage(layers.sphinx, SPHINX_X, y);
+    // 가끔 눈을 깜빡인다
+    if (Math.floor(t * 1.3) % 5 === 0 && (t * 1.3) % 1 < 0.15) {
+      ctx.fillStyle = '#e3b56b';
+      ctx.fillRect(SPHINX_X + 18, y + 20, 2, 2);
+      ctx.fillRect(SPHINX_X + 28, y + 20, 2, 2);
+    }
+  }
+
+  function drawCompass() {
+    const c = state.compass;
+    if (!c.visible) return;
+    c.x += (c.tx - c.x) * 0.05;
+    c.y += (c.ty - c.y) * 0.05;
+    const y = Math.round(c.y + Math.sin(t * 3) * 2);
+    disc(Math.round(c.x), y - 13, 14, 'rgba(255, 220, 120, 0.25)');
+    drawSprite(Sprites.frames.compass[0], c.x, y, 2);
+    if (Math.random() < 0.35) spark(c.x + (Math.random() * 24 - 12), y - Math.random() * 26, '#ffe9a8', -0.2);
+  }
+
+  function drawDesert() {
+    ctx.drawImage(layers.day, 0, 0);
+    disc(292, 22, 9, '#fff8d8');
+    ctx.drawImage(layers.pyramids, 0, 0);
+    ctx.drawImage(layers.dunesNear, 0, 8);
+    tile(layers.ground, 0, GROUND);
+  }
+
   // ---------- 그리기 루프 ----------
   function tile(img, offset, y = 0) {
     const x = -Math.round(offset % img.width);
@@ -684,6 +808,7 @@
         drawShowcase();
       } else {
         if (state.scene === 'village') ctx.drawImage(layers.village, 0, 0);
+        else if (state.scene === 'desert') drawDesert();
         else drawWild();
         if (state.dark > 0.01) {
           ctx.fillStyle = `rgba(10, 6, 24, ${state.dark})`;
@@ -694,7 +819,9 @@
       }
       drawMamba();
       drawGem();
-      if (state.scene === 'wild') drawParty();
+      drawSphinx();
+      if (state.scene === 'wild' || state.scene === 'desert') drawParty();
+      drawCompass();
       if (state.scene === 'showcase') return endFrame(dt);
       drawDevil();
       drawAngel();
@@ -773,6 +900,17 @@
     },
     walk(on) {
       state.walking = on;
+    },
+    showSphinx() {
+      state.sphinx = true;
+      Sound.play('rumble');
+      state.shake = 0.5;
+    },
+    // 스핑크스 머리에서 나침반이 나와 주인공 머리 위로 날아간다
+    giveCompass() {
+      const h = state.actors.hero;
+      state.compass = { visible: true, x: SPHINX_X + 24, y: GROUND - 50, tx: h.x, ty: h.y - 58 };
+      Sound.play('powerup');
     },
     hideParty() {
       state.partyVisible = false;

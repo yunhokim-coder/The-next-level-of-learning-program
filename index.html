@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>I'M ON THE NEXT LEVEL</title>
   <meta name="description" content="학업동기 향상을 위한 광야에서의 모험">
-  <meta name="app-version" content="20260926c">
+  <meta name="app-version" content="20260926f">
   <link rel="preload" href="assets/fonts/Galmuri11.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=20260926c">
+  <link rel="stylesheet" href="css/style.css?v=20260926f">
 </head>
 <body>
   <main id="app">
@@ -161,6 +161,51 @@
     </div>
   </section>
 
+  <!-- 에피소드 3: 마음 게이지 -->
+  <section id="gauge-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 data-i18n="ep3.gaugeTitle">마음 게이지가 무엇인가요?</h2>
+      <p class="panel-sub" data-i18n="ep3.gaugeSub"></p>
+      <div id="gauge-list" class="gauge-list"></div>
+      <button id="gauge-ok" type="button" class="big-btn" data-i18n="ep3.gaugeOk">알겠어요!</button>
+    </div>
+  </section>
+
+  <section id="check-screen" class="screen" hidden>
+    <div class="panel">
+      <h2 data-i18n="ep3.checkTitle">CHECK LIST</h2>
+      <p class="panel-sub" data-i18n="ep3.checkSub"></p>
+      <div id="check-list" class="check-list"></div>
+      <div class="check-foot">
+        <span id="check-count" class="check-count"></span>
+        <button id="check-done" type="button" class="big-btn" data-i18n="ep3.checkDone">에너지 스티커 모으기 ▶</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="sticker-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 data-i18n="ep3.resultTitle">나의 에너지 스티커</h2>
+      <div id="sticker-list" class="sticker-list"></div>
+      <p id="sticker-msg" class="sticker-msg"></p>
+      <button id="sticker-next" type="button" class="big-btn" data-i18n="ep3.resultNext">다음 ▶</button>
+    </div>
+  </section>
+
+  <section id="goal-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 data-i18n="ep3.goalTitle">황금나침반이 가리키는 곳</h2>
+      <p class="panel-sub" data-i18n="ep3.goalSub"></p>
+      <textarea id="goal-input" class="goal-input" rows="3" maxlength="80" data-i18n-placeholder="ep3.goalPlaceholder"></textarea>
+      <div id="goal-examples" class="chips"></div>
+      <p class="goal-privacy" data-i18n="ep3.goalPrivacy"></p>
+      <div class="goal-actions">
+        <button id="goal-skip" type="button" class="pill" data-i18n="ep3.goalSkip">나중에 할래요</button>
+        <button id="goal-done" type="button" class="big-btn" data-i18n="ep3.goalDone">나침반에 새기기 ▶</button>
+      </div>
+    </div>
+  </section>
+
   <section id="clear-screen" class="screen screen-center" hidden>
     <div class="clear">
       <div id="clear-ep" class="clear-ep"></div>
@@ -226,15 +271,16 @@
       document.getElementById('crash-detail').textContent = (e.message || '') + ' @ ' + (e.filename || '').split('/').pop() + ':' + (e.lineno || '');
     });
   </script>
-  <script src="config.js?v=20260926c"></script>
-  <script src="js/i18n.js?v=20260926c"></script>
-  <script src="js/sound.js?v=20260926c"></script>
-  <script src="js/data.js?v=20260926c"></script>
-  <script src="js/sprites.js?v=20260926c"></script>
-  <script src="js/game.js?v=20260926c"></script>
-  <script src="js/story.js?v=20260926c"></script>
-  <script src="js/card.js?v=20260926c"></script>
-  <script src="js/quiz.js?v=20260926c"></script>
-  <script src="js/main.js?v=20260926c"></script>
+  <script src="config.js?v=20260926f"></script>
+  <script src="js/i18n.js?v=20260926f"></script>
+  <script src="js/sound.js?v=20260926f"></script>
+  <script src="js/data.js?v=20260926f"></script>
+  <script src="js/sprites.js?v=20260926f"></script>
+  <script src="js/game.js?v=20260926f"></script>
+  <script src="js/story.js?v=20260926f"></script>
+  <script src="js/card.js?v=20260926f"></script>
+  <script src="js/energy.js?v=20260926f"></script>
+  <script src="js/quiz.js?v=20260926f"></script>
+  <script src="js/main.js?v=20260926f"></script>
 </body>
 </html>

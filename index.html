@@ -20,29 +20,27 @@
         </div>
         <div class="hud-right">
           <span class="hp" aria-hidden="true"><span class="hp-heart">♥</span><span class="hp-bar"><span></span></span></span>
-          <span class="player" data-i18n="hud.player">PLAYER 1</span>
+          <span id="player-name" class="player">PLAYER 1</span>
           <button id="mute-btn" class="icon-btn" type="button" aria-label="소리 켜짐">🔊</button>
         </div>
       </header>
 
-      <section id="title" class="title">
+      <section id="title" class="title" hidden>
         <h1>
           <span class="t1" data-i18n="title.line1">I'M ON THE</span>
           <span class="t2" data-i18n="title.line2">NEXT LEVEL</span>
           <span class="t3" data-i18n="title.line3">IN EDUCATION</span>
         </h1>
-        <button id="start-btn" class="start" type="button" data-i18n="title.press">PRESS START</button>
-        <p class="subtitle" data-i18n="title.subtitle">- 학업동기 향상을 위한 광야에서의 모험 -</p>
+        <div class="title-actions">
+          <button id="start-btn" class="start" type="button" data-i18n="title.press">PRESS START</button>
+          <button id="continue-btn" class="start" type="button" data-i18n="title.continue" hidden>이어하기</button>
+          <button id="new-btn" class="start start-sub" type="button" data-i18n="title.newGame" hidden>처음부터</button>
+        </div>
+        <p class="subtitle" data-i18n="title.subtitle"></p>
         <p class="credit" data-i18n="title.credit"></p>
       </section>
 
-      <div id="bonus" class="bonus" hidden data-i18n="demo.bonus">자신감 +1</div>
-
-      <section id="clear" class="clear" hidden>
-        <h2 data-i18n="demo.clear">DEMO CLEAR!</h2>
-        <p data-i18n="demo.clearSub"></p>
-        <button id="replay" class="start" type="button" data-i18n="demo.replay">다시 보기</button>
-      </section>
+      <div id="bonus" class="bonus" hidden data-i18n="ep1.bonus">자신감 +1</div>
     </div>
 
     <section id="dialog" class="dialog" hidden aria-live="polite">
@@ -53,6 +51,141 @@
     </section>
   </main>
 
+  <!-- 1. 언어 선택 -->
+  <section id="lang-screen" class="screen screen-center" hidden>
+    <div class="panel lang-panel">
+      <p class="lang-kicker">I'M ON THE NEXT LEVEL</p>
+      <h2>언어를 골라 주세요<br><span>Choose your language</span></h2>
+      <div class="lang-options">
+        <button type="button" class="big-btn" data-pick-lang="ko">한국어</button>
+        <button type="button" class="big-btn" data-pick-lang="en">English</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 여행자 등록 -->
+  <section id="setup-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 data-i18n="setup.title">여행자 등록</h2>
+      <div class="field">
+        <div class="field-label" data-i18n="setup.nameLabel">나의 여행자 이름</div>
+        <div class="name-picker">
+          <div class="name-part">
+            <button id="name-adj-prev" type="button" class="arrow" aria-label="◀">◀</button>
+            <button id="name-adj-next" type="button" class="arrow" aria-label="▶">▶</button>
+          </div>
+          <div id="setup-name" class="name-value"></div>
+          <div class="name-part">
+            <button id="name-noun-prev" type="button" class="arrow" aria-label="◀">◀</button>
+            <button id="name-noun-next" type="button" class="arrow" aria-label="▶">▶</button>
+          </div>
+        </div>
+        <div class="field-row">
+          <button id="name-dice" type="button" class="pill" data-i18n="setup.dice">🎲 아무거나</button>
+          <span class="field-hint" data-i18n="setup.nameHint"></span>
+        </div>
+      </div>
+      <div class="field">
+        <div class="field-label" data-i18n="setup.ageLabel">나는 몇 살이에요?</div>
+        <div id="setup-ages" class="ages"></div>
+        <div id="setup-error" class="field-error" hidden data-i18n="setup.needAge"></div>
+      </div>
+      <div class="field code-box">
+        <div class="field-label" data-i18n="setup.codeLabel">나의 모험 코드</div>
+        <div id="setup-code" class="code-value"></div>
+        <div class="field-hint" data-i18n="setup.codeHint"></div>
+      </div>
+      <button id="setup-go" type="button" class="big-btn" data-i18n="setup.go">모험 시작!</button>
+    </div>
+  </section>
+
+  <!-- 4. 모험 지도 -->
+  <section id="map-screen" class="screen" hidden>
+    <div class="panel map-panel">
+      <div class="map-head">
+        <img id="map-avatar" class="map-avatar" alt="" hidden>
+        <div>
+          <h2 data-i18n="map.title">모험 지도</h2>
+          <div class="map-who"><span id="map-name"></span> · <span id="map-code"></span></div>
+        </div>
+      </div>
+      <ol id="map-list" class="map-list"></ol>
+    </div>
+  </section>
+
+  <!-- 에피소드 2: 성격 검사 -->
+  <section id="quiz-screen" class="screen screen-center" hidden>
+    <div class="panel quiz-panel">
+      <div class="quiz-top">
+        <button id="quiz-back" type="button" class="pill" data-i18n="ep2.back">◀ 이전</button>
+        <span id="quiz-count" class="quiz-count"></span>
+      </div>
+      <div class="quiz-progress"><span id="quiz-bar"></span></div>
+      <h2 data-i18n="ep2.q">나와 가장 비슷한 말은?</h2>
+      <div id="quiz-options" class="options"></div>
+      <p id="quiz-cheer" class="quiz-cheer" hidden></p>
+    </div>
+  </section>
+
+  <section id="tie-screen" class="screen screen-center" hidden>
+    <div class="panel">
+      <h2 id="tie-title"></h2>
+      <p id="tie-prompt" class="tie-prompt"></p>
+      <div id="tie-options" class="tie-options"></div>
+    </div>
+  </section>
+
+  <section id="result-screen" class="screen screen-center" hidden>
+    <div class="panel result-panel">
+      <h2 id="result-title"></h2>
+      <div class="result-body">
+        <div>
+          <div id="result-card" class="card" role="button" tabindex="0"></div>
+          <button id="result-flip" type="button" class="pill"></button>
+        </div>
+        <div class="result-text">
+          <div class="result-label" data-i18n="ep2.main">나의 캐릭터</div>
+          <p id="result-main-desc"></p>
+          <div class="result-sub">
+            <img id="result-sub-img" alt="">
+            <div>
+              <div class="result-label" data-i18n="ep2.sub">조금 섞여 있는 모습</div>
+              <p id="result-sub-line" class="result-sub-line"></p>
+              <p id="result-sub-desc"></p>
+            </div>
+          </div>
+          <button id="result-next" type="button" class="big-btn" data-i18n="ep2.done">다음 ▶</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clear-screen" class="screen screen-center" hidden>
+    <div class="clear">
+      <div id="clear-ep" class="clear-ep"></div>
+      <h2 data-i18n="clear.title">MISSION COMPLETE</h2>
+      <p class="clear-level" data-i18n="clear.level">LEVEL UP!</p>
+      <div class="clear-actions">
+        <button id="clear-map" type="button" class="big-btn" data-i18n="clear.toMap">모험 지도로</button>
+        <button id="clear-video" type="button" class="pill" data-i18n="clear.video">▶ 소개 영상 보기</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="video-modal" class="screen screen-center" hidden>
+    <div class="panel video-panel">
+      <h2 data-i18n="video.title">소개 영상</h2>
+      <div class="video-wrap">
+        <iframe id="video-frame" title="Intro video" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="video-actions">
+        <a id="video-link" class="pill" target="_blank" rel="noopener" data-i18n="video.open">YouTube에서 열기</a>
+        <button id="video-close" type="button" class="pill pill-primary" data-i18n="video.close">닫기</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 설정 메뉴 -->
   <div id="menu" class="menu" hidden role="dialog" aria-modal="true" aria-labelledby="menu-title">
     <div class="menu-panel">
       <h2 id="menu-title" data-i18n="menu.title">설정</h2>
@@ -71,6 +204,7 @@
         </div>
       </div>
       <div class="menu-actions">
+        <button id="menu-map" type="button" class="pill" data-i18n="menu.map">모험 지도</button>
         <button id="menu-restart" type="button" class="pill" data-i18n="menu.restart">처음으로</button>
         <button id="menu-close" type="button" class="pill pill-primary" data-i18n="menu.close">닫기</button>
       </div>
@@ -80,8 +214,12 @@
   <script src="config.js"></script>
   <script src="js/i18n.js"></script>
   <script src="js/sound.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/sprites.js"></script>
   <script src="js/game.js"></script>
+  <script src="js/story.js"></script>
+  <script src="js/card.js"></script>
+  <script src="js/quiz.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

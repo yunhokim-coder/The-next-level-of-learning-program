@@ -14,6 +14,8 @@
     V: '#6b3fa0', v: '#9a6ad0', G: '#ffe14a',
     // 블랙맘바
     D: '#2b2b33', d: '#4a4a57', b: '#caa46a',
+    // 꿈의 보석
+    q: '#ffe0f4', m: '#ff7ac8', n: '#b8409a',
   };
 
   const legsStand = [
@@ -118,6 +120,23 @@
         '.......KKKKKVK..',
         '...........KRRK.',
         '..........R...R.',
+      ],
+    ],
+    gem: [
+      [
+        '.....KK.....',
+        '....KqqK....',
+        '...KqmmnK...',
+        '..KqmmmnnK..',
+        '.KqmmmmnnnK.',
+        'KqmmmmmnnnnK',
+        'KmmmmmmnnnnK',
+        'KmmmqmmnnnnK',
+        '.KmmmmnnnnK.',
+        '..KmmmnnnK..',
+        '...KmmnnK...',
+        '....KmnK....',
+        '.....KK.....',
       ],
     ],
     mambaHead: [

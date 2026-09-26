@@ -1,5 +1,5 @@
-// 캔버스 장면: 광야 배경, 캐릭터, 연출 효과.
-// 기본 해상도 320×180에 그린 뒤 CSS로 정수배 확대한다 (main.js의 fit 참고).
+// 캔버스 장면: 꿈의 마을, 광야 배경, 캐릭터, 연출 효과.
+// 게임 좌표는 320×180. 캔버스는 화면 해상도에 맞춰 k배로 그려 원작 캐릭터를 선명하게 보여준다.
 (function () {
   const W = 320;
   const H = 180;
@@ -7,19 +7,32 @@
 
   let canvas;
   let ctx;
+  let k = 1; // 캔버스 실제 픽셀 / 게임 픽셀
   let lastTs = 0;
   let t = 0; // 경과 시간(초)
 
   const state = {
-    mode: 'title', // 'title' | 'walk'
+    mode: 'title', // 'title' | 'play'
+    scene: 'wild', // 'village' | 'wild'
     walking: false,
     scroll: 0,
     shake: 0,
+    dark: 0,
+    darkTarget: 0,
+    fade: 0,
+    fadeTarget: 0,
+    partyOffset: 0,
     focus: null,
     focusAt: 0,
     particles: [],
     actors: {},
+    gem: { visible: false, x: 160, y: 62, tx: 160, ty: 62, taken: false },
+    showcase: null, // 파티원 소개 장면: { key, at }
+    portal: 0,
+    portalTarget: 0,
   };
+
+  const CARD_COLORS = { D: '#dc143c', I: '#8fbf5e', S: '#f5d33f', C: '#0070c0' };
 
   // ---------- 준비: 움직이지 않는 배경은 미리 한 장으로 구워 둔다 ----------
   const layers = {};
@@ -48,7 +61,7 @@
   }
 
   function bakeLayers() {
-    // 낮 하늘
+    // 낮 하늘 (광야)
     const day = makeCanvas(W, H);
     let g = day.getContext('2d');
     bands(g, ['#6fb8ff', '#8fcbff', '#b5ddff', '#ffe3b8', '#ffd09a'], 0, GROUND - 20);
@@ -65,6 +78,34 @@
       g.fillRect((i * 97) % W, (i * 53) % (GROUND - 30), 1, 1);
     }
     layers.night = night;
+
+    // 노을 진 꿈의 마을
+    const village = makeCanvas(W, H);
+    g = village.getContext('2d');
+    bands(g, ['#5b3f8f', '#8a4f9e', '#d0668f', '#f08a6a', '#f7b267'], 0, 120);
+    for (let i = 0; i < 30; i++) {
+      g.fillStyle = '#ffe9a8';
+      g.fillRect((i * 71) % W, (i * 37) % 70, 1, 1);
+    }
+    hillsInto(g, '#6b4a8a', '#5a3d78', 112, [[8, 160, 1], [4, 80, 0]]);
+    hillsInto(g, '#3f6b3a', '#2f5a2c', 124, [[4, 106.67, 0.5], [2, 40, 1]]);
+    house(g, 36, 138, 44, 26, '#b8452f');
+    house(g, 130, 134, 30, 20, '#a33d2a');
+    house(g, 228, 138, 50, 28, '#b8452f');
+    g.fillStyle = '#4c8a3e';
+    g.fillRect(0, 138, W, H - 138);
+    g.fillStyle = '#d99a52';
+    for (let y = 138; y < H; y++) {
+      const half = Math.round(6 + (y - 138) * 0.9);
+      g.fillRect(160 - half, y, half * 2, 1);
+    }
+    [[20, 150], [30, 158], [290, 152], [300, 162], [110, 160]].forEach(([x, y], i) => {
+      g.fillStyle = i % 2 ? '#ffcf3f' : '#ff5a6e';
+      g.fillRect(x, y, 3, 3);
+      g.fillStyle = '#2f5a2c';
+      g.fillRect(x + 1, y + 3, 1, 3);
+    });
+    layers.village = village;
 
     // 먼 모래언덕 (가로로 이어 붙일 수 있게 주기를 320에 맞춘다)
     layers.dunesFar = hills('#f3cf8f', '#e6b877', 112, [[7, 160, 0], [3, 80, 1.3]]);
@@ -95,9 +136,7 @@
     layers.ground = ground;
   }
 
-  function hills(fill, edge, base, waves) {
-    const c = makeCanvas(W, H);
-    const g = c.getContext('2d');
+  function hillsInto(g, fill, edge, base, waves) {
     for (let x = 0; x < W; x++) {
       let y = base;
       waves.forEach(([amp, period, phase]) => {
@@ -109,13 +148,41 @@
       g.fillStyle = fill;
       g.fillRect(x, y + 2, 1, H - y);
     }
+  }
+
+  function hills(fill, edge, base, waves) {
+    const c = makeCanvas(W, H);
+    hillsInto(c.getContext('2d'), fill, edge, base, waves);
     return c;
+  }
+
+  function house(g, x, base, w, h, roof) {
+    const K = '#1b1b24';
+    g.fillStyle = K;
+    g.fillRect(x - 1, base - h - 1, w + 2, h + 2);
+    g.fillStyle = '#f1d6a8';
+    g.fillRect(x, base - h, w, h);
+    // 지붕
+    for (let i = 0; i < 12; i++) {
+      g.fillStyle = K;
+      g.fillRect(x - 4 + i, base - h - 1 - i, w + 8 - i * 2, 1);
+      g.fillStyle = i % 3 === 0 ? '#8f2f20' : roof;
+      g.fillRect(x - 3 + i, base - h - 1 - i, w + 6 - i * 2, 1);
+    }
+    // 창문과 문
+    g.fillStyle = K;
+    g.fillRect(x + 5, base - h + 6, 7, 7);
+    g.fillRect(x + w - 12, base - h + 6, 7, 7);
+    g.fillRect(x + w / 2 - 4, base - 12, 8, 12);
+    g.fillStyle = '#ffc84a';
+    g.fillRect(x + 6, base - h + 7, 5, 5);
+    g.fillRect(x + w - 11, base - h + 7, 5, 5);
+    g.fillStyle = '#7a4a2a';
+    g.fillRect(x + w / 2 - 3, base - 11, 6, 11);
   }
 
   function cactus(g, x, ground, h) {
     const K = '#1b1b24';
-    const green = '#4caf50';
-    const dark = '#2e7d32';
     const box = (bx, by, bw, bh) => {
       g.fillStyle = K;
       g.fillRect(bx - 1, by - 1, bw + 2, bh + 2);
@@ -125,13 +192,13 @@
     box(x - 5, ground - h + 1, 3, 5);
     box(x + 6, ground - h + 8, 4, 3);
     box(x + 8, ground - h + 3, 3, 6);
-    g.fillStyle = green;
+    g.fillStyle = '#4caf50';
     g.fillRect(x, ground - h, 5, h);
     g.fillRect(x - 5, ground - h + 5, 5, 3);
     g.fillRect(x - 5, ground - h + 1, 3, 5);
     g.fillRect(x + 5, ground - h + 8, 5, 3);
     g.fillRect(x + 8, ground - h + 3, 3, 6);
-    g.fillStyle = dark;
+    g.fillStyle = '#2e7d32';
     g.fillRect(x + 3, ground - h + 1, 1, h - 1);
   }
 
@@ -162,8 +229,8 @@
   function drawFirePillar(x, top, bottom) {
     const colors = ['#ff5a3c', '#ff9a3c', '#ffd23f'];
     for (let y = top; y < bottom; y += 2) {
-      const k = (y - top) / (bottom - top);
-      const w = 4 + Math.round(3 * Math.sin(t * 8 + y * 0.35)) + Math.round(k * 3);
+      const f = (y - top) / (bottom - top);
+      const w = 4 + Math.round(3 * Math.sin(t * 8 + y * 0.35)) + Math.round(f * 3);
       ctx.fillStyle = colors[0];
       ctx.fillRect(x - w, y, w * 2, 2);
       ctx.fillStyle = colors[1];
@@ -173,7 +240,6 @@
         ctx.fillRect(x - 1, y, 2, 2);
       }
     }
-    // 불꽃 끝이 튀는 효과
     if (Math.random() < 0.3) spark(x + (Math.random() * 10 - 5), top + 4, '#ffd23f', -0.3);
   }
 
@@ -190,15 +256,21 @@
 
   function resetActors() {
     state.actors = {
-      hero: { x: 196, y: GROUND, visible: true },
-      D: { x: 158, y: GROUND, visible: true },
-      I: { x: 120, y: GROUND, visible: true },
-      S: { x: 84, y: GROUND, visible: true },
-      C: { x: 46, y: GROUND, visible: true },
+      hero: { x: 196, y: GROUND },
+      D: { x: 158, y: GROUND },
+      I: { x: 120, y: GROUND },
+      S: { x: 84, y: GROUND },
+      C: { x: 46, y: GROUND },
       angel: { x: 360, y: 40, tx: 212, ty: 64, visible: false },
       devil: { x: 252, y: GROUND + 30, ty: GROUND, visible: false, leaving: false },
       mamba: { x: 272, rise: 0, target: 0, visible: false },
     };
+    state.partyVisible = true;
+    state.partyOffset = 0;
+    state.gem = { visible: false, x: 160, y: 62, tx: 160, ty: 62, taken: false };
+    state.dark = state.darkTarget = 0;
+    state.portal = state.portalTarget = 0;
+    state.showcase = null;
   }
 
   function hop(id) {
@@ -214,22 +286,33 @@
     ctx.drawImage(img, Math.round(x - w / 2), Math.round(feetY - h), w, h);
   }
 
+  // 원작 캐릭터 도트(세로 96칸)를 게임 높이 48로 그린다. 캔버스가 화면 해상도라 칸이 뭉개지지 않는다
+  function drawCharacter(img, x, feetY, height = 48) {
+    if (!img) return;
+    const w = (img.width / img.height) * height;
+    ctx.drawImage(img, Math.round((x - w / 2) * 2) / 2, Math.round((feetY - height) * 2) / 2, w, height);
+  }
+
   function drawParty() {
+    if (!state.partyVisible) return;
+    state.partyOffset += (0 - state.partyOffset) * 0.03;
+    const off = Math.round(state.partyOffset);
+    const walking = state.walking || off < -2;
     const a = state.actors;
-    PARTY.forEach((k, i) => {
-      const act = a[k];
-      const bob = state.walking ? (Math.floor(t * 6 + i) % 2 ? -1 : 0) : 0;
-      drawShadow(act.x, GROUND, 12);
-      drawSprite(Sprites.party[k], act.x, act.y + bob - hop(k));
+    PARTY.forEach((key, i) => {
+      const act = a[key];
+      const bob = walking ? (Math.floor(t * 6 + i) % 2 ? -1 : 0) : 0;
+      drawShadow(act.x + off, GROUND, 12);
+      drawCharacter(Sprites.party[key], act.x + off, act.y + bob - hop(key));
     });
     const h = a.hero;
-    const frame = state.walking ? Math.floor(t * 6) % 2 : 0;
-    drawShadow(h.x, GROUND, 10);
-    drawSprite(Sprites.frames.hero[frame], h.x, h.y - hop('hero'), 2);
+    const frame = walking ? Math.floor(t * 6) % 2 : 0;
+    drawShadow(h.x + off, GROUND, 10);
+    drawSprite(Sprites.frames.hero[frame], h.x + off, h.y - hop('hero'), 2);
   }
 
   function drawShadow(x, y, r) {
-    ctx.fillStyle = 'rgba(120, 60, 20, 0.25)';
+    ctx.fillStyle = 'rgba(80, 40, 20, 0.25)';
     ctx.fillRect(Math.round(x - r), y - 1, r * 2, 2);
   }
 
@@ -240,8 +323,6 @@
     a.y += (a.ty - a.y) * 0.06;
     const y = a.y + Math.round(Math.sin(t * 3) * 3) - hop('angel');
     const frame = Math.floor(t * 8) % 2;
-    // 은은한 빛
-    ctx.fillStyle = 'rgba(255, 240, 150, 0.25)';
     disc(Math.round(a.x), Math.round(y - 13), 16, 'rgba(255, 240, 150, 0.18)');
     drawSprite(Sprites.frames.angel[frame], a.x, y, 2);
     if (Math.random() < 0.25) spark(a.x + (Math.random() * 20 - 10), y - Math.random() * 20, '#fff6b0', 0.2);
@@ -261,29 +342,64 @@
     if (d.leaving && d.y > GROUND + 26) d.visible = false;
   }
 
-  // 블랙맘바 몸통: 낮은 해상도(1/2)로 그린 뒤 2배로 키워 도트 크기를 주인공과 맞춘다
+  function drawGem() {
+    const g = state.gem;
+    if (!g.visible) return;
+    if (g.taken) {
+      // 블랙맘바 머리를 따라간다
+      g.tx = mambaHead.x;
+      g.ty = mambaHead.y + 8;
+    }
+    g.x += (g.tx - g.x) * 0.08;
+    g.y += (g.ty - g.y) * 0.08;
+    const y = Math.round(g.y + (g.taken ? 0 : Math.sin(t * 2) * 3));
+    const x = Math.round(g.x);
+    if (!g.taken) {
+      const r = 22 + Math.round(Math.sin(t * 3) * 2);
+      disc(x, y - 12, r, 'rgba(255, 200, 120, 0.18)');
+      disc(x, y - 12, r - 8, 'rgba(255, 220, 160, 0.22)');
+      if (Math.random() < 0.3) spark(x + (Math.random() * 40 - 20), y - 12 + (Math.random() * 30 - 15), '#ffe9a8', -0.1);
+    }
+    drawSprite(Sprites.frames.gem[0], x, y, g.taken ? 1 : 2);
+  }
+
+  // 블랙맘바 몸통: 낮은 해상도로 그린 뒤 키워서 도트 크기를 맞춘다
   const snakeBuf = makeCanvas(60, 60);
+  const mambaHead = { x: 0, y: 0 };
+  const MAMBA_SIZE = 116;
+
+  function circle(g, cx, cy, r) {
+    for (let dy = -r; dy <= r; dy++) {
+      const half = Math.round(Math.sqrt(r * r - dy * dy));
+      g.fillRect(cx - half, cy + dy, half * 2 + 1, 1);
+    }
+  }
+
   function drawMamba() {
     const m = state.actors.mamba;
     if (!m.visible) return;
     m.rise += (m.target - m.rise) * 0.05;
+    if (m.target === 0 && m.rise < 0.02) {
+      m.visible = false;
+      if (state.gem.taken) state.gem.visible = false;
+      return;
+    }
     const g = snakeBuf.getContext('2d');
     g.clearRect(0, 0, 60, 60);
     const sway = Math.sin(t * 2);
     const back = [];
     const front = [];
-    // 바닥에 두 겹 똬리: 뒤쪽 반원은 먼저, 앞쪽 반원은 나중에 그려 입체감을 준다
+    // 바닥의 똬리: 뒤쪽 반원을 먼저, 앞쪽 반원을 나중에 그려 입체감을 준다
     for (let i = 0; i <= 48; i++) {
       const a = (i / 48) * Math.PI * 2;
-      const p = [30 + Math.cos(a) * 14, 52 + Math.sin(a) * 5, 3.6];
-      (Math.sin(a) < 0 ? back : front).push(p);
+      (Math.sin(a) < 0 ? back : front).push([30 + Math.cos(a) * 14, 52 + Math.sin(a) * 5, 3.6]);
     }
     // 목이 S자로 솟아오르고 끝에서 앞(왼쪽)으로 고개를 내민다
     const neck = [];
     for (let i = 0; i <= 36; i++) {
-      const k = i / 36;
-      const x = 44 - k * 20 + Math.sin(k * Math.PI * 2) * 7 * (1 - k * 0.4) + sway * k * 2;
-      neck.push([x, 52 - k * 40, 3.5 - k * 0.8]);
+      const f = i / 36;
+      const x = 44 - f * 20 + Math.sin(f * Math.PI * 2) * 7 * (1 - f * 0.4) + sway * f * 2;
+      neck.push([x, 52 - f * 40, 3.5 - f * 0.8]);
     }
     // 윤곽선을 먼저 모두 그리고 몸통을 덮어야 마디마다 선이 겹쳐 보이지 않는다
     const seg = (list, belly) => {
@@ -305,8 +421,7 @@
     seg(back, 'down');
     seg(neck, 'left');
     seg(front, 'down');
-    const pts = neck;
-    const head = pts[pts.length - 1];
+    const head = neck[neck.length - 1];
     const hx = Math.round(head[0]) - 7;
     const hy = Math.round(head[1]) - 5;
     g.drawImage(Sprites.frames.mambaHead[0], hx, hy);
@@ -317,21 +432,17 @@
       g.fillRect(hx - 3, hy + 6, 1, 1);
     }
 
-    const size = 116;
-    const top = GROUND + 6 - Math.round(size * m.rise) - hop('mamba');
+    const scale = MAMBA_SIZE / 60;
+    const left = m.x - MAMBA_SIZE / 2;
+    const top = GROUND + 6 - Math.round(MAMBA_SIZE * m.rise) - hop('mamba');
+    mambaHead.x = left + (hx + 6) * scale;
+    mambaHead.y = top + (hy + 3) * scale;
     ctx.save();
     ctx.beginPath();
     ctx.rect(0, 0, W, GROUND + 4);
     ctx.clip();
-    ctx.drawImage(snakeBuf, m.x - size / 2, top, size, size);
+    ctx.drawImage(snakeBuf, left, top, MAMBA_SIZE, MAMBA_SIZE);
     ctx.restore();
-  }
-
-  function circle(g, cx, cy, r) {
-    for (let dy = -r; dy <= r; dy++) {
-      const half = Math.round(Math.sqrt(r * r - dy * dy));
-      g.fillRect(cx - half, cy + dy, half * 2 + 1, 1);
-    }
   }
 
   // ---------- 입자 효과 ----------
@@ -359,6 +470,55 @@
     });
   }
 
+  // 어둠이 내리면 마을 뒤로 나타나는 탑의 그림자
+  function drawTower(alpha) {
+    ctx.fillStyle = `rgba(24, 16, 30, ${alpha})`;
+    for (let i = 0; i < 7; i++) {
+      const w = 44 - i * 5;
+      ctx.fillRect(70 - w / 2, 126 - (i + 1) * 13, w, 13);
+    }
+    ctx.fillStyle = `rgba(255, 170, 60, ${alpha * 0.6})`;
+    for (let i = 0; i < 6; i++) ctx.fillRect(64 + (i % 3) * 5, 118 - i * 13, 2, 3);
+  }
+
+  // 파티원 한 명을 크게 비춰 소개한다
+  function drawShowcase() {
+    const sc = state.showcase;
+    ctx.fillStyle = '#12101f';
+    ctx.fillRect(0, 0, W, H);
+    const color = CARD_COLORS[sc.key];
+    const since = t - sc.at;
+    const r = Math.min(70, Math.round(since * 220));
+    disc(160, 96, r, color);
+    disc(160, 96, Math.max(0, r - 6), 'rgba(255,255,255,0.18)');
+    for (let i = 0; i < 18; i++) {
+      const a = (i / 18) * Math.PI * 2 + t * 0.4;
+      ctx.fillStyle = i % 2 ? '#ffe9a8' : color;
+      ctx.fillRect(Math.round(160 + Math.cos(a) * 82), Math.round(96 + Math.sin(a) * 60), 2, 2);
+    }
+    const pop = Math.min(1, since * 3);
+    const h = 104 * (0.6 + 0.4 * pop) + Math.sin(t * 3) * 2;
+    drawCharacter(Sprites.party[sc.key], 160, 150, h);
+  }
+
+  // 황금빛 문: 반짝이가 여행자들을 부르는 입구
+  function drawPortal() {
+    const p = state.portal;
+    if (p < 0.02) return;
+    const cx = 40;
+    const cy = 104;
+    for (let i = 0; i < 48; i++) {
+      const a = (i / 48) * Math.PI * 2 + t * 1.5;
+      const x = cx + Math.cos(a) * 18 * p;
+      const y = cy + Math.sin(a) * 40 * p;
+      ctx.fillStyle = i % 3 ? '#ffc84a' : '#fff3c4';
+      ctx.fillRect(Math.round(x), Math.round(y), 2, 2);
+    }
+    ctx.fillStyle = `rgba(255, 220, 140, ${0.25 * p})`;
+    ctx.fillRect(cx - 14 * p, cy - 34 * p, 28 * p, 68 * p);
+    if (Math.random() < 0.5) spark(cx + (Math.random() * 30 - 15) * p, cy + (Math.random() * 70 - 35) * p, '#ffe9a8', -0.2);
+  }
+
   // ---------- 그리기 루프 ----------
   function tile(img, offset, y = 0) {
     const x = -Math.round(offset % img.width);
@@ -366,12 +526,28 @@
     ctx.drawImage(img, x + img.width, y);
   }
 
+  function drawWild() {
+    ctx.drawImage(layers.day, 0, 0);
+    disc(262, 26, 9, '#fff8d8');
+    drawCloudPillar(34, 70, 116);
+    drawFirePillar(296, 72, 118);
+    tile(layers.dunesFar, state.scroll * 0.2);
+    tile(layers.dunesNear, state.scroll * 0.45);
+    tile(layers.props, state.scroll * 0.8);
+    tile(layers.ground, state.scroll, GROUND);
+  }
+
   function frame(ts) {
     const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0);
     lastTs = ts;
     t += dt;
     if (state.walking) state.scroll += dt * 28;
+    state.dark += (state.darkTarget - state.dark) * 0.04;
+    state.fade += (state.fadeTarget - state.fade) * 0.12;
+    state.portal += (state.portalTarget - state.portal) * 0.05;
 
+    ctx.setTransform(k, 0, 0, k, 0, 0);
+    ctx.imageSmoothingEnabled = false;
     ctx.save();
     if (state.shake > 0) {
       state.shake -= dt;
@@ -384,37 +560,57 @@
       drawShadow(64, GROUND, 10);
       drawSprite(Sprites.frames.hero[Math.floor(t * 2) % 2], 64, GROUND, 2);
     } else {
-      ctx.drawImage(layers.day, 0, 0);
-      disc(262, 26, 9, '#fff8d8');
-      drawCloudPillar(34, 70, 116);
-      drawFirePillar(296, 72, 118);
-      tile(layers.dunesFar, state.scroll * 0.2);
-      tile(layers.dunesNear, state.scroll * 0.45);
-      tile(layers.props, state.scroll * 0.8);
-      tile(layers.ground, state.scroll, GROUND);
+      if (state.scene === 'showcase' && state.showcase) {
+        drawShowcase();
+      } else {
+        if (state.scene === 'village') ctx.drawImage(layers.village, 0, 0);
+        else drawWild();
+        if (state.dark > 0.01) {
+          ctx.fillStyle = `rgba(10, 6, 24, ${state.dark})`;
+          ctx.fillRect(0, 0, W, H);
+          if (state.scene === 'village') drawTower(Math.min(1, state.dark * 1.8));
+        }
+        drawPortal();
+      }
       drawMamba();
-      drawParty();
+      drawGem();
+      if (state.scene === 'wild') drawParty();
+      if (state.scene === 'showcase') return endFrame(dt);
       drawDevil();
       drawAngel();
     }
+    endFrame(dt);
+  }
+
+  function endFrame(dt) {
     drawParticles(dt);
     ctx.restore();
+    if (state.fade > 0.01) {
+      ctx.fillStyle = `rgba(0, 0, 0, ${Math.min(1, state.fade)})`;
+      ctx.fillRect(0, 0, W, H);
+    }
     requestAnimationFrame(frame);
   }
 
-  // ---------- main.js에서 쓰는 명령 ----------
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  // ---------- 다른 파일에서 쓰는 명령 ----------
   window.Game = {
     W,
     H,
     init(el) {
       canvas = el;
-      canvas.width = W;
-      canvas.height = H;
       ctx = canvas.getContext('2d');
-      ctx.imageSmoothingEnabled = false;
+      this.resize(1);
       bakeLayers();
       resetActors();
       requestAnimationFrame(frame);
+    },
+    // cssScale: 게임 1픽셀이 화면에서 차지하는 CSS 픽셀 수
+    resize(cssScale) {
+      k = Math.max(1, Math.round(cssScale * (window.devicePixelRatio || 1)));
+      canvas.width = W * k;
+      canvas.height = H * k;
     },
     setMode(mode) {
       state.mode = mode;
@@ -424,18 +620,60 @@
         state.particles = [];
       }
     },
-    reset() {
+    reset(scene = 'wild') {
       resetActors();
+      state.scene = scene;
+      state.walking = false;
       state.scroll = 0;
       state.particles = [];
       state.focus = null;
+      state.mode = 'play';
+    },
+    // 검은 화면으로 가렸다가 장면을 바꾼다
+    async fadeTo(scene) {
+      state.fadeTarget = 1.05;
+      await wait(450);
+      state.scene = scene;
+      state.dark = state.darkTarget = 0;
+      state.fadeTarget = 0;
+      await wait(350);
+    },
+    // 파티원 한 명 소개 (key: D/I/S/C)
+    showcase(key) {
+      state.scene = 'showcase';
+      state.showcase = { key, at: t };
+      Sound.play('sparkle');
+    },
+    portal(on) {
+      state.portalTarget = on ? 1 : 0;
+      if (on) Sound.play('sparkle');
+    },
+    night(on) {
+      state.darkTarget = on ? 0.45 : 0;
     },
     walk(on) {
       state.walking = on;
     },
+    hideParty() {
+      state.partyVisible = false;
+    },
+    // 파티가 화면 왼쪽 밖에서 걸어 들어온다
+    partyEnter() {
+      state.partyVisible = true;
+      state.partyOffset = -230;
+    },
     focus(id) {
       state.focus = id;
       state.focusAt = t;
+    },
+    showGem() {
+      state.gem = { visible: true, x: 160, y: 20, tx: 160, ty: 70, taken: false };
+      Sound.play('sparkle');
+    },
+    stealGem() {
+      state.gem.taken = true;
+      state.darkTarget = 0.55;
+      Sound.play('poof');
     },
     enter(id) {
       const a = state.actors[id];
@@ -456,7 +694,8 @@
         a.rise = 0;
         a.target = 1;
         state.shake = 1.4;
-        for (let i = 0; i < 4; i++) burst(a.x - 30 + i * 20, GROUND - 1, '#e6b877', 10);
+        const dust = state.scene === 'village' ? '#6d8a4a' : '#e6b877';
+        for (let i = 0; i < 4; i++) burst(a.x - 30 + i * 20, GROUND - 1, dust, 10);
         Sound.play('rumble');
       }
     },
@@ -467,6 +706,11 @@
         a.leaving = true;
         burst(a.x, GROUND - 2, '#9a6ad0', 18);
         Sound.play('poof');
+      }
+      if (id === 'mamba') {
+        a.target = 0;
+        state.shake = 0.8;
+        Sound.play('rumble');
       }
     },
     cheer() {

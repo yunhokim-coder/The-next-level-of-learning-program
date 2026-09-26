@@ -1,11 +1,17 @@
 {
   "langName": "English",
+  "lang": {
+    "title": "Choose your language",
+    "sub": "언어를 골라 주세요"
+  },
   "title": {
     "line1": "I'M ON THE",
     "line2": "NEXT LEVEL",
     "line3": "IN EDUCATION",
     "subtitle": "- An adventure across the wilderness to power up your motivation to learn -",
     "press": "PRESS START",
+    "continue": "Continue",
+    "newGame": "New game",
     "credit": "Lead researcher Yunho Kim · Co-researcher Seonghye Moon"
   },
   "hud": {
@@ -20,28 +26,122 @@
     "sound": "Sound",
     "on": "On",
     "off": "Off",
+    "map": "Adventure map",
     "restart": "Back to start",
     "close": "Close"
   },
   "dialog": {
-    "next": "Next ▶",
-    "hint": "Tap the screen or press Space"
+    "next": "Next ▶"
+  },
+  "setup": {
+    "title": "Traveler sign-up",
+    "nameLabel": "My traveler name",
+    "nameHint": "Pick a cool adventure name instead of your real name!",
+    "dice": "🎲 Random",
+    "ageLabel": "How old are you?",
+    "ageSecret": "Secret",
+    "ageUnit": "",
+    "codeLabel": "My adventure code",
+    "codeHint": "If your teacher asks, tell them this code.",
+    "go": "Start the adventure!",
+    "needAge": "Please choose your age"
+  },
+  "nameParts": {
+    "adj": [
+      "Shiny",
+      "Brave",
+      "Bold",
+      "Wise",
+      "Easygoing",
+      "Bright",
+      "Warm",
+      "Swift",
+      "Dreamy",
+      "Cheery",
+      "Sturdy",
+      "Gentle"
+    ],
+    "noun": [
+      "Traveler",
+      "Adventurer",
+      "Explorer",
+      "Star",
+      "Wind",
+      "Compass",
+      "Flame",
+      "Cloud",
+      "Oasis",
+      "Cactus",
+      "Sand",
+      "Moonlight"
+    ]
+  },
+  "codeWords": [
+    "STAR",
+    "SAND",
+    "WIND",
+    "CLOUD",
+    "FLAME",
+    "MOON",
+    "GEM",
+    "COMPASS"
+  ],
+  "map": {
+    "title": "Adventure map",
+    "ep": "EPISODE",
+    "done": "Done",
+    "play": "Play!",
+    "replay": "Play again",
+    "locked": "Locked",
+    "soon": "Coming soon",
+    "video": "▶ Intro video"
+  },
+  "episodes": {
+    "1": {
+      "title": "Travelers to the Wilderness",
+      "desc": "Why do we set out on this adventure?"
+    },
+    "2": {
+      "title": "What Kind of Traveler Am I?",
+      "desc": "Find your character with a personality quiz"
+    },
+    "3": {
+      "title": "The Sphinx's Riddle & the Golden Compass",
+      "desc": "Discover your study energy"
+    },
+    "4": {
+      "title": "Find Your Black Mamba!",
+      "desc": "Find what gets in the way of studying"
+    },
+    "5": {
+      "title": "Stomp the Snake! Pillars of Cloud & Fire",
+      "desc": "Make your own study strategy"
+    },
+    "6": {
+      "title": "Reclaim the Dream Gem",
+      "desc": "Finish your profile card and action plan"
+    }
   },
   "names": {
     "narrator": "",
     "angel": "Sparkle",
     "devil": "Slinky",
     "mamba": "Black Mamba",
-    "hero": "PLAYER 1",
     "D": "Flame Knight",
     "I": "Empathy Mage",
     "S": "Pat-Pat Healer",
     "C": "AI Strategist"
   },
-  "demo": {
-    "n1": "An adventure across the wilderness. The travelers are walking toward the Land of Dreams.",
+  "ep1": {
+    "s1": "Long, long ago, every child in the Land of Dreams had a 'Dream Gem' of their very own.",
+    "s2": "When the Dream Gem sparkled, they found things they wanted to do, and studying felt like an adventure.",
+    "s3": "But one day, the ground shook and the whole world went dark…",
+    "mamba1": "I am the Black Mamba! I'm the one who gets in the way of your dreams and studies. This gem is mine now!",
+    "s4": "The Black Mamba stole the Dream Gem and vanished into the darkness. Without their gem, the children forgot what they wanted to do.",
+    "s5": "One night, a golden door opened in front of the four friends.",
     "angel1": "Hi! I'm Sparkle, the starlight spirit who woke up inside the Golden Compass!",
-    "angel2": "See the cloud and the firelight far ahead? They'll light our way. Let's go to the Land of Dreams together!",
+    "angel2": "We need your help to get the Dream Gem back! Come with me across the wilderness to find the Black Mamba!",
+    "angel3": "The adventure has six stages. Get to know yourself, find your study energy, find your Black Mamba, beat it with your own strategy… and we'll get the Dream Gem back!",
     "partyD": "Alright, I'll lead the way!",
     "partyI": "It's way more fun when we all go together!",
     "partyS": "Slow and steady, so nobody gets hurt~",
@@ -54,12 +154,55 @@
     "angelRest": "Rest is important too! But let's decide how many minutes first. Then Slinky can't beat us!",
     "devilGo": "Hmph… next time I'll get you for sure!",
     "angelGo": "Awesome! You just beat a temptation. Confidence gauge UP!",
-    "n3": "Whoa! The ground is shaking!",
-    "mamba1": "I am the Black Mamba! I'm the one who gets in the way of your dreams and studies!",
-    "angel3": "Know yourself and know your enemy, and you'll win every battle! Next stage, let's find your Black Mamba!",
-    "clear": "DEMO CLEAR!",
-    "clearSub": "The next stage is on its way",
-    "replay": "Watch again",
-    "bonus": "Confidence +1"
+    "angel4": "More temptations like Slinky will show up. But as long as we're together, we'll be fine. Next episode, let's find out what kind of traveler you are!",
+    "bonus": "Confidence +1",
+    "sI": "Around that time, there were friends shining in their own places. The Empathy Mage cast spells that made friends laugh,",
+    "sD": "the Flame Knight always led the way, training alongside friends,",
+    "sS": "the Pat-Pat Healer stayed by sick friends and comforted their hearts,",
+    "sC": "and the AI Strategist solved hard problems step by step with an AI buddy.",
+    "s6": "By day a cloud shaded them from the hot sun, and by night a firelight showed them the way. The travelers' adventure had begun!"
+  },
+  "ep2": {
+    "intro1": "To cross the wilderness, first you need to know yourself. What kind of traveler are you?",
+    "intro2": "There are 24 questions. For each one, pick the ONE that sounds most like you. There are no wrong answers, so be honest!",
+    "q": "Which sounds most like you?",
+    "back": "◀ Back",
+    "cheer": [
+      "Nice, you're doing great!",
+      "Halfway there already!",
+      "Almost done!"
+    ],
+    "tieTitle": "Both characters are part of you!",
+    "tieFirst": "Which character do you want to adventure with?",
+    "tieSecond": "Which one feels like your second side?",
+    "resultTitle": "{name}'s character is…",
+    "main": "My character",
+    "sub": "A little bit of",
+    "subLine": "And you have a little bit of the {job}, too!",
+    "flipBack": "Flip the card",
+    "flipFront": "Show front",
+    "done": "Next ▶",
+    "angelResult": "Wow! Now you have your very own character. Remember your strengths and growth keywords!"
+  },
+  "card": {
+    "type": "Type {code}",
+    "job": "Class",
+    "element": "Element",
+    "weapon": "Weapon",
+    "strengths": "Strengths",
+    "weaknesses": "Weaknesses",
+    "growth": "Growth keywords",
+    "code": "Adventure code"
+  },
+  "clear": {
+    "title": "MISSION COMPLETE",
+    "level": "LEVEL UP!",
+    "toMap": "To the map",
+    "video": "▶ Watch the intro video"
+  },
+  "video": {
+    "title": "Intro video",
+    "close": "Close",
+    "open": "Open on YouTube"
   }
 }

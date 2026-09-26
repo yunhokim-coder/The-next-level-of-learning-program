@@ -13,6 +13,10 @@
 
 원본 프로그램: "I'M ON THE NEXT LEVEL in Education — 학업동기향상을 위한 광야에서의 모험" (책임 연구원 김윤호, 공동 연구원 문성혜)
 
+## 검사 도구
+
+- DISC 질문지 24문항과 점수 집계표 (`data/disc.json`): 하늘꿈 자료. 사용 허락 범위 확인 필요.
+
 ## 폰트
 
 - **Galmuri11** (Regular, Bold) — © 2019–2025 Lee Minseo, SIL Open Font License 1.1. https://github.com/quiple/galmuri

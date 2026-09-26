@@ -803,7 +803,7 @@
       // 소리가 안 날 때 원인을 알 수 있게 상태를 보여 준다
       setTimeout(() => {
         const st = Sound.status();
-        $('#sound-status').textContent = `${st.ctx} · ${st.muted ? 'muted' : 'on'} · ${st.session}`;
+        $('#sound-status').textContent = `${st.ctx} · ${st.muted ? 'muted' : 'on'} · ${st.session} · ${st.route}`;
       }, 300);
     });
     $('#mute-btn').addEventListener('click', () => {

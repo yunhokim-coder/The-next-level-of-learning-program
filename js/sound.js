@@ -17,34 +17,37 @@
     /* 지원하지 않는 브라우저 */
   }
 
-  // 예전 아이폰용: 소리 없는 오디오를 한 번 틀어 두면 같은 효과가 난다
-  let silentEl = null;
-  function silentAudio() {
-    if (silentEl) return;
-    const rate = 8000;
-    const n = 800;
-    const buf = new ArrayBuffer(44 + n * 2);
-    const v = new DataView(buf);
-    const str = (o, s) => [...s].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
-    str(0, 'RIFF');
-    v.setUint32(4, 36 + n * 2, true);
-    str(8, 'WAVEfmt ');
-    v.setUint32(16, 16, true);
-    v.setUint16(20, 1, true);
-    v.setUint16(22, 1, true);
-    v.setUint32(24, rate, true);
-    v.setUint32(28, rate * 2, true);
-    v.setUint16(32, 2, true);
-    v.setUint16(34, 16, true);
-    str(36, 'data');
-    v.setUint32(40, n * 2, true);
-    silentEl = document.createElement('audio');
-    silentEl.src = URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
-    silentEl.loop = true;
-    silentEl.setAttribute('playsinline', '');
-    silentEl.volume = 0.01;
-    const p = silentEl.play();
-    if (p && p.catch) p.catch(() => {});
+  // 아이폰·아이패드: 효과음을 보이지 않는 <audio> 재생기로 흘려보낸다.
+  // <audio>로 나는 소리는 동영상처럼 무음 스위치를 무시하고 음량 버튼만 따른다.
+  const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let master = null; // 모든 효과음이 모이는 곳
+  let player = null;
+
+  function route() {
+    if (master) return;
+    master = ctx.createGain();
+    if (IOS && ctx.createMediaStreamDestination) {
+      try {
+        const dest = ctx.createMediaStreamDestination();
+        master.connect(dest);
+        player = document.createElement('audio');
+        player.setAttribute('playsinline', '');
+        player.srcObject = dest.stream;
+        const p = player.play();
+        if (p && p.catch) {
+          p.catch(() => {
+            // 재생기가 막히면 원래대로 바로 스피커로
+            master.disconnect();
+            master.connect(ctx.destination);
+            player = null;
+          });
+        }
+        return;
+      } catch (e) {
+        player = null;
+      }
+    }
+    master.connect(ctx.destination);
   }
 
   // 브라우저 정책상 사용자가 화면을 누른 순간에만 소리를 켤 수 있다
@@ -55,12 +58,16 @@
     }
     if (!ctx) return;
     if (ctx.state !== 'running') ctx.resume();
-    silentAudio();
+    route();
+    if (player && player.paused) {
+      const p = player.play();
+      if (p && p.catch) p.catch(() => {});
+    }
     // 아주 짧은 빈 소리를 한 번 내야 풀리는 기기가 있다
     const b = ctx.createBuffer(1, 1, 22050);
     const src = ctx.createBufferSource();
     src.buffer = b;
-    src.connect(ctx.destination);
+    src.connect(master);
     src.start(0);
   }
 
@@ -69,22 +76,17 @@
     window.addEventListener(
       ev,
       () => {
-        if (!ctx || ctx.state !== 'running') unlock();
+        if (!ctx || ctx.state !== 'running' || (player && player.paused)) unlock();
       },
       { passive: true }
     )
   );
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      if (silentEl) silentEl.pause();
-    } else if (silentEl && !muted) {
-      const p = silentEl.play();
-      if (p && p.catch) p.catch(() => {});
-    }
+    if (document.hidden && player) player.pause();
   });
 
   function tone(freq, dur, { type = 'square', vol = 0.06, slide = 0, delay = 0 } = {}) {
-    if (muted || !ctx) return;
+    if (muted || !ctx || !master) return;
     const t0 = ctx.currentTime + delay;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
@@ -93,13 +95,13 @@
     if (slide) osc.frequency.linearRampToValueAtTime(freq + slide, t0 + dur);
     gain.gain.setValueAtTime(vol, t0);
     gain.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(gain).connect(ctx.destination);
+    osc.connect(gain).connect(master);
     osc.start(t0);
     osc.stop(t0 + dur + 0.02);
   }
 
   function noise(dur, vol = 0.08) {
-    if (muted || !ctx) return;
+    if (muted || !ctx || !master) return;
     const len = Math.floor(ctx.sampleRate * dur);
     const buf = ctx.createBuffer(1, len, ctx.sampleRate);
     const data = buf.getChannelData(0);
@@ -108,7 +110,7 @@
     const gain = ctx.createGain();
     gain.gain.value = vol;
     src.buffer = buf;
-    src.connect(gain).connect(ctx.destination);
+    src.connect(gain).connect(master);
     src.start();
   }
 
@@ -134,6 +136,7 @@
         ctx: ctx ? ctx.state : 'none',
         muted,
         session: navigator.audioSession ? navigator.audioSession.type : 'n/a',
+        route: player ? (player.paused ? 'player-paused' : 'player') : 'direct',
       };
     },
     play: (name) => sfx[name] && sfx[name](),

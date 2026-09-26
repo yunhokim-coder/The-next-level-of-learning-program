@@ -2078,3 +2078,132 @@ body.portrait .hcard {
 .hand-tools .pill {
   white-space: nowrap;
 }
+
+/* ---------- 에피소드 6 ---------- */
+.grow-panel {
+  width: min(100%, 720px);
+}
+
+.grow-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.grow-step {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+.grow-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.grow-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #2f2f55;
+}
+
+.grow-dot.on {
+  background: var(--green);
+}
+
+.grow-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grow-row {
+  margin-bottom: 4px;
+}
+
+.grow-cheer-label {
+  margin-top: 10px;
+}
+
+.chip[aria-pressed='true'] {
+  background: var(--blue);
+  border-color: #fff;
+  box-shadow: 0 0 0 2px var(--gold);
+}
+
+.map-card {
+  margin-top: 8px;
+  font-size: 15px;
+  padding: 6px 14px;
+  border-width: 2px;
+  border-radius: 6px;
+}
+
+.map-card[hidden] {
+  display: none;
+}
+
+.card-panel {
+  width: min(100%, 640px);
+  text-align: center;
+}
+
+.card-img {
+  width: 100%;
+  min-height: 200px;
+  border-radius: 12px;
+  background: #1c1c3a;
+  user-select: auto;
+  -webkit-user-select: auto;
+  -webkit-touch-callout: default;
+}
+
+.card-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.card-actions .big-btn {
+  width: auto;
+  flex: 1 1 220px;
+}
+
+.card-actions .pill {
+  font-size: 16px;
+  padding: 10px 16px;
+  border-width: 2px;
+  border-radius: 8px;
+}
+
+.print-area {
+  display: none;
+}
+
+@media print {
+  body > *:not(.print-area) {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+    display: block;
+    min-height: 0;
+    overflow: visible;
+  }
+  .print-area {
+    display: block;
+  }
+  .print-area img {
+    width: 100%;
+    max-height: 100vh;
+    object-fit: contain;
+  }
+  @page {
+    size: A4 portrait;
+    margin: 10mm;
+  }
+}

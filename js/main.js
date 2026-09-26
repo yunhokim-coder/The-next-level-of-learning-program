@@ -5,10 +5,10 @@
   const titleEl = $('#title');
   const menu = $('#menu');
   const VIDEO_ID = 'bZFApTvrVVQ';
-  const READY_EPISODES = [1, 2, 3, 4, 5]; // 지금 플레이할 수 있는 에피소드
+  const READY_EPISODES = [1, 2, 3, 4, 5, 6]; // 지금 플레이할 수 있는 에피소드
   const MIN_AGE = 7;
   const MAX_AGE = 80;
-  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#strategy-screen', '#clear-screen', '#video-modal'];
+  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#strategy-screen', '#grow-screen', '#card-screen', '#clear-screen', '#video-modal'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
   function fit() {
@@ -164,6 +164,7 @@
     if (!s) return;
     $('#map-name').textContent = Data.nameText();
     $('#map-code').textContent = Data.codeText();
+    $('#map-card').hidden = !s.done[6];
     const avatar = $('#map-avatar');
     avatar.hidden = !s.disc;
     if (s.disc) avatar.src = `assets/sprites/${s.disc.primary.toLowerCase()}.png`;
@@ -487,6 +488,43 @@
     ]);
   }
 
+  // 에피소드 6: 꿈의 보석을 되찾아라 (GROW 실천 계획 → 약속의 빛 → 엔딩 → 프로필 카드)
+  async function playEp6(rec) {
+    await Story.play([
+      {
+        do: async () => {
+          await Game.fadeTo('village');
+          Game.reset('village');
+          Game.mambaWithGem();
+          Game.partyEnter();
+        },
+        wait: 2600,
+      },
+      { who: 'narrator', key: 'ep6.intro1' },
+      { who: 'mamba', key: 'ep6.mamba1' },
+      { do: () => Game.enter('angel'), wait: 1100 },
+      { who: 'angel', key: 'ep6.angel1' },
+      { who: 'angel', key: 'ep6.angel2' },
+      {
+        do: async () => {
+          $('#dialog').hidden = true;
+          Object.assign(rec, await Finale.grow(Data.save.ep6 || {}), { at: Date.now() });
+          Data.save.ep6 = rec;
+          Data.persist();
+        },
+      },
+      { who: 'angel', key: 'ep6.angel3' },
+      { who: 'narrator', key: 'ep6.blast', do: () => Game.finalBlast(), wait: 1300 },
+      { who: 'mamba', key: 'ep6.mamba2' },
+      { who: 'narrator', key: 'ep6.n2', do: () => Game.reclaimGem(), wait: 2200 },
+      { who: 'narrator', key: 'ep6.n3', do: () => Game.cheer() },
+      { who: 'angel', key: 'ep6.angel4' },
+      { who: 'angel', key: 'ep6.angel5' },
+    ]);
+    $('#dialog').hidden = true;
+    await Finale.showCard();
+  }
+
   async function playEpisode(ep) {
     hideOverlays();
     titleEl.hidden = true;
@@ -521,6 +559,16 @@
         checks: (rec.checks || []).map((c) => (c ? 1 : 0)).join(''),
         top: (rec.top || []).join(','),
         compassTries: rec.compassTries,
+      });
+    } else if (ep === 6) {
+      const rec = {};
+      await playEp6(rec);
+      // 목표, 지금 모습, 무엇을 할지는 아이가 쓴 글이라 보내지 않는다
+      Data.send('ep6_result', {
+        strategies: (rec.o || []).join(','),
+        when: rec.when,
+        long: rec.long,
+        cheer: rec.cheer,
       });
     } else if (ep === 5) {
       const rec = { results: [] };
@@ -591,7 +639,8 @@
   function showClear(ep) {
     Data.complete(ep);
     hideOverlays();
-    $('#clear-ep').textContent = `${I18n.t('map.ep')} ${ep}`;
+    $('#clear-ep').textContent = ep === 6 ? I18n.t('ep6.theEnd') : `${I18n.t('map.ep')} ${ep}`;
+    $('#clear-title').textContent = ep === 6 ? I18n.t('ep6.allClear') : I18n.t('clear.title');
     $('#clear-video').hidden = ep !== 1;
     $('#clear-screen').hidden = false;
     Sound.play('clear');
@@ -649,6 +698,7 @@
     Energy.rerender();
     Mamba.rerender();
     Battle.rerender();
+    Finale.rerender();
   }
 
   function bind() {
@@ -673,6 +723,12 @@
     Energy.bind();
     Mamba.bind();
     Battle.bind();
+    Finale.bind();
+    $('#map-card').addEventListener('click', async () => {
+      $('#map-screen').hidden = true;
+      await Finale.showCard();
+      showMap();
+    });
     $('#quiz-back').addEventListener('click', () => Quiz.back());
     $('#result-flip').addEventListener('click', () => {
       $('#result-card').classList.toggle('flipped');
@@ -753,7 +809,7 @@
 
   // 브라우저가 예전 index.html을 기억하고 있으면 새 코드와 맞지 않는다. 그때는 한 번 새로 받아 온다
   function staleHtml() {
-    if ($('#lang-screen') && $('#setup-age') && $('#strategy-screen')) return false;
+    if ($('#lang-screen') && $('#setup-age') && $('#card-screen')) return false;
     const url = new URL(location.href);
     if (url.searchParams.has('fresh')) return false;
     url.searchParams.set('fresh', Date.now());

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>I'M ON THE NEXT LEVEL</title>
   <meta name="description" content="학업동기 향상을 위한 광야에서의 모험">
-  <meta name="app-version" content="20260926k">
+  <meta name="app-version" content="20260926n">
   <link rel="preload" href="assets/fonts/Galmuri11.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=20260926k">
+  <link rel="stylesheet" href="css/style.css?v=20260926n">
 </head>
 <body>
   <main id="app">
@@ -136,6 +136,7 @@
         <div>
           <h2 data-i18n="map.title">모험 지도</h2>
           <div class="map-who"><span id="map-name"></span> · <span id="map-code"></span></div>
+          <button id="map-card" type="button" class="pill pill-primary map-card" data-i18n="ep6.openCard" hidden>🏆 내 프로필 카드</button>
         </div>
       </div>
       <ol id="map-list" class="map-list"></ol>
@@ -292,10 +293,42 @@
     </div>
   </section>
 
+  <!-- 에피소드 6: GROW 실천 계획 -->
+  <section id="grow-screen" class="screen" hidden>
+    <div class="panel grow-panel">
+      <div class="grow-top">
+        <span id="grow-step" class="grow-step"></span>
+        <span class="grow-dots"><i class="grow-dot"></i><i class="grow-dot"></i><i class="grow-dot"></i><i class="grow-dot"></i></span>
+      </div>
+      <h2 id="grow-title"></h2>
+      <p id="grow-sub" class="panel-sub"></p>
+      <div id="grow-body" class="grow-body"></div>
+      <p id="grow-error" class="field-error" hidden data-i18n="ep6.needW"></p>
+      <p class="goal-privacy" data-i18n="ep6.privacy"></p>
+      <div class="goal-actions">
+        <button id="grow-prev" type="button" class="pill" data-i18n="ep6.prev">◀ 이전</button>
+        <button id="grow-next" type="button" class="big-btn"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 완성한 프로필 카드 -->
+  <section id="card-screen" class="screen" hidden>
+    <div class="panel card-panel">
+      <h2 data-i18n="ep6.cardTitle">나의 프로필 카드</h2>
+      <img id="card-img" class="card-img" alt="">
+      <div class="card-actions">
+        <button id="card-save" type="button" class="big-btn" data-i18n="ep6.save">🖼 이미지로 저장</button>
+        <button id="card-print" type="button" class="pill" data-i18n="ep6.print">🖨 인쇄하기</button>
+        <button id="card-close" type="button" class="pill pill-primary" data-i18n="ep6.toMap">모험 지도로</button>
+      </div>
+    </div>
+  </section>
+
   <section id="clear-screen" class="screen screen-center" hidden>
     <div class="clear">
       <div id="clear-ep" class="clear-ep"></div>
-      <h2 data-i18n="clear.title">MISSION COMPLETE</h2>
+      <h2 id="clear-title" data-i18n="clear.title">MISSION COMPLETE</h2>
       <p class="clear-level" data-i18n="clear.level">LEVEL UP!</p>
       <div class="clear-actions">
         <button id="clear-map" type="button" class="big-btn" data-i18n="clear.toMap">모험 지도로</button>
@@ -316,6 +349,9 @@
       </div>
     </div>
   </section>
+
+  <!-- 인쇄할 때만 보이는 카드 -->
+  <div id="print-area" class="print-area"><img id="print-img" alt=""></div>
 
   <!-- 설정 메뉴 -->
   <div id="menu" class="menu" hidden role="dialog" aria-modal="true" aria-labelledby="menu-title">
@@ -357,18 +393,19 @@
       document.getElementById('crash-detail').textContent = (e.message || '') + ' @ ' + (e.filename || '').split('/').pop() + ':' + (e.lineno || '');
     });
   </script>
-  <script src="config.js?v=20260926k"></script>
-  <script src="js/i18n.js?v=20260926k"></script>
-  <script src="js/sound.js?v=20260926k"></script>
-  <script src="js/data.js?v=20260926k"></script>
-  <script src="js/sprites.js?v=20260926k"></script>
-  <script src="js/game.js?v=20260926k"></script>
-  <script src="js/story.js?v=20260926k"></script>
-  <script src="js/card.js?v=20260926k"></script>
-  <script src="js/energy.js?v=20260926k"></script>
-  <script src="js/mamba.js?v=20260926k"></script>
-  <script src="js/battle.js?v=20260926k"></script>
-  <script src="js/quiz.js?v=20260926k"></script>
-  <script src="js/main.js?v=20260926k"></script>
+  <script src="config.js?v=20260926n"></script>
+  <script src="js/i18n.js?v=20260926n"></script>
+  <script src="js/sound.js?v=20260926n"></script>
+  <script src="js/data.js?v=20260926n"></script>
+  <script src="js/sprites.js?v=20260926n"></script>
+  <script src="js/game.js?v=20260926n"></script>
+  <script src="js/story.js?v=20260926n"></script>
+  <script src="js/card.js?v=20260926n"></script>
+  <script src="js/energy.js?v=20260926n"></script>
+  <script src="js/mamba.js?v=20260926n"></script>
+  <script src="js/battle.js?v=20260926n"></script>
+  <script src="js/finale.js?v=20260926n"></script>
+  <script src="js/quiz.js?v=20260926n"></script>
+  <script src="js/main.js?v=20260926n"></script>
 </body>
 </html>

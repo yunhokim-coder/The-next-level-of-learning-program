@@ -932,7 +932,7 @@
       if (state.scene !== 'battle') drawMamba();
       drawGem();
       drawSphinx();
-      if (state.scene === 'wild' || state.scene === 'desert') drawParty();
+      if (state.scene === 'wild' || state.scene === 'desert' || state.scene === 'village') drawParty();
       drawCompass();
       if (state.scene === 'showcase') return endFrame(dt);
       drawDevil();
@@ -1090,6 +1090,41 @@
         burst(BATTLE.ex, BATTLE.ebase - 20, '#ff6ad5', 16);
         Sound.play('rumble');
       }, 600);
+    },
+    // 에피소드 6: 블랙맘바가 보석을 쥔 채 마을에 나타난다
+    mambaWithGem() {
+      const m = state.actors.mamba;
+      Object.assign(m, { visible: true, x: 272, base: 0, size: 0, rise: 1, target: 1, dx: 0, squash: 0, blink: 0 });
+      state.gem = { visible: true, x: 272, y: 40, tx: 272, ty: 40, taken: true };
+      state.darkTarget = 0.5;
+    },
+    // 약속의 빛: 파티에서 블랙맘바로 빛줄기가 날아간다
+    finalBlast() {
+      const h = state.actors.hero;
+      for (let i = 0; i < 40; i++) {
+        setTimeout(() => {
+          const k = i / 40;
+          const x = h.x + (mambaHead.x - h.x) * k;
+          const y = h.y - 30 + (mambaHead.y - (h.y - 30)) * k;
+          burst(x, y, i % 2 ? '#fff6b0' : '#ff6ad5', 3, 2);
+        }, i * 18);
+      }
+      setTimeout(() => {
+        state.actors.mamba.blink = t + 1;
+        state.shake = 0.8;
+        burst(mambaHead.x, mambaHead.y, '#ffffff', 30);
+      }, 750);
+      Sound.play('powerup');
+    },
+    // 보석이 마을 위 제자리로 돌아오고, 블랙맘바는 사라지고, 마을이 밝아진다
+    reclaimGem() {
+      state.gem.taken = false;
+      state.gem.tx = 160;
+      state.gem.ty = 72;
+      state.actors.mamba.target = 0;
+      state.darkTarget = 0;
+      for (let i = 0; i < 6; i++) setTimeout(() => burst(40 + Math.random() * 240, 40 + Math.random() * 60, ['#ffd23f', '#ff6ad5', '#3cf29a'][i % 3], 16), i * 250);
+      Sound.play('clear');
     },
     cheerBattle() {
       burst(BATTLE.px, BATTLE.pbase - 60, '#ffd23f', 24);

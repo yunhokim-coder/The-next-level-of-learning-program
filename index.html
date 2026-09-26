@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>I'M ON THE NEXT LEVEL</title>
+  <meta name="description" content="학업동기 향상을 위한 광야에서의 모험">
+  <link rel="preload" href="assets/fonts/Galmuri11.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main id="app">
+    <div id="stage">
+      <canvas id="screen" aria-hidden="true"></canvas>
+
+      <header class="hud">
+        <div class="hud-left">
+          <button id="menu-btn" class="pill" type="button" data-i18n="hud.menu">MENU</button>
+          <span id="hearts" class="hearts" aria-hidden="true">♥♥♥</span>
+        </div>
+        <div class="hud-right">
+          <span class="hp" aria-hidden="true"><span class="hp-heart">♥</span><span class="hp-bar"><span></span></span></span>
+          <span class="player" data-i18n="hud.player">PLAYER 1</span>
+          <button id="mute-btn" class="icon-btn" type="button" aria-label="소리 켜짐">🔊</button>
+        </div>
+      </header>
+
+      <section id="title" class="title">
+        <h1>
+          <span class="t1" data-i18n="title.line1">I'M ON THE</span>
+          <span class="t2" data-i18n="title.line2">NEXT LEVEL</span>
+          <span class="t3" data-i18n="title.line3">IN EDUCATION</span>
+        </h1>
+        <button id="start-btn" class="start" type="button" data-i18n="title.press">PRESS START</button>
+        <p class="subtitle" data-i18n="title.subtitle">- 학업동기 향상을 위한 광야에서의 모험 -</p>
+        <p class="credit" data-i18n="title.credit"></p>
+      </section>
+
+      <div id="bonus" class="bonus" hidden data-i18n="demo.bonus">자신감 +1</div>
+
+      <section id="clear" class="clear" hidden>
+        <h2 data-i18n="demo.clear">DEMO CLEAR!</h2>
+        <p data-i18n="demo.clearSub"></p>
+        <button id="replay" class="start" type="button" data-i18n="demo.replay">다시 보기</button>
+      </section>
+    </div>
+
+    <section id="dialog" class="dialog" hidden aria-live="polite">
+      <div id="dialog-name" class="dialog-name"></div>
+      <p id="dialog-text" class="dialog-text"></p>
+      <div id="choices" class="choices" hidden></div>
+      <span class="dialog-next" aria-hidden="true">▼</span>
+    </section>
+  </main>
+
+  <div id="menu" class="menu" hidden role="dialog" aria-modal="true" aria-labelledby="menu-title">
+    <div class="menu-panel">
+      <h2 id="menu-title" data-i18n="menu.title">설정</h2>
+      <div class="menu-row">
+        <span class="menu-label" data-i18n="menu.language">언어</span>
+        <div class="seg">
+          <button type="button" data-lang="ko">한국어</button>
+          <button type="button" data-lang="en">English</button>
+        </div>
+      </div>
+      <div class="menu-row">
+        <span class="menu-label" data-i18n="menu.sound">소리</span>
+        <div class="seg">
+          <button type="button" data-sound="on" data-i18n="menu.on">켜기</button>
+          <button type="button" data-sound="off" data-i18n="menu.off">끄기</button>
+        </div>
+      </div>
+      <div class="menu-actions">
+        <button id="menu-restart" type="button" class="pill" data-i18n="menu.restart">처음으로</button>
+        <button id="menu-close" type="button" class="pill pill-primary" data-i18n="menu.close">닫기</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/game.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

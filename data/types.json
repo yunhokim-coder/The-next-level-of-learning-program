@@ -6,11 +6,24 @@
     "job": "불꽃 기사",
     "animal": "호랑이",
     "color": "#DC143C",
-    "element": { "icon": "🔥", "name": "불" },
+    "element": {
+      "icon": "🔥",
+      "name": "불"
+    },
     "weapon": "리더의 불꽃 깃발",
-    "strengths": ["자신감", "추진력"],
-    "weaknesses": ["감정조절 어려움", "성급함"],
-    "growthKeywords": ["신중함", "공감", "감정 다스리기"],
+    "strengths": [
+      "자신감",
+      "추진력"
+    ],
+    "weaknesses": [
+      "감정조절 어려움",
+      "성급함"
+    ],
+    "growthKeywords": [
+      "신중함",
+      "공감",
+      "감정 다스리기"
+    ],
     "summary": "원하는 결과를 얻기 위해 어려움을 이겨내고, 스스로 방법을 찾아요!",
     "traits": [
       "자신감이 있고, 리더처럼 앞장서는 걸 좋아해요!",
@@ -22,7 +35,26 @@
       "여유 있고, 다른 사람을 이해하려고 노력하면 더 좋아져요!"
     ],
     "cardFront": "assets/cards/characters/d-front.webp",
-    "cardBack": "assets/cards/characters/d-back.png"
+    "cardBack": "assets/cards/characters/d-back.png",
+    "en": {
+      "job": "Flame Knight",
+      "element": "Fire",
+      "weapon": "Leader's Flame Banner",
+      "strengths": [
+        "Confidence",
+        "Drive"
+      ],
+      "weaknesses": [
+        "Trouble managing emotions",
+        "Impatience"
+      ],
+      "growthKeywords": [
+        "Carefulness",
+        "Empathy",
+        "Handling emotions"
+      ],
+      "summary": "You push through challenges to get the results you want, and find your own way!"
+    }
   },
   "I": {
     "code": "I",
@@ -31,11 +63,23 @@
     "job": "공감 마법사",
     "animal": "턱시도 고양이",
     "color": "#A6C77E",
-    "element": { "icon": "🌟", "name": "빛" },
+    "element": {
+      "icon": "🌟",
+      "name": "빛"
+    },
     "weapon": "따듯한 공감별",
-    "strengths": ["공감능력", "따듯함"],
-    "weaknesses": ["결정에 시간 걸림"],
-    "growthKeywords": ["자기표현", "선택력", "결단력"],
+    "strengths": [
+      "공감능력",
+      "따듯함"
+    ],
+    "weaknesses": [
+      "결정에 시간 걸림"
+    ],
+    "growthKeywords": [
+      "자기표현",
+      "선택력",
+      "결단력"
+    ],
     "summary": "말을 잘해서 다른 사람을 움직이게 하고, 다른 사람들도 따라오게 만들어요!",
     "traits": [
       "친구랑 어울리는 걸 좋아하고, 밝고 즐거운 사람이에요!",
@@ -47,7 +91,25 @@
       "생각과 마음을 솔직하게 말하고, 다른 사람에게 다정해요!"
     ],
     "cardFront": "assets/cards/characters/i-front.webp",
-    "cardBack": "assets/cards/characters/i-back.png"
+    "cardBack": "assets/cards/characters/i-back.png",
+    "en": {
+      "job": "Empathy Mage",
+      "element": "Light",
+      "weapon": "Warm Empathy Star",
+      "strengths": [
+        "Empathy",
+        "Warmth"
+      ],
+      "weaknesses": [
+        "Takes time to decide"
+      ],
+      "growthKeywords": [
+        "Self-expression",
+        "Choosing",
+        "Decisiveness"
+      ],
+      "summary": "You move people with your words and bring others along with you!"
+    }
   },
   "S": {
     "code": "S",
@@ -56,11 +118,23 @@
     "job": "토닥 힐러",
     "animal": "토끼",
     "color": "#FFE97F",
-    "element": { "icon": "🌿", "name": "자연" },
+    "element": {
+      "icon": "🌿",
+      "name": "자연"
+    },
     "weapon": "회복의 솜털 당근",
-    "strengths": ["조화", "따듯함"],
-    "weaknesses": ["소극적", "새로움 회피"],
-    "growthKeywords": ["유연성", "적극성"],
+    "strengths": [
+      "조화",
+      "따듯함"
+    ],
+    "weaknesses": [
+      "소극적",
+      "새로움 회피"
+    ],
+    "growthKeywords": [
+      "유연성",
+      "적극성"
+    ],
     "summary": "일을 잘 해내기 위해 친구들과 함께 힘을 합치는 걸 좋아해요!",
     "traits": [
       "친구들과 잘 지내고, 참을성이 많고 부지런해요!",
@@ -72,7 +146,25 @@
       "다른 사람의 말을 잘 들어주고, 차분하게 도와줘요!"
     ],
     "cardFront": "assets/cards/characters/s-front.webp",
-    "cardBack": "assets/cards/characters/s-back.png"
+    "cardBack": "assets/cards/characters/s-back.png",
+    "en": {
+      "job": "Pat-Pat Healer",
+      "element": "Nature",
+      "weapon": "Fluffy Carrot of Healing",
+      "strengths": [
+        "Harmony",
+        "Warmth"
+      ],
+      "weaknesses": [
+        "Holding back",
+        "Avoiding new things"
+      ],
+      "growthKeywords": [
+        "Flexibility",
+        "Taking initiative"
+      ],
+      "summary": "You love working together with friends to get things done well!"
+    }
   },
   "C": {
     "code": "C",
@@ -81,11 +173,25 @@
     "job": "AI 전략가",
     "animal": "안경 쓴 캐릭터와 AI 로봇",
     "color": "#0070C0",
-    "element": { "icon": "⛰️", "name": "돌" },
+    "element": {
+      "icon": "⛰️",
+      "name": "돌"
+    },
     "weapon": "계산 척척 AI",
-    "strengths": ["꼼꼼함", "문제해결", "계획성"],
-    "weaknesses": ["걱정", "의심", "느릿함"],
-    "growthKeywords": ["속도감(빠른 결정)", "유머(가볍게 받기)"],
+    "strengths": [
+      "꼼꼼함",
+      "문제해결",
+      "계획성"
+    ],
+    "weaknesses": [
+      "걱정",
+      "의심",
+      "느릿함"
+    ],
+    "growthKeywords": [
+      "속도감(빠른 결정)",
+      "유머(가볍게 받기)"
+    ],
     "summary": "실수하지 않으려고 천천히 생각하고, 정해진 방법대로 해요!",
     "traits": [
       "뭐든 항상 꼼꼼하고 정확하게 하려고 해요!",
@@ -97,6 +203,26 @@
       "너무 완벽하려 하기보다 현실적으로 생각하면 더욱 좋아요!"
     ],
     "cardFront": "assets/cards/characters/c-front.webp",
-    "cardBack": "assets/cards/characters/c-back.png"
+    "cardBack": "assets/cards/characters/c-back.png",
+    "en": {
+      "job": "AI Strategist",
+      "element": "Stone",
+      "weapon": "Quick-Calc AI",
+      "strengths": [
+        "Carefulness",
+        "Problem solving",
+        "Planning"
+      ],
+      "weaknesses": [
+        "Worry",
+        "Doubt",
+        "Slowness"
+      ],
+      "growthKeywords": [
+        "Speed (quick decisions)",
+        "Humor (taking things lightly)"
+      ],
+      "summary": "You think slowly and carefully so you don’t make mistakes, and follow the right steps!"
+    }
   }
 }

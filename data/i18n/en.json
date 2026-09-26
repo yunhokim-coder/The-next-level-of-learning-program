@@ -1,0 +1,65 @@
+{
+  "langName": "English",
+  "title": {
+    "line1": "I'M ON THE",
+    "line2": "NEXT LEVEL",
+    "line3": "IN EDUCATION",
+    "subtitle": "- An adventure across the wilderness to power up your motivation to learn -",
+    "press": "PRESS START",
+    "credit": "Lead researcher Yunho Kim · Co-researcher Seonghye Moon"
+  },
+  "hud": {
+    "menu": "MENU",
+    "player": "PLAYER 1",
+    "soundOn": "Sound on",
+    "soundOff": "Sound off"
+  },
+  "menu": {
+    "title": "Settings",
+    "language": "Language",
+    "sound": "Sound",
+    "on": "On",
+    "off": "Off",
+    "restart": "Back to start",
+    "close": "Close"
+  },
+  "dialog": {
+    "next": "Next ▶",
+    "hint": "Tap the screen or press Space"
+  },
+  "names": {
+    "narrator": "",
+    "angel": "Sparkle",
+    "devil": "Slinky",
+    "mamba": "Black Mamba",
+    "hero": "PLAYER 1",
+    "D": "Flame Knight",
+    "I": "Empathy Mage",
+    "S": "Pat-Pat Healer",
+    "C": "AI Strategist"
+  },
+  "demo": {
+    "n1": "An adventure across the wilderness. The travelers are walking toward the Land of Dreams.",
+    "angel1": "Hi! I'm Sparkle, the starlight spirit who woke up inside the Golden Compass!",
+    "angel2": "See the cloud and the firelight far ahead? They'll light our way. Let's go to the Land of Dreams together!",
+    "partyD": "Alright, I'll lead the way!",
+    "partyI": "It's way more fun when we all go together!",
+    "partyS": "Slow and steady, so nobody gets hurt~",
+    "partyC": "Route calculated. We're good to go.",
+    "n2": "Just then, something came slinking out of the sand.",
+    "devil1": "Sssso~ why walk through this hot wilderness? Let's rest here for just 5 minutes~",
+    "choiceRest": "Okay, just a short break…",
+    "choiceGo": "No, I'll keep going!",
+    "devilRest": "Hehe, 5 minutes turns into 50 before you know it~",
+    "angelRest": "Rest is important too! But let's decide how many minutes first. Then Slinky can't beat us!",
+    "devilGo": "Hmph… next time I'll get you for sure!",
+    "angelGo": "Awesome! You just beat a temptation. Confidence gauge UP!",
+    "n3": "Whoa! The ground is shaking!",
+    "mamba1": "I am the Black Mamba! I'm the one who gets in the way of your dreams and studies!",
+    "angel3": "Know yourself and know your enemy, and you'll win every battle! Next stage, let's find your Black Mamba!",
+    "clear": "DEMO CLEAR!",
+    "clearSub": "The next stage is on its way",
+    "replay": "Watch again",
+    "bonus": "Confidence +1"
+  }
+}

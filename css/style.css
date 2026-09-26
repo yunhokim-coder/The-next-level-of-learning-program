@@ -1,0 +1,502 @@
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('../assets/fonts/Galmuri11.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Galmuri11';
+  src: url('../assets/fonts/Galmuri11-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+:root {
+  --s: 3; /* 화면 배율 (main.js가 설정) */
+  --u: calc(var(--s) * 1px); /* 게임 해상도 1픽셀 */
+  --bg: #07070f;
+  --ink: #ffffff;
+  --pink: #ff6ad5;
+  --green: #3cf29a;
+  --blue: #5b5bf0;
+  --panel: #0d0d1a;
+  --gold: #ffd23f;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Galmuri11', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+button:focus-visible {
+  outline: 2px dashed var(--gold);
+  outline-offset: 2px;
+}
+
+#app {
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+body.ready #app {
+  opacity: 1;
+}
+
+#stage {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+}
+
+#screen {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ---------- HUD ---------- */
+.hud {
+  position: absolute;
+  top: calc(var(--u) * 4);
+  left: calc(var(--u) * 5);
+  right: calc(var(--u) * 5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: max(10px, calc(var(--u) * 6));
+  pointer-events: none;
+  text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+}
+
+.hud button {
+  pointer-events: auto;
+}
+
+.hud-left,
+.hud-right {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 4);
+}
+
+.pill {
+  background: var(--blue);
+  border: max(1px, var(--u)) solid #c7c7ff;
+  border-radius: calc(var(--u) * 2);
+  padding: calc(var(--u) * 0.5) calc(var(--u) * 3);
+  font-size: max(11px, calc(var(--u) * 6));
+  line-height: 1.2;
+}
+
+.pill-primary {
+  background: var(--pink);
+  border-color: #ffd1f2;
+  color: #1b0717;
+}
+
+.hearts {
+  color: var(--pink);
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 #7a1f63;
+}
+
+.hp {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1);
+}
+
+.hp-heart {
+  color: var(--pink);
+}
+
+.hp-bar {
+  width: calc(var(--u) * 26);
+  height: calc(var(--u) * 3);
+  background: #fff;
+  border: max(1px, calc(var(--u) * 0.5)) solid #000;
+}
+
+.hp-bar span {
+  display: block;
+  height: 100%;
+  width: 78%;
+  background: var(--green);
+}
+
+.player {
+  color: var(--pink);
+  letter-spacing: 0.08em;
+}
+
+.icon-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  font-size: max(14px, calc(var(--u) * 7));
+  line-height: 1;
+}
+
+/* ---------- 타이틀 ---------- */
+.title {
+  position: absolute;
+  inset: calc(var(--u) * 20) calc(var(--u) * 6) calc(var(--u) * 36) 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: calc(var(--u) * 5);
+}
+
+.title[hidden] {
+  display: none;
+}
+
+.title h1 {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.05;
+  color: var(--pink);
+  font-weight: 700;
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--green);
+}
+
+.t1,
+.t2 {
+  font-size: calc(var(--u) * 19);
+}
+
+.t3 {
+  font-size: calc(var(--u) * 9);
+  margin-top: calc(var(--u) * 3);
+}
+
+.start {
+  background: var(--blue);
+  border: calc(var(--u) * 1) solid #fff;
+  box-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 #000;
+  padding: calc(var(--u) * 2) calc(var(--u) * 6);
+  font-size: max(12px, calc(var(--u) * 8));
+  font-weight: 700;
+  animation: blink 1s steps(2, start) infinite;
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--pink);
+  font-size: max(10px, calc(var(--u) * 5.5));
+}
+
+.credit {
+  position: absolute;
+  bottom: calc(var(--u) * -30);
+  right: 0;
+  margin: 0;
+  font-size: max(9px, calc(var(--u) * 4.5));
+  color: #ffd1f2;
+  opacity: 0.85;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ---------- 대화창 (항상 그림 아래) ---------- */
+#app {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 5);
+}
+
+.dialog {
+  position: relative;
+  min-height: calc(var(--u) * 34);
+  padding: calc(var(--u) * 5) calc(var(--u) * 7) calc(var(--u) * 6);
+  background: rgba(8, 8, 20, 0.92);
+  border: max(2px, var(--u)) solid var(--green);
+  border-radius: calc(var(--u) * 4);
+  font-size: max(14px, calc(var(--u) * 6.5));
+  line-height: 1.55;
+  cursor: pointer;
+}
+
+.dialog[hidden] {
+  display: block;
+  visibility: hidden; /* 자리는 남겨 화면이 흔들리지 않게 */
+}
+
+.dialog-name {
+  position: absolute;
+  top: calc(var(--u) * -6);
+  left: calc(var(--u) * 6);
+  padding: 0 calc(var(--u) * 3);
+  background: var(--pink);
+  color: #1b0717;
+  border-radius: calc(var(--u) * 2);
+  font-weight: 700;
+  font-size: max(12px, calc(var(--u) * 5.5));
+}
+
+.dialog-name[hidden] {
+  display: none;
+}
+
+.dialog[data-who='angel'] .dialog-name {
+  background: var(--gold);
+}
+.dialog[data-who='devil'] .dialog-name {
+  background: #9a6ad0;
+  color: #fff;
+}
+.dialog[data-who='mamba'] .dialog-name {
+  background: #2b2b33;
+  color: #caa46a;
+  outline: 1px solid #caa46a;
+}
+.dialog[data-who='narrator'] .dialog-text {
+  color: #cfe9ff;
+}
+
+.dialog-text {
+  margin: 0;
+  min-height: 3.1em;
+  word-break: keep-all;
+}
+
+.dialog-next {
+  position: absolute;
+  right: calc(var(--u) * 5);
+  bottom: calc(var(--u) * 3);
+  color: var(--green);
+  font-size: 0.7em;
+  animation: blink 0.8s steps(2, start) infinite;
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 4);
+  margin-top: calc(var(--u) * 3);
+}
+
+.choices[hidden] {
+  display: none;
+}
+
+.choice {
+  flex: 1 1 40%;
+  background: #1c1c3a;
+  border: max(2px, var(--u)) solid var(--pink);
+  border-radius: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2) calc(var(--u) * 4);
+  text-align: left;
+}
+
+.choice::before {
+  content: '▶ ';
+  color: var(--pink);
+}
+
+.choice:hover,
+.choice:focus-visible {
+  background: #33205a;
+}
+
+/* 세로 화면: 대화창을 그림 아래로 */
+body.portrait #app {
+  gap: 18px;
+}
+
+body.portrait .dialog {
+  margin: 0 12px;
+  min-height: 7.5em;
+  font-size: 16px;
+}
+
+body.portrait .dialog-name {
+  top: -12px;
+  font-size: 13px;
+}
+
+/* ---------- 보너스, 클리어 ---------- */
+.bonus {
+  position: absolute;
+  left: 50%;
+  top: 22%;
+  transform: translateX(-50%);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: calc(var(--u) * 10);
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 #7a4a00;
+}
+
+.bonus[hidden] {
+  display: none;
+}
+
+.bonus.pop {
+  animation: rise 1.6s ease-out forwards;
+}
+
+@keyframes rise {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -30px) scale(1);
+  }
+}
+
+.clear {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 4);
+  background: rgba(0, 0, 0, 0.72);
+  text-align: center;
+}
+
+.clear[hidden] {
+  display: none;
+}
+
+.clear h2 {
+  margin: 0;
+  color: var(--pink);
+  font-size: calc(var(--u) * 22);
+  text-shadow: calc(var(--u) * 1) calc(var(--u) * 1) 0 var(--green);
+}
+
+.clear p {
+  margin: 0;
+  font-size: max(12px, calc(var(--u) * 6));
+}
+
+/* ---------- 설정 메뉴 ---------- */
+.menu {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+.menu-panel {
+  width: min(92vw, 420px);
+  background: var(--panel);
+  border: 3px solid var(--green);
+  border-radius: 10px;
+  padding: 22px 22px 18px;
+  box-shadow: 6px 6px 0 #000;
+}
+
+.menu-panel h2 {
+  margin: 0 0 16px;
+  color: var(--pink);
+  font-size: 22px;
+  text-shadow: 1px 1px 0 var(--green);
+}
+
+.menu-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px dashed #2f2f55;
+  font-size: 16px;
+}
+
+.seg {
+  display: flex;
+  border: 2px solid #c7c7ff;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.seg button {
+  background: #1c1c3a;
+  border: 0;
+  padding: 8px 14px;
+  font-size: 15px;
+  min-width: 76px;
+}
+
+.seg button + button {
+  border-left: 2px solid #c7c7ff;
+}
+
+.seg button[aria-pressed='true'] {
+  background: var(--blue);
+}
+
+.seg button[aria-pressed='true']::before {
+  content: '▶ ';
+}
+
+.menu-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.menu-actions .pill {
+  font-size: 15px;
+  padding: 8px 16px;
+  border-width: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .start,
+  .dialog-next {
+    animation: none;
+  }
+}

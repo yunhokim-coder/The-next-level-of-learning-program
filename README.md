@@ -8,3 +8,12 @@
 - 개발 안내: [CLAUDE.md](CLAUDE.md)
 - 세계관: [docs/worldview.md](docs/worldview.md)
 - 저작권: [CREDITS.md](CREDITS.md)
+
+## 실행
+
+```bash
+python3 -m http.server
+# 브라우저에서 http://localhost:8000
+```
+
+지금은 1단계 데모(광야를 걷는 파티, 반짝이·스르륵·블랙맘바 등장, 한국어/영어 전환)까지 들어 있다.

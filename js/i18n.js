@@ -19,7 +19,7 @@
 
   async function load(code) {
     if (!cache[code]) {
-      const res = await fetch(`data/i18n/${code}.json`);
+      const res = await fetch(`data/i18n/${code}.json`, { cache: 'no-cache' });
       cache[code] = await res.json();
     }
     return cache[code];

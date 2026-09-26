@@ -526,7 +526,18 @@
     window.addEventListener('resize', fit);
   }
 
+  // 브라우저가 예전 index.html을 기억하고 있으면 새 코드와 맞지 않는다. 그때는 한 번 새로 받아 온다
+  function staleHtml() {
+    if ($('#lang-screen') && $('#setup-age')) return false;
+    const url = new URL(location.href);
+    if (url.searchParams.has('fresh')) return false;
+    url.searchParams.set('fresh', Date.now());
+    location.replace(url.toString());
+    return true;
+  }
+
   async function boot() {
+    if (staleHtml()) return;
     Game.init($('#screen'));
     fit();
     Story.init();

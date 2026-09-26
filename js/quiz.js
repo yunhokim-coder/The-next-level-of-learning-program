@@ -9,7 +9,7 @@
   let resolveQuiz = null;
 
   async function loadDisc() {
-    if (!disc) disc = await (await fetch('data/disc.json')).json();
+    if (!disc) disc = await (await fetch('data/disc.json', { cache: 'no-cache' })).json();
     return disc;
   }
 

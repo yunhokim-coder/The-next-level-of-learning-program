@@ -3,7 +3,7 @@
   let types = null;
 
   async function loadTypes() {
-    if (!types) types = await (await fetch('data/types.json')).json();
+    if (!types) types = await (await fetch('data/types.json', { cache: 'no-cache' })).json();
     return types;
   }
 

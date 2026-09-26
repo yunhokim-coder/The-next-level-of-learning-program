@@ -29,6 +29,8 @@
     gem: { visible: false, x: 160, y: 62, tx: 160, ty: 62, taken: false },
     showcase: null, // 파티원 소개 장면: { key, at }
     sphinx: false,
+    knocked: false,
+    knockedAt: 0,
     compass: { visible: false, x: 0, y: 0, tx: 0, ty: 0 },
     portal: 0,
     portalTarget: 0,
@@ -361,6 +363,7 @@
     state.portal = state.portalTarget = 0;
     state.showcase = null;
     state.sphinx = false;
+    state.knocked = false;
     state.compass = { visible: false, x: 0, y: 0, tx: 0, ty: 0 };
   }
 
@@ -384,8 +387,39 @@
     ctx.drawImage(img, Math.round((x - w / 2) * 2) / 2, Math.round((feetY - height) * 2) / 2, w, height);
   }
 
+  // 쓰러진 캐릭터: 옆으로 눕혀 바닥에 붙인다 (누우면 그림의 너비가 높이가 된다)
+  function drawLying(img, x, height, scale) {
+    if (!img) return;
+    const h = height || img.height * scale;
+    const w = height ? (img.width / img.height) * height : img.width * scale;
+    ctx.save();
+    ctx.translate(Math.round(x), GROUND - Math.round(w / 2));
+    ctx.rotate(-Math.PI / 2);
+    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+  }
+
+  function dizzy(x, y) {
+    for (let i = 0; i < 3; i++) {
+      const a = t * 4 + (i * Math.PI * 2) / 3;
+      ctx.fillStyle = '#ffd23f';
+      ctx.fillRect(Math.round(x + Math.cos(a) * 8), Math.round(y + Math.sin(a) * 3), 2, 2);
+    }
+  }
+
   function drawParty() {
     if (!state.partyVisible) return;
+    if (state.knocked) {
+      PARTY.forEach((key) => {
+        const act = state.actors[key];
+        drawLying(Sprites.party[key], act.x, 48);
+        dizzy(act.x, GROUND - 26);
+      });
+      const h = state.actors.hero;
+      drawLying(Sprites.frames.hero[0], h.x, 0, 2);
+      dizzy(h.x, GROUND - 20);
+      return;
+    }
     state.partyOffset += (0 - state.partyOffset) * 0.03;
     const off = Math.round(state.partyOffset);
     const walking = state.walking || off < -2;
@@ -911,6 +945,18 @@
       const h = state.actors.hero;
       state.compass = { visible: true, x: SPHINX_X + 24, y: GROUND - 50, tx: h.x, ty: h.y - 58 };
       Sound.play('powerup');
+    },
+    knockdown(on) {
+      state.knocked = on;
+      if (on) {
+        state.shake = 0.8;
+        state.darkTarget = 0.35;
+        Sound.play('rumble');
+      } else {
+        state.darkTarget = 0;
+        PARTY.concat('hero').forEach((k) => burst(state.actors[k].x, GROUND - 20, '#fff6b0', 8));
+        Sound.play('powerup');
+      }
     },
     hideParty() {
       state.partyVisible = false;

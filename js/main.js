@@ -5,10 +5,10 @@
   const titleEl = $('#title');
   const menu = $('#menu');
   const VIDEO_ID = 'bZFApTvrVVQ';
-  const READY_EPISODES = [1, 2, 3]; // 지금 플레이할 수 있는 에피소드
+  const READY_EPISODES = [1, 2, 3, 4]; // 지금 플레이할 수 있는 에피소드
   const MIN_AGE = 7;
   const MAX_AGE = 80;
-  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#clear-screen', '#video-modal'];
+  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#clear-screen', '#video-modal'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
   function fit() {
@@ -390,6 +390,48 @@
     ];
   }
 
+  // 에피소드 4: 나의 블랙맘바를 찾아라!
+  function ep4Script(rec) {
+    const panel = (fn) => ({
+      do: async () => {
+        $('#dialog').hidden = true;
+        await fn();
+      },
+    });
+    return [
+      {
+        do: () => {
+          Game.reset('wild');
+          Game.partyEnter();
+          Game.walk(true);
+        },
+        wait: 2600,
+      },
+      { do: () => Game.walk(false) },
+      { who: 'narrator', key: 'ep4.intro1', do: () => Game.enter('mamba'), wait: 1500 },
+      { who: 'mamba', key: 'ep4.mamba1' },
+      { who: 'mamba', key: 'ep4.mamba2' },
+      { do: () => Game.enter('angel'), wait: 1100 },
+      { who: 'angel', key: 'ep4.angel1' },
+      { who: 'angel', key: 'ep4.angel2' },
+      panel(async () => {
+        rec.cards = await Mamba.pick(rec.cards);
+        rec.freq = await Mamba.frequency(rec.freq);
+      }),
+      { who: 'angel', key: 'ep4.angel3' },
+      panel(async () => {
+        rec.drawing = await Mamba.draw(rec.drawing);
+      }),
+      { who: 'mamba', key: 'ep4.mamba3' },
+      { who: 'narrator', key: 'ep4.n2', do: () => Game.knockdown(true), wait: 1400 },
+      { who: 'angel', key: 'ep4.angel4' },
+      { who: 'narrator', key: 'ep4.n3', do: () => Game.knockdown(false), wait: 900 },
+      { who: 'mamba', key: 'ep4.mamba4' },
+      { do: () => Game.leave('mamba'), wait: 1600 },
+      { who: 'angel', key: 'ep4.angel5' },
+    ];
+  }
+
   async function playEpisode(ep) {
     hideOverlays();
     titleEl.hidden = true;
@@ -424,6 +466,18 @@
         checks: (rec.checks || []).map((c) => (c ? 1 : 0)).join(''),
         top: (rec.top || []).join(','),
         compassTries: rec.compassTries,
+      });
+    } else if (ep === 4) {
+      const prev = Data.save.ep4 || {};
+      const rec = { cards: prev.cards || [], freq: prev.freq || {}, drawing: prev.drawing || null };
+      await Story.play(ep4Script(rec));
+      Data.save.ep4 = rec;
+      Data.persist();
+      // 그림, 이름, 말풍선은 기기에만 두고 보내지 않는다
+      Data.send('ep4_result', {
+        cards: rec.cards.join(','),
+        categories: rec.cards.map((id) => Mamba.card(id).category[0]).join(''),
+        freq: rec.cards.map((id) => rec.freq[id] || 0).join(''),
       });
     }
     showClear(ep);
@@ -530,6 +584,7 @@
     if (!$('#result-screen').hidden) renderResult();
     Quiz.rerender();
     Energy.rerender();
+    Mamba.rerender();
   }
 
   function bind() {
@@ -552,6 +607,7 @@
     });
 
     Energy.bind();
+    Mamba.bind();
     $('#quiz-back').addEventListener('click', () => Quiz.back());
     $('#result-flip').addEventListener('click', () => {
       $('#result-card').classList.toggle('flipped');
@@ -632,7 +688,7 @@
 
   // 브라우저가 예전 index.html을 기억하고 있으면 새 코드와 맞지 않는다. 그때는 한 번 새로 받아 온다
   function staleHtml() {
-    if ($('#lang-screen') && $('#setup-age') && $('#goal-screen')) return false;
+    if ($('#lang-screen') && $('#setup-age') && $('#draw-screen')) return false;
     const url = new URL(location.href);
     if (url.searchParams.has('fresh')) return false;
     url.searchParams.set('fresh', Date.now());
@@ -646,7 +702,7 @@
     fit();
     Story.init();
     bind();
-    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc(), Energy.load()]);
+    await Promise.all([I18n.init(), Sprites.loadParty(), Card.loadTypes(), Quiz.loadDisc(), Energy.load(), Mamba.load()]);
     Data.load();
     syncMenu();
     updateHud();

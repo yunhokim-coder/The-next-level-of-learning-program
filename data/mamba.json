@@ -1,0 +1,737 @@
+{
+ "note": "블랙맘바 카드 55종 (© 2025 김윤호, 문성혜). category(마음 heart / 생각 thought / 행동 action)는 Claude가 카드 설명을 보고 나눈 분류다.",
+ "categories": [
+  {
+   "id": "heart",
+   "ko": "마음",
+   "en": "Heart"
+  },
+  {
+   "id": "thought",
+   "ko": "생각",
+   "en": "Thought"
+  },
+  {
+   "id": "action",
+   "ko": "행동",
+   "en": "Action"
+  }
+ ],
+ "cards": [
+  {
+   "id": 1,
+   "img": "assets/cards/mamba/01.webp",
+   "category": "heart",
+   "ko": {
+    "name": "덜덜덜 맘바",
+    "desc": "시험 시간이 다가오면 긴장되고 불안해져 막막할 때가 있다"
+   },
+   "en": {
+    "name": "Shaky Mamba",
+    "desc": "When a test gets close, I get tense and anxious and feel stuck"
+   }
+  },
+  {
+   "id": 2,
+   "img": "assets/cards/mamba/02.webp",
+   "category": "action",
+   "ko": {
+    "name": "대충 맘바",
+    "desc": "하기는 싫은데 억지로 해야 해서 대충 끝내 버린다"
+   },
+   "en": {
+    "name": "Sloppy Mamba",
+    "desc": "I don't want to, but I have to, so I just rush through it"
+   }
+  },
+  {
+   "id": 3,
+   "img": "assets/cards/mamba/03.webp",
+   "category": "heart",
+   "ko": {
+    "name": "걱정 맘바",
+    "desc": "이유 없는 걱정이 들 때, 계속 어슬렁거릴 수 있다"
+   },
+   "en": {
+    "name": "Worry Mamba",
+    "desc": "Worries with no reason keep hanging around me"
+   }
+  },
+  {
+   "id": 4,
+   "img": "assets/cards/mamba/04.webp",
+   "category": "thought",
+   "ko": {
+    "name": "빨리빨리 맘바",
+    "desc": "공부를 빨리 마쳐야 한다고 생각해 실수를 하거나 내용을 놓칠 때가 있다"
+   },
+   "en": {
+    "name": "Hurry Mamba",
+    "desc": "I think I must finish fast, so I make mistakes or miss things"
+   }
+  },
+  {
+   "id": 5,
+   "img": "assets/cards/mamba/05.webp",
+   "category": "action",
+   "ko": {
+    "name": "헛소리 맘바",
+    "desc": "수업 시간에 자꾸 친구와 떠들어서 방해가 된다"
+   },
+   "en": {
+    "name": "Chatter Mamba",
+    "desc": "I keep chatting with friends in class and get in the way"
+   }
+  },
+  {
+   "id": 6,
+   "img": "assets/cards/mamba/06.webp",
+   "category": "action",
+   "ko": {
+    "name": "침대 맘바",
+    "desc": "침대의 유혹을 거절하지 못하고 항상 이끌려 버린다"
+   },
+   "en": {
+    "name": "Bed Mamba",
+    "desc": "I can't say no to my bed and always get pulled in"
+   }
+  },
+  {
+   "id": 7,
+   "img": "assets/cards/mamba/07.webp",
+   "category": "action",
+   "ko": {
+    "name": "끄적 맘바",
+    "desc": "수업은 열심히 듣는다. 하지만 선생님 말씀만 받아 적는 데 집중한다"
+   },
+   "en": {
+    "name": "Scribble Mamba",
+    "desc": "I listen hard in class, but I only copy down what the teacher says"
+   }
+  },
+  {
+   "id": 8,
+   "img": "assets/cards/mamba/08.webp",
+   "category": "thought",
+   "ko": {
+    "name": "심통 맘바",
+    "desc": "공부가 중요한 이유를 잘 모르겠다고 대답한다"
+   },
+   "en": {
+    "name": "Grumpy Mamba",
+    "desc": "I say I don't really know why studying matters"
+   }
+  },
+  {
+   "id": 9,
+   "img": "assets/cards/mamba/09.webp",
+   "category": "heart",
+   "ko": {
+    "name": "그대로 맘바",
+    "desc": "열심히 노력했지만 원하는 결과가 나오지 않았다"
+   },
+   "en": {
+    "name": "Stuck Mamba",
+    "desc": "I tried hard, but I didn't get the result I wanted"
+   }
+  },
+  {
+   "id": 10,
+   "img": "assets/cards/mamba/10.webp",
+   "category": "action",
+   "ko": {
+    "name": "시간허둥 맘바",
+    "desc": "공부를 할 때 늘 시간에 시달린다"
+   },
+   "en": {
+    "name": "Rush-Rush Mamba",
+    "desc": "When I study, I'm always running out of time"
+   }
+  },
+  {
+   "id": 11,
+   "img": "assets/cards/mamba/11.webp",
+   "category": "action",
+   "ko": {
+    "name": "충동 맘바",
+    "desc": "어떠한 계획 없이 무작정 하려고만 한다"
+   },
+   "en": {
+    "name": "Impulse Mamba",
+    "desc": "I just jump in without any plan"
+   }
+  },
+  {
+   "id": 12,
+   "img": "assets/cards/mamba/12.webp",
+   "category": "thought",
+   "ko": {
+    "name": "완벽 맘바",
+    "desc": "너무 완벽하게 하려다가, 할 게 많아서 대부분 다 못하게 된다"
+   },
+   "en": {
+    "name": "Perfect Mamba",
+    "desc": "I try to do everything perfectly, then there's too much and I finish little"
+   }
+  },
+  {
+   "id": 13,
+   "img": "assets/cards/mamba/13.webp",
+   "category": "action",
+   "ko": {
+    "name": "미룸 맘바",
+    "desc": "공부해야 하지만, 노는 게 너무 좋다"
+   },
+   "en": {
+    "name": "Later Mamba",
+    "desc": "I should study, but playing is just too fun"
+   }
+  },
+  {
+   "id": 14,
+   "img": "assets/cards/mamba/14.webp",
+   "category": "thought",
+   "ko": {
+    "name": "복잡 맘바",
+    "desc": "여러 가지 생각들이 많아 공부에 집중하지 못한다"
+   },
+   "en": {
+    "name": "Tangled Mamba",
+    "desc": "Too many thoughts, so I can't focus on studying"
+   }
+  },
+  {
+   "id": 15,
+   "img": "assets/cards/mamba/15.webp",
+   "category": "action",
+   "ko": {
+    "name": "산만 맘바",
+    "desc": "공부에 금방 싫증을 느낀다. 스마트폰을 보고, 딴생각을 하다 중요한 내용을 놓친다"
+   },
+   "en": {
+    "name": "Scatter Mamba",
+    "desc": "I get bored fast, check my phone, drift off, and miss important things"
+   }
+  },
+  {
+   "id": 16,
+   "img": "assets/cards/mamba/16.webp",
+   "category": "thought",
+   "ko": {
+    "name": "핑계 맘바",
+    "desc": "공부할 때마다 변명거리만 생각한다"
+   },
+   "en": {
+    "name": "Excuse Mamba",
+    "desc": "Every time I study, I only think of excuses"
+   }
+  },
+  {
+   "id": 17,
+   "img": "assets/cards/mamba/17.webp",
+   "category": "action",
+   "ko": {
+    "name": "할래말래 맘바",
+    "desc": "공부할 생각과 마음은 있지만, 실제로 행동하는 경우는 드물다"
+   },
+   "en": {
+    "name": "Maybe Mamba",
+    "desc": "I want to study, but I rarely actually do it"
+   }
+  },
+  {
+   "id": 18,
+   "img": "assets/cards/mamba/18.webp",
+   "category": "heart",
+   "ko": {
+    "name": "발표 무서 맘바",
+    "desc": "발표가 너무 무서워 어려움을 겪는다"
+   },
+   "en": {
+    "name": "Stage-Fright Mamba",
+    "desc": "Speaking in front of the class scares me a lot"
+   }
+  },
+  {
+   "id": 19,
+   "img": "assets/cards/mamba/19.webp",
+   "category": "thought",
+   "ko": {
+    "name": "고집 맘바",
+    "desc": "공부할 때 나만의 방법을 고집한다"
+   },
+   "en": {
+    "name": "Stubborn Mamba",
+    "desc": "I stick to only my own way of studying"
+   }
+  },
+  {
+   "id": 20,
+   "img": "assets/cards/mamba/20.webp",
+   "category": "action",
+   "ko": {
+    "name": "늘어져 맘바",
+    "desc": "시간은 충분하지만 공부는 하지 않는다"
+   },
+   "en": {
+    "name": "Droopy Mamba",
+    "desc": "I have plenty of time but still don't study"
+   }
+  },
+  {
+   "id": 21,
+   "img": "assets/cards/mamba/21.webp",
+   "category": "thought",
+   "ko": {
+    "name": "당황 맘바",
+    "desc": "공부를 어떻게 해야 할지 모르겠다"
+   },
+   "en": {
+    "name": "Puzzled Mamba",
+    "desc": "I don't know how I should study"
+   }
+  },
+  {
+   "id": 22,
+   "img": "assets/cards/mamba/22.webp",
+   "category": "heart",
+   "ko": {
+    "name": "눈치 맘바",
+    "desc": "다른 사람들이 나를 비웃는 것 같아 주눅 든다"
+   },
+   "en": {
+    "name": "Nervous-Eye Mamba",
+    "desc": "I feel small because I think others are laughing at me"
+   }
+  },
+  {
+   "id": 23,
+   "img": "assets/cards/mamba/23.webp",
+   "category": "action",
+   "ko": {
+    "name": "농담 맘바",
+    "desc": "얘기하느라 정신 팔려서 공부에 집중하지 않는다"
+   },
+   "en": {
+    "name": "Joke Mamba",
+    "desc": "I get so caught up in talking that I don't focus"
+   }
+  },
+  {
+   "id": 24,
+   "img": "assets/cards/mamba/24.webp",
+   "category": "thought",
+   "ko": {
+    "name": "비교 맘바",
+    "desc": "항상 친구들과 나를 비교한다"
+   },
+   "en": {
+    "name": "Compare Mamba",
+    "desc": "I always compare myself with my friends"
+   }
+  },
+  {
+   "id": 25,
+   "img": "assets/cards/mamba/25.webp",
+   "category": "heart",
+   "ko": {
+    "name": "칭얼칭얼 맘바",
+    "desc": "공부할 때 '싫어!'라는 불평만 늘어놓고, 부모님이나 선생님을 탓할 때가 있다"
+   },
+   "en": {
+    "name": "Whiny Mamba",
+    "desc": "I just complain 'No!' and sometimes blame my parents or teachers"
+   }
+  },
+  {
+   "id": 26,
+   "img": "assets/cards/mamba/26.webp",
+   "category": "thought",
+   "ko": {
+    "name": "반항 맘바",
+    "desc": "'내가 왜 해야 해?'라는 반항심이 공부하려는 마음을 막는다"
+   },
+   "en": {
+    "name": "Rebel Mamba",
+    "desc": "'Why should I?' gets in the way of wanting to study"
+   }
+  },
+  {
+   "id": 27,
+   "img": "assets/cards/mamba/27.webp",
+   "category": "action",
+   "ko": {
+    "name": "절박 맘바",
+    "desc": "공부를 벼락치기로 하거나 계획을 무시할 때가 있다"
+   },
+   "en": {
+    "name": "Last-Minute Mamba",
+    "desc": "I cram at the last minute or ignore my plan"
+   }
+  },
+  {
+   "id": 28,
+   "img": "assets/cards/mamba/28.webp",
+   "category": "action",
+   "ko": {
+    "name": "게임 맘바",
+    "desc": "게임에 푹 빠져 시간 가는 줄 모른다"
+   },
+   "en": {
+    "name": "Game Mamba",
+    "desc": "I get so into games that I lose track of time"
+   }
+  },
+  {
+   "id": 29,
+   "img": "assets/cards/mamba/29.webp",
+   "category": "action",
+   "ko": {
+    "name": "유튜브 맘바",
+    "desc": "유튜브 영상 보는 거에 푹 빠져 공부할 시간을 낭비한다"
+   },
+   "en": {
+    "name": "Video Mamba",
+    "desc": "I get hooked on videos and waste my study time"
+   }
+  },
+  {
+   "id": 30,
+   "img": "assets/cards/mamba/30.webp",
+   "category": "action",
+   "ko": {
+    "name": "비난 맘바",
+    "desc": "친구의 발표에 빈정거리거나, 무조건 잘못했다고 비난한다"
+   },
+   "en": {
+    "name": "Blame Mamba",
+    "desc": "I mock friends' presentations or say they did it wrong"
+   }
+  },
+  {
+   "id": 31,
+   "img": "assets/cards/mamba/31.webp",
+   "category": "heart",
+   "ko": {
+    "name": "싫어 맘바",
+    "desc": "딱히 이유는 없지만 그냥 모든 게 싫다"
+   },
+   "en": {
+    "name": "No-No Mamba",
+    "desc": "No real reason, I just don't like anything"
+   }
+  },
+  {
+   "id": 32,
+   "img": "assets/cards/mamba/32.webp",
+   "category": "action",
+   "ko": {
+    "name": "딴짓 맘바",
+    "desc": "수업 시간에 수업은 안 듣고 딴짓만 하고 있다"
+   },
+   "en": {
+    "name": "Off-Task Mamba",
+    "desc": "In class, I don't listen and do other things"
+   }
+  },
+  {
+   "id": 33,
+   "img": "assets/cards/mamba/33.webp",
+   "category": "heart",
+   "ko": {
+    "name": "집중 뚝 맘바",
+    "desc": "집중력이 오래가지 않아 금방 싫증을 느낀다"
+   },
+   "en": {
+    "name": "Focus-Drop Mamba",
+    "desc": "My focus doesn't last, so I get bored quickly"
+   }
+  },
+  {
+   "id": 34,
+   "img": "assets/cards/mamba/34.webp",
+   "category": "action",
+   "ko": {
+    "name": "간식 맘바",
+    "desc": "책은 펴고 있지만 간식 먹는 데에만 집중한다"
+   },
+   "en": {
+    "name": "Snack Mamba",
+    "desc": "My book is open, but I only focus on snacks"
+   }
+  },
+  {
+   "id": 35,
+   "img": "assets/cards/mamba/35.webp",
+   "category": "thought",
+   "ko": {
+    "name": "아몰랑 맘바",
+    "desc": "못할 것 같아도 '어떻게든 되겠지'라고만 생각한다"
+   },
+   "en": {
+    "name": "Whatever Mamba",
+    "desc": "Even when I might not make it, I just think 'It'll work out somehow'"
+   }
+  },
+  {
+   "id": 36,
+   "img": "assets/cards/mamba/36.webp",
+   "category": "action",
+   "ko": {
+    "name": "홀로 맘바",
+    "desc": "친구들과 잘 어울리지 않고 늘 혼자 있는다"
+   },
+   "en": {
+    "name": "Alone Mamba",
+    "desc": "I don't join in with friends and am always by myself"
+   }
+  },
+  {
+   "id": 37,
+   "img": "assets/cards/mamba/37.webp",
+   "category": "heart",
+   "ko": {
+    "name": "삐짐 맘바",
+    "desc": "공부에 관해서 지적이나 충고를 들으면 삐지기만 한다"
+   },
+   "en": {
+    "name": "Sulky Mamba",
+    "desc": "When someone gives me advice about studying, I just sulk"
+   }
+  },
+  {
+   "id": 38,
+   "img": "assets/cards/mamba/38.webp",
+   "category": "action",
+   "ko": {
+    "name": "바빠 맘바",
+    "desc": "다른 것들에만 신경 써서 공부는 뒷전으로 밀려난다"
+   },
+   "en": {
+    "name": "Busy Mamba",
+    "desc": "I focus on other things, and studying gets pushed back"
+   }
+  },
+  {
+   "id": 39,
+   "img": "assets/cards/mamba/39.webp",
+   "category": "heart",
+   "ko": {
+    "name": "노잼 맘바",
+    "desc": "요즘 뭘 하든 재미가 없고, 공부가 손에 안 잡힌다. 집중도 잘 안 된다"
+   },
+   "en": {
+    "name": "No-Fun Mamba",
+    "desc": "Nothing is fun lately, I can't get into studying or focus"
+   }
+  },
+  {
+   "id": 40,
+   "img": "assets/cards/mamba/40.webp",
+   "category": "heart",
+   "ko": {
+    "name": "부족 맘바",
+    "desc": "공부를 하는 데 있어 늘 부족하다고 느끼고 자책한다"
+   },
+   "en": {
+    "name": "Not-Enough Mamba",
+    "desc": "I always feel I'm not good enough at studying and blame myself"
+   }
+  },
+  {
+   "id": 41,
+   "img": "assets/cards/mamba/41.webp",
+   "category": "heart",
+   "ko": {
+    "name": "의욕 뚝 맘바",
+    "desc": "공부 내용이 어렵고 재미없을 때 종종 나타난다"
+   },
+   "en": {
+    "name": "Drained Mamba",
+    "desc": "Shows up when lessons are hard and boring"
+   }
+  },
+  {
+   "id": 42,
+   "img": "assets/cards/mamba/42.webp",
+   "category": "heart",
+   "ko": {
+    "name": "쫄보 맘바",
+    "desc": "겁 많고 소극적인 성격이 모르는 걸 배우려는 마음을 막는다"
+   },
+   "en": {
+    "name": "Scaredy Mamba",
+    "desc": "Being timid gets in the way of wanting to learn new things"
+   }
+  },
+  {
+   "id": 43,
+   "img": "assets/cards/mamba/43.webp",
+   "category": "thought",
+   "ko": {
+    "name": "포기 맘바",
+    "desc": "'난 공부랑 안 맞아'라고 생각해서 시작도 하지 않는다"
+   },
+   "en": {
+    "name": "Give-Up Mamba",
+    "desc": "I think 'Studying isn't for me,' so I don't even start"
+   }
+  },
+  {
+   "id": 44,
+   "img": "assets/cards/mamba/44.webp",
+   "category": "action",
+   "ko": {
+    "name": "빈둥 맘바",
+    "desc": "공부를 생각하고 있지만 빈둥거리는 시간이 훨씬 길다"
+   },
+   "en": {
+    "name": "Lazy Mamba",
+    "desc": "I think about studying, but I laze around much longer"
+   }
+  },
+  {
+   "id": 45,
+   "img": "assets/cards/mamba/45.webp",
+   "category": "heart",
+   "ko": {
+    "name": "부담 맘바",
+    "desc": "부모님께서 실망하는 모습을 보는 것을 매우 걱정한다"
+   },
+   "en": {
+    "name": "Pressure Mamba",
+    "desc": "I worry a lot about my parents being disappointed"
+   }
+  },
+  {
+   "id": 46,
+   "img": "assets/cards/mamba/46.webp",
+   "category": "action",
+   "ko": {
+    "name": "그냥 맘바",
+    "desc": "체계적으로 하지 않고 적당한 수준으로만 한다"
+   },
+   "en": {
+    "name": "Just-Enough Mamba",
+    "desc": "I don't study in an organized way, just enough to get by"
+   }
+  },
+  {
+   "id": 47,
+   "img": "assets/cards/mamba/47.webp",
+   "category": "thought",
+   "ko": {
+    "name": "재능 맘바",
+    "desc": "공부도 재능이라고 생각해서 학업에 소극적으로 임한다"
+   },
+   "en": {
+    "name": "Talent Mamba",
+    "desc": "I think studying is all talent, so I hold back"
+   }
+  },
+  {
+   "id": 48,
+   "img": "assets/cards/mamba/48.webp",
+   "category": "heart",
+   "ko": {
+    "name": "귀찮아 맘바",
+    "desc": "'귀찮아'라는 말을 달고 살며, 공부할 때 가장 많이 나타난다"
+   },
+   "en": {
+    "name": "Bother Mamba",
+    "desc": "I always say 'What a bother,' especially when studying"
+   }
+  },
+  {
+   "id": 49,
+   "img": "assets/cards/mamba/49.webp",
+   "category": "action",
+   "ko": {
+    "name": "회피 맘바",
+    "desc": "해야 할 게 있지만 이유 없이 피하고 있다"
+   },
+   "en": {
+    "name": "Dodge Mamba",
+    "desc": "I have things to do but avoid them for no reason"
+   }
+  },
+  {
+   "id": 50,
+   "img": "assets/cards/mamba/50.webp",
+   "category": "action",
+   "ko": {
+    "name": "깜빡 맘바",
+    "desc": "수업은 듣지만, 복습을 미루는 경우가 많아 대부분의 내용을 기억하지 못한다"
+   },
+   "en": {
+    "name": "Forgetful Mamba",
+    "desc": "I listen in class but put off reviewing, so I forget most of it"
+   }
+  },
+  {
+   "id": 51,
+   "img": "assets/cards/mamba/51.webp",
+   "category": "action",
+   "ko": {
+    "name": "졸음 맘바",
+    "desc": "수업이 지루하게 느껴져 종종 잠을 자는 경우가 많다"
+   },
+   "en": {
+    "name": "Sleepy Mamba",
+    "desc": "Class feels boring, so I often fall asleep"
+   }
+  },
+  {
+   "id": 52,
+   "img": "assets/cards/mamba/52.webp",
+   "category": "thought",
+   "ko": {
+    "name": "채찍질 맘바",
+    "desc": "항상 부족하다고 생각해 스스로를 한계로 몰아붙인다"
+   },
+   "en": {
+    "name": "Whip Mamba",
+    "desc": "I always think I'm not enough and push myself to the limit"
+   }
+  },
+  {
+   "id": 53,
+   "img": "assets/cards/mamba/53.webp",
+   "category": "action",
+   "ko": {
+    "name": "몰라 맘바",
+    "desc": "스스로 알려고 하지 않고 무조건 '몰라요'라는 말을 반복한다"
+   },
+   "en": {
+    "name": "Dunno Mamba",
+    "desc": "I don't try to figure it out and just keep saying 'I don't know'"
+   }
+  },
+  {
+   "id": 54,
+   "img": "assets/cards/mamba/54.webp",
+   "category": "thought",
+   "ko": {
+    "name": "욕심만만 맘바",
+    "desc": "노력은 안 하는데 더 많이 갖고 싶고 좋은 성적을 받을 욕심만 가득하다"
+   },
+   "en": {
+    "name": "Greedy Mamba",
+    "desc": "I don't try, but I want more and dream only of good grades"
+   }
+  },
+  {
+   "id": 55,
+   "img": "assets/cards/mamba/55.webp",
+   "category": "thought",
+   "ko": {
+    "name": "꿈 도둑 맘바",
+    "desc": "끊임없이 반복적으로 '꿈을 포기해! 이만하면 됐어'라고 나에게 속삭인다"
+   },
+   "en": {
+    "name": "Dream Thief Mamba",
+    "desc": "Keeps whispering to me, 'Give up your dream! This is good enough'"
+   }
+  }
+ ]
+}

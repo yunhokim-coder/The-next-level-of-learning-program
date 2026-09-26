@@ -1,6 +1,6 @@
 {
- "note": "에피소드 3 데이터. checklist의 gauge는 개발자 확인 전 초안(mappingDraft=true)이다. 바꾸려면 gauge 값만 고치면 된다.",
- "mappingDraft": true,
+ "note": "에피소드 3 데이터. checklist의 gauge는 개발자 확인을 마친 연결이다.",
+ "mappingDraft": false,
  "riddles": [
   {
    "ko": "나는 공부할 때 새로운 것을 배우는 게 즐거워서 해요!",

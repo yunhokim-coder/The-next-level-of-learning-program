@@ -28,7 +28,8 @@
     "off": "끄기",
     "map": "모험 지도",
     "restart": "처음으로",
-    "close": "닫기"
+    "close": "닫기",
+    "soundTest": "🔔 소리 테스트"
   },
   "dialog": {
     "next": "다음 ▶"

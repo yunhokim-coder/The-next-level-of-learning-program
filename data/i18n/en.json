@@ -28,7 +28,8 @@
     "off": "Off",
     "map": "Adventure map",
     "restart": "Back to start",
-    "close": "Close"
+    "close": "Close",
+    "soundTest": "🔔 Sound test"
   },
   "dialog": {
     "next": "Next ▶"

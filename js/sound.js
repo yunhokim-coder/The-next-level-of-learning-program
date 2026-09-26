@@ -128,6 +128,14 @@
 
   window.Sound = {
     unlock,
+    // 메뉴의 소리 테스트용: 지금 소리 장치 상태
+    status() {
+      return {
+        ctx: ctx ? ctx.state : 'none',
+        muted,
+        session: navigator.audioSession ? navigator.audioSession.type : 'n/a',
+      };
+    },
     play: (name) => sfx[name] && sfx[name](),
     get muted() {
       return muted;

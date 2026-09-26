@@ -2312,3 +2312,8 @@ body.portrait .hcard {
   border-width: 2px;
   border-radius: 8px;
 }
+
+.sound-status {
+  color: #9fe6c4;
+  font-size: 13px;
+}

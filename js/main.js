@@ -431,6 +431,9 @@
       { who: 'narrator', key: 'ep4.n3', do: () => Game.knockdown(false), wait: 900 },
       { who: 'mamba', key: 'ep4.mamba4' },
       { do: () => Game.leave('mamba'), wait: 1600 },
+      // 블랙맘바를 나와 떼어 놓고(외재화), 이길 카드가 이미 있다는 희망으로 에피소드 5에 잇는다
+      { who: 'angel', key: 'ep4.angel6' },
+      { who: 'angel', key: 'ep4.angel7' },
       { who: 'angel', key: 'ep4.angel5' },
     ];
   }

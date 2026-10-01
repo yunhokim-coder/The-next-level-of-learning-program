@@ -96,8 +96,7 @@
     "play": "도전!",
     "replay": "다시 하기",
     "locked": "잠김",
-    "soon": "준비 중",
-    "video": "▶ 소개 영상"
+    "soon": "준비 중"
   },
   "episodes": {
     "1": {
@@ -205,13 +204,7 @@
   "clear": {
     "title": "MISSION COMPLETE",
     "level": "LEVEL UP!",
-    "toMap": "모험 지도로",
-    "video": "▶ 소개 영상 보기"
-  },
-  "video": {
-    "title": "소개 영상",
-    "close": "닫기",
-    "open": "YouTube에서 열기"
+    "toMap": "모험 지도로"
   },
   "ep3": {
     "intro1": "뜨거운 모래바람을 지나자, 거대한 피라미드와 스핑크스가 나타났어요.",

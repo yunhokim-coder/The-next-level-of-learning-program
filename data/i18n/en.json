@@ -96,8 +96,7 @@
     "play": "Play!",
     "replay": "Play again",
     "locked": "Locked",
-    "soon": "Coming soon",
-    "video": "▶ Intro video"
+    "soon": "Coming soon"
   },
   "episodes": {
     "1": {
@@ -205,13 +204,7 @@
   "clear": {
     "title": "MISSION COMPLETE",
     "level": "LEVEL UP!",
-    "toMap": "To the map",
-    "video": "▶ Watch the intro video"
-  },
-  "video": {
-    "title": "Intro video",
-    "close": "Close",
-    "open": "Open on YouTube"
+    "toMap": "To the map"
   },
   "ep3": {
     "intro1": "Past the hot, sandy wind, giant pyramids and a Sphinx appeared.",

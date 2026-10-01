@@ -4,11 +4,10 @@
   const stage = $('#stage');
   const titleEl = $('#title');
   const menu = $('#menu');
-  const VIDEO_ID = 'bZFApTvrVVQ';
   const READY_EPISODES = [1, 2, 3, 4, 5, 6]; // 지금 플레이할 수 있는 에피소드
   const MIN_AGE = 7;
   const MAX_AGE = 80;
-  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#strategy-screen', '#grow-screen', '#card-screen', '#clear-screen', '#video-modal'];
+  const OVERLAYS = ['#lang-screen', '#setup-screen', '#map-screen', '#quiz-screen', '#tie-screen', '#result-screen', '#gauge-screen', '#check-screen', '#sticker-screen', '#goal-screen', '#mamba-screen', '#freq-screen', '#draw-screen', '#strategy-screen', '#grow-screen', '#card-screen', '#clear-screen'];
 
   // ---------- 화면 크기: 320×180을 정수배로 확대 (작은 화면에서는 꽉 차게) ----------
   function fit() {
@@ -195,14 +194,6 @@
         b.textContent = done ? I18n.t('map.replay') : I18n.t('map.play');
         b.addEventListener('click', () => playEpisode(ep));
         side.appendChild(b);
-      }
-      if (ep === 1) {
-        const v = document.createElement('button');
-        v.type = 'button';
-        v.className = 'pill';
-        v.textContent = I18n.t('map.video');
-        v.addEventListener('click', openVideo);
-        side.appendChild(v);
       }
       list.appendChild(li);
     }
@@ -644,23 +635,9 @@
     hideOverlays();
     $('#clear-ep').textContent = ep === 6 ? I18n.t('ep6.theEnd') : `${I18n.t('map.ep')} ${ep}`;
     $('#clear-title').textContent = ep === 6 ? I18n.t('ep6.allClear') : I18n.t('clear.title');
-    $('#clear-video').hidden = ep !== 1;
     $('#clear-screen').hidden = false;
     Sound.play('clear');
     $('#clear-map').focus();
-  }
-
-  // ---------- 소개 영상 ----------
-  function openVideo() {
-    Sound.unlock();
-    $('#video-frame').src = `https://www.youtube-nocookie.com/embed/${VIDEO_ID}?rel=0`;
-    $('#video-link').href = `https://youtu.be/${VIDEO_ID}`;
-    $('#video-modal').hidden = false;
-  }
-
-  function closeVideo() {
-    $('#video-frame').src = 'about:blank';
-    $('#video-modal').hidden = true;
   }
 
   // ---------- 설정 메뉴 ----------
@@ -747,8 +724,6 @@
     });
 
     $('#clear-map').addEventListener('click', showMap);
-    $('#clear-video').addEventListener('click', openVideo);
-    $('#video-close').addEventListener('click', closeVideo);
 
     // 화면 어디를 눌러도 대사가 넘어간다 (버튼과 열린 패널은 제외)
     document.addEventListener('click', (e) => {
@@ -763,7 +738,6 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         if (!menu.hidden) closeMenu();
-        else if (!$('#video-modal').hidden) closeVideo();
         return;
       }
       if (e.key !== ' ' && e.key !== 'Enter') return;

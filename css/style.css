@@ -1136,43 +1136,6 @@ body.portrait .dialog-name {
   display: none;
 }
 
-/* 영상 */
-.video-panel {
-  width: min(100%, 900px);
-}
-
-.video-wrap {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.video-wrap iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-.video-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 14px;
-}
-
-.video-actions .pill {
-  font-size: 15px;
-  padding: 8px 14px;
-  border-width: 2px;
-  border-radius: 6px;
-  text-decoration: none;
-  color: inherit;
-}
-
 @media (max-width: 640px) {
   .options,
   .result-body {
